@@ -19,6 +19,7 @@ This guide is based on the **Conventional Commits** style.
 
 ---
 
+
 ## 2️⃣ Commit Structure
 
 <type>(<scope>): <short description>
