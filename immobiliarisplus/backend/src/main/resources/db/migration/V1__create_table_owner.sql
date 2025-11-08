@@ -1,0 +1,8 @@
+CREATE TABLE owner (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
+    phone VARCHAR(255),
+    contact_preference ENUM('EMAIL', 'PHONE', 'WHATSAPP') DEFAULT 'EMAIL',
+    intake_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
