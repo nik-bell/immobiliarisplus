@@ -1,18 +1,15 @@
-import './App.css';
-import NotFoundPage from './component/NotFoundPage'
-import PrivacyPolicy from './component/PrivacyPolicy'
-import CookiePolicy from './component/CookiePolicy'
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import appRoutes from "./routes/AppRoutes";
 
 function App() {
+  const routes = createBrowserRouter(appRoutes);
+
   return (
     <>
-      <div className='main-div'>
-      <NotFoundPage></NotFoundPage>
-      <PrivacyPolicy></PrivacyPolicy>
-      <CookiePolicy></CookiePolicy>
-    </div >
+      <RouterProvider router={routes} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
