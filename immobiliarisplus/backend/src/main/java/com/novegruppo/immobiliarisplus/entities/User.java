@@ -2,7 +2,6 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.UserRole;
 
-import cn.herodotus.oss.minio.api.entity.OwnerEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Owner owner;
 
@@ -31,6 +30,6 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public UserEntity() {}
+    public User() {}
 
 }
