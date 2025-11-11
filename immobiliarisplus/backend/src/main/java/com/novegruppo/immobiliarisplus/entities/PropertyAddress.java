@@ -36,18 +36,6 @@ public class PropertyAddress {
     @Column(name = "zone_score")
     private Integer zoneScore;
 
-    // Constructors
-    public PropertyAddress() {
-    }
-
-    public PropertyAddress(Property property, String street, String city, String cap, String province) {
-        this.property = property;
-        this.street = street;
-        this.city = city;
-        this.cap = cap;
-        this.province = province;
-    }
-
     // Getters and Setters
     public Integer getPropertyId() {
         return propertyId;
