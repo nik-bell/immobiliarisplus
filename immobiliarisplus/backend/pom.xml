@@ -76,12 +76,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-    
-      <dependency>
-        <groupId>cn.herodotus.oss</groupId>
-        <artifactId>minio-sdk-api</artifactId>
-        <version>0.3.0</version>
-      </dependency>
     </dependencies>
 
     <build>
