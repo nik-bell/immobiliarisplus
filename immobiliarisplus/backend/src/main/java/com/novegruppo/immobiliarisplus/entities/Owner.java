@@ -27,7 +27,7 @@ public class Owner {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public Owner() {}
+
 
     
 
