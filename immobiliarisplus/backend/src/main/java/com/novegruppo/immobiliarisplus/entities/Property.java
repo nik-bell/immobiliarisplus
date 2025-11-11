@@ -1,5 +1,6 @@
 package com.novegruppo.immobiliarisplus.entities;
 
+import com.novegruppo.immobiliarisplus.enums.*;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
