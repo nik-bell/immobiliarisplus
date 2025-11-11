@@ -1,60 +1,37 @@
 package com.novegruppo.immobiliarisplus.entities;
 
+import com.novegruppo.immobiliarisplus.enums.ExclusiveContractStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Rappresenta un contratto di esclusiva collegato ad una sola proprietà.
- * La relazione è 1:1 → una property può avere al massimo un solo contratto attivo.
- */
 @Entity
 @Table(name = "exclusive_contract")
 public class ExclusiveContract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    /**
-     * URL o percorso del file del contratto (PDF, immagine, ecc).
-     * Non salviamo il file nel DB, ma solo il riferimento.
-     */
     @Column(name = "contract_url", nullable = false)
     private String contractUrl;
 
-    /**
-     * Stato del contratto (es: ACTIVE, EXPIRED, PENDING).
-     * Ti conviene poi creare un enum.
-     */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private ExclusiveContractStatus status;
 
-    /**
-     * Data di firma del contratto.
-     */
     @Column(name = "signed_at")
     private LocalDateTime signedAt;
 
-    /**
-     * Data di scadenza del contratto.
-     */
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
-    /**
-     * Relazione One-to-One con Property.
-     * Una proprietà può avere un solo contratto di esclusiva.
-     */
     @OneToOne
     @JoinColumn(name = "property_id", nullable = false, unique = true)
     private Property property;
 
-    // Costruttore vuoto richiesto da JPA
     public ExclusiveContract() {}
 
-    // Getters & setters
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -62,7 +39,7 @@ public class ExclusiveContract {
         return contractUrl;
     }
 
-    public String getStatus() {
+    public ExclusiveContractStatus getStatus() {
         return status;
     }
 
@@ -78,7 +55,7 @@ public class ExclusiveContract {
         return property;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -86,7 +63,7 @@ public class ExclusiveContract {
         this.contractUrl = contractUrl;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ExclusiveContractStatus status) {
         this.status = status;
     }
 
