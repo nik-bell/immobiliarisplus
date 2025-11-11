@@ -1,42 +1,132 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.main-div {
+  background-color: rgb(244, 244, 244);
+  height: 100vh;
+}
+
+/* STILE PER LA PAGINA NOT FOUND */
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 96vh;
   text-align: center;
+  background-color: rgb(244, 244, 244);
+  font-family: 'Arial', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.illustration-container {
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.illustration-image {
+  width: auto;
+  min-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.not-found-title {
+  font-size: 2rem;
+  color: #2C3E50;
+  margin-bottom: 10px;
+}
+
+.not-found-subtitle {
+  font-size: 1rem;
+  color: #7F8C8D;
+  max-width: 600px;
+  line-height: 1.4;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+  justify-content: center;
+}
+
+.not-found-button {
+  padding: 15px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.button-primary {
+  background-color: #f2c94c;
+  color: #2b2b2bff;
+}
+
+.button-secondary {
+  background-color: #2db39aff;
+  color: #ebebebff;
+}
+
+.button-primary:hover {
+  background-color: #e0b83e;
+}
+
+.button-secondary:hover {
+  background-color: #248f76;
+}
+
+.not-found-p {
+  font-size: 0.9rem;
+  color: #B0B0B0;
+}
+
+/* ========================================= */
+/* MEDIA QUERY (TABLET / DESKTOP - min 768px) */
+/* ========================================= */
+
+@media (min-width: 768px) {
+  .not-found-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .not-found-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  .illustration-image {
+    min-width: 350px;
+  }
+
+  .button-container {
+    flex-direction: row;
+    gap: 20px;
+    width: auto;
+    max-width: none;
+  }
+
+  .not-found-button {
+    padding: 12px 25px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* ========================================= */
+/* MEDIA QUERY (LARGE DESKTOP - min 1024px) */
+/* ========================================= */
+
+@media (min-width: 1024px) {
+  .illustration-image {
+    min-width: 400px;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .not-found-p {
+    margin-top: 40px;
+  }
 }
