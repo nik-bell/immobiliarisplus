@@ -1,5 +1,5 @@
-import CookiePolicy from './CookiePolicy'
-import PrivacyPolicy from './PrivacyPolicy'
+import CookiePolicy from '../components/CookiePolicy'
+import PrivacyPolicy from '../components/PrivacyPolicy'
 
 
 function Footer() {

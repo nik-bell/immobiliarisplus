@@ -1,3 +1,6 @@
+import ManagementNavbar from "../components/ManagementNavbar";
+import PagesNavbar from "../components/PagesNavbar";
+
 function Header() {
   return (
     <header>
