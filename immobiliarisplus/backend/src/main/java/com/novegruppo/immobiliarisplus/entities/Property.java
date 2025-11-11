@@ -1,13 +1,16 @@
 package com.novegruppo.immobiliarisplus.entities;
 
 import jakarta.persistence.*;
-
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "property")
 public class Property {
 
-    @id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
@@ -39,7 +42,7 @@ public class Property {
     private EnergyClass energyClass;
 
     @Column(name="description", columnDefinition="TEXT")
-    private text description;
+    private String description;
 
     @Column(name="terrace", nullable = false)
     private boolean hasBalcony;
@@ -146,11 +149,11 @@ public class Property {
         this.energyClass = energyClass;
     }
 
-    public text getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(text description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
