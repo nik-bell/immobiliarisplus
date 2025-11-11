@@ -52,15 +52,6 @@ public class PropertyValuation {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // Constructors
-    public PropertyValuation() {
-    }
-
-    public PropertyValuation(Property property, Double estimatedPriceMin, Double estimatedPriceMax) {
-        this.property = property;
-        this.estimatedPriceMin = estimatedPriceMin;
-        this.estimatedPriceMax = estimatedPriceMax;
-    }
 
     // Getters and Setters
     public int getId() {
