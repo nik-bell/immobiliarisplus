@@ -17,6 +17,10 @@ public class User {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Owner owner;
 
+    @OneToOne(mappedBy = "user")
+    private Employee employee;
+
+
     @Column(nullable = false, unique = true)
     private String email;
 
