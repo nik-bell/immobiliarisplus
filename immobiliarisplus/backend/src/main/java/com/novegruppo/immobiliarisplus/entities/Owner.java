@@ -1,36 +1,33 @@
 package com.novegruppo.immobiliarisplus.entities;
 
-import com.novegruppo.immobiliarisplus.enums.UserRole;
-
+import com.novegruppo.immobiliarisplus.enums.ContactPreference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "owner")
+public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private Owner owner;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    @Column(name = "contact_preferences", nullable = false)
+    private ContactPreference contactPreference;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public User() {}
+    public Owner() {}
 
     
 
@@ -42,12 +39,12 @@ public class User {
         this.id = id;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -58,20 +55,20 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public UserRole getRole() {
-        return role;
+    public ContactPreference getContactPreference() {
+        return contactPreference;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setContactPreference(ContactPreference contactPreference) {
+        this.contactPreference = contactPreference;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -81,7 +78,5 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    
 
 }
