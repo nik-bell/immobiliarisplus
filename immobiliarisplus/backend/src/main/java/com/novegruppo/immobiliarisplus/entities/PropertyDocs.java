@@ -16,21 +16,13 @@ public class PropertyDocs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id; 
 
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
 
-    public PropertyDocs() {}
-
-    public PropertyDocs(String fileName, Property property) {
-        this.fileName = fileName;
-        this.property = property;
-    }
-
-    
 }
