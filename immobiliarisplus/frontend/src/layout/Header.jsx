@@ -1,10 +1,11 @@
-import ManagementNavbar from "../components/ManagementNavbar";
-import PagesNavbar from "../components/PagesNavbar";
+import MainNavbar from "../components/MainNavbar";
+import TopNavbar from "../components/TopNavbar";
 
 function Header() {
   return (
     <header>
-      <h3>Questo è l'header</h3>
+      <TopNavbar></TopNavbar>
+      <MainNavbar></MainNavbar>
     </header>
   );
 }
