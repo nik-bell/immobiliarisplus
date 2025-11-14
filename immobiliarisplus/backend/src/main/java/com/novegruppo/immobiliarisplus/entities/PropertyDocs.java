@@ -25,4 +25,29 @@ public class PropertyDocs {
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
 
+    public int getId() {
+    return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getFileName() {
+        return fileName;
+    }
+    
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+    
+    public Property getProperty() {
+        return property;
+    }
+    
+    public void setProperty(Property property) {
+        this.property = property;
+    }
+    
+    
 }
