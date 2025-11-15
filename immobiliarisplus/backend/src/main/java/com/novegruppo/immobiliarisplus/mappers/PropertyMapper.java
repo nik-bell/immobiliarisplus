@@ -5,8 +5,8 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
 import com.novegruppo.immobiliarisplus.entities.Owner;
 import com.novegruppo.immobiliarisplus.entities.Property;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
+
 
 @Mapper(componentModel = "spring")
 public interface PropertyMapper {
