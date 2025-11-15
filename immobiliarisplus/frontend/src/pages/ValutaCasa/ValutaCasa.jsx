@@ -18,9 +18,15 @@ function StepsRenderer() {
 export default function ValutaCasa() {
   return (
     <FormContextProvider>
-      <StepsRenderer />
+      <div className="bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <h1 className="text-2xl font-bold mb-6">Valuta la tua casa</h1>
 
-      <NavigationButtons />
+          <StepsRenderer />
+
+          <NavigationButtons />
+        </div>
+      </div>
     </FormContextProvider>
   );
 }

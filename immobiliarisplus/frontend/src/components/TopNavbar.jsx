@@ -5,21 +5,27 @@ const TopNavbar = () => {
   const { isLoggedIn, userType } = useAuth();
 
   return (
-    <div>
-      <div>
-        <NavLink href="/contattaci">Assistenza</NavLink>
+    <div className="w-full bg-gray-900 text-gray-100 text-sm">
+      <div className="max-w-7xl mx-auto px-6 py-2 flex items-end justify-end">
+        <div className="flex items-end gap-4">
+          <NavLink to="/contattaci" className="hover:underline">
+            Assistenza
+          </NavLink>
 
-        {!isLoggedIn ? (
-          <NavLink href="/login">Login</NavLink>
-        ) : (
-          <>
-            {userType === "agente" ? (
-              <NavLink href="/area-agenti">Area Agenti</NavLink>
-            ) : (
-              <NavLink href="/area-personale">Area Personale</NavLink>
-            )}
-          </>
-        )}
+          {!isLoggedIn ? (
+            <NavLink to="/login" className="hover:underline">
+              Login
+            </NavLink>
+          ) : userType === "agente" ? (
+            <NavLink to="/area-agenti" className="hover:underline">
+              Area Agenti
+            </NavLink>
+          ) : (
+            <NavLink to="/area-personale" className="hover:underline">
+              Area Personale
+            </NavLink>
+          )}
+        </div>
       </div>
     </div>
   );

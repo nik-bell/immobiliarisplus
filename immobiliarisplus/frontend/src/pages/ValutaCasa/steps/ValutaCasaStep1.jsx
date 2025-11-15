@@ -5,12 +5,15 @@ export default function ValutaCasaStep1() {
   const p = state.property;
 
   return (
-    <div>
-      <h2>Step 1 — Dettagli dell'immobile</h2>
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+      <h2 className="text-lg font-semibold mb-4">
+        Step 1 — Dettagli dell'immobile
+      </h2>
 
-      <div>
-        <label>Via e numero</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Via e numero</label>
         <input
+          className="w-full px-3 py-2 border rounded"
           value={p.address}
           onChange={(e) =>
             dispatch({
@@ -19,12 +22,17 @@ export default function ValutaCasaStep1() {
             })
           }
         />
-        {state.errors.address && <p>{state.errors.address}</p>}
+        {state.errors.address && (
+          <p className="text-sm text-red-600">{state.errors.address}</p>
+        )}
       </div>
 
-      <div>
-        <label>Tipologia immobile</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">
+          Tipologia immobile
+        </label>
         <select
+          className="w-full px-3 py-2 border rounded"
           value={p.propertyType}
           onChange={(e) =>
             dispatch({
@@ -39,12 +47,15 @@ export default function ValutaCasaStep1() {
           <option value="ufficio">Ufficio</option>
           <option value="altro">Altro</option>
         </select>
-        {state.errors.propertyType && <p>{state.errors.propertyType}</p>}
+        {state.errors.propertyType && (
+          <p className="text-sm text-red-600">{state.errors.propertyType}</p>
+        )}
       </div>
 
-      <div>
-        <label>Condizioni</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Condizioni</label>
         <select
+          className="w-full px-3 py-2 border rounded"
           value={p.condition}
           onChange={(e) =>
             dispatch({
@@ -59,12 +70,15 @@ export default function ValutaCasaStep1() {
           <option value="buono">Buono</option>
           <option value="da_ristrutturare">Da ristrutturare</option>
         </select>
-        {state.errors.condition && <p>{state.errors.condition}</p>}
+        {state.errors.condition && (
+          <p className="text-sm text-red-600">{state.errors.condition}</p>
+        )}
       </div>
 
-      <div>
-        <label>Metri quadrati</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Metri quadrati</label>
         <input
+          className="w-full px-3 py-2 border rounded"
           type="number"
           value={p.surfaceM2}
           onChange={(e) =>
@@ -74,7 +88,9 @@ export default function ValutaCasaStep1() {
             })
           }
         />
-        {state.errors.surfaceM2 && <p>{state.errors.surfaceM2}</p>}
+        {state.errors.surfaceM2 && (
+          <p className="text-sm text-red-600">{state.errors.surfaceM2}</p>
+        )}
       </div>
     </div>
   );

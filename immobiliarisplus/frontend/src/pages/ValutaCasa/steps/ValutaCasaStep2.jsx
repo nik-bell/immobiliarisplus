@@ -12,12 +12,15 @@ export default function ValutaCasaStep2() {
   }
 
   return (
-    <div>
-      <h2>Step 2 — Caratteristiche</h2>
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+      <h2 className="text-lg font-semibold mb-4">Step 2 — Caratteristiche</h2>
 
-      <div>
-        <label>Numero di camere</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">
+          Numero di camere
+        </label>
         <input
+          className="w-full px-3 py-2 border rounded"
           type="number"
           value={d.rooms}
           onChange={(e) =>
@@ -27,12 +30,17 @@ export default function ValutaCasaStep2() {
             })
           }
         />
-        {state.errors.rooms && <p>{state.errors.rooms}</p>}
+        {state.errors.rooms && (
+          <p className="text-sm text-red-600">{state.errors.rooms}</p>
+        )}
       </div>
 
-      <div>
-        <label>Numero di bagni</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">
+          Numero di bagni
+        </label>
         <input
+          className="w-full px-3 py-2 border rounded"
           type="number"
           value={d.bathrooms}
           onChange={(e) =>
@@ -42,12 +50,15 @@ export default function ValutaCasaStep2() {
             })
           }
         />
-        {state.errors.bathrooms && <p>{state.errors.bathrooms}</p>}
+        {state.errors.bathrooms && (
+          <p className="text-sm text-red-600">{state.errors.bathrooms}</p>
+        )}
       </div>
 
-      <div>
-        <label>Piano</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Piano</label>
         <input
+          className="w-full px-3 py-2 border rounded"
           type="number"
           value={d.floor}
           onChange={(e) =>
@@ -57,22 +68,26 @@ export default function ValutaCasaStep2() {
             })
           }
         />
-        {state.errors.floor && <p>{state.errors.floor}</p>}
+        {state.errors.floor && (
+          <p className="text-sm text-red-600">{state.errors.floor}</p>
+        )}
       </div>
 
       <div>
-        <label>Dotazioni</label>
-
-        {Object.keys(d.features).map((feature) => (
-          <div key={feature}>
-            <input
-              type="checkbox"
-              checked={d.features[feature]}
-              onChange={() => toggleFeature(feature)}
-            />
-            <label>{feature}</label>
-          </div>
-        ))}
+        <label className="block text-sm font-medium mb-2">Dotazioni</label>
+        <div className="grid grid-cols-2 gap-2">
+          {Object.keys(d.features).map((feature) => (
+            <label key={feature} className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={d.features[feature]}
+                onChange={() => toggleFeature(feature)}
+                className="w-4 h-4"
+              />
+              <span className="capitalize">{feature.replace(/_/g, " ")}</span>
+            </label>
+          ))}
+        </div>
       </div>
     </div>
   );
