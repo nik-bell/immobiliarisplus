@@ -29,7 +29,6 @@ public class ExclusiveContract {
     @JoinColumn(name = "property_id", nullable = false, unique = true)
     private Property property;
 
-    public ExclusiveContract() {}
 
     public int getId() {
         return id;
