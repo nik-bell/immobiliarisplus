@@ -2,16 +2,16 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import appRoutes from "./routes/AppRoutes";
 
-import { AuthProvider } from "./providers/AuthProvider";
+import { AuthContextProvider } from "./providers/AuthContextProvider";
 
 function App() {
   const routes = createBrowserRouter(appRoutes);
 
   return (
     <>
-      <AuthProvider>
+      <AuthContextProvider>
         <RouterProvider router={routes} />
-      </AuthProvider>
+      </AuthContextProvider>
     </>
   );
 }

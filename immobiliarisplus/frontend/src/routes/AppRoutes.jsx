@@ -2,7 +2,7 @@ import MainLayout from "../layout/MainLayout";
 import Homepage from "../pages/Homepage";
 import Blog from "../pages/Blog";
 import Contattaci from "../pages/Contattaci";
-import ValutaCasa from "../pages/ValutaCasa";
+import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
 import NotFoundPage from "../pages/NotFoundPage";
