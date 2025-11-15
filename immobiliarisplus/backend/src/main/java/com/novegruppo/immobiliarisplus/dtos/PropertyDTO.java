@@ -9,8 +9,8 @@ public record PropertyDTO(
         @NotNull(message = "L'ID non può essere nullo.")
         Integer id,
 
-        @NotNull(message = "L'ID del proprietario non può essere nullo.")
-        Integer ownerId,
+        // Cognome del proprietario esposto in lettura al posto dell'ownerId
+        String ownerSurname,
 
         PropertyStatus status,
 
