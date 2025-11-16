@@ -20,7 +20,7 @@ public interface PropertyMapper {
     @Mapping(source = "hasBasement", target = "basement")
     PropertyDTO toDTO(Property entity);
 
-    /@Mapping(source = "ownerId", target = "owner.id")
+    @Mapping(source = "ownerId", target = "owner.id")
     @Mapping(source = "sizeMq", target = "size")
     @Mapping(source = "terrace", target = "hasBalcony")
     @Mapping(source = "elevator", target = "hasElevator")
