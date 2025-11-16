@@ -5,6 +5,7 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
 import com.novegruppo.immobiliarisplus.entities.Owner;
 import com.novegruppo.immobiliarisplus.entities.Property;
+import com.novegruppo.immobiliarisplus.exceptions.ResourceNotFoundException;
 import com.novegruppo.immobiliarisplus.mappers.PropertyMapper;
 import com.novegruppo.immobiliarisplus.repository.OwnerRepository;
 import com.novegruppo.immobiliarisplus.repository.PropertyRepository;
