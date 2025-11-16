@@ -3,6 +3,7 @@ package com.novegruppo.immobiliarisplus.controllers;
 import com.novegruppo.immobiliarisplus.dtos.PropertyCreateDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
+import com.novegruppo.immobiliarisplus.services.PropertyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
