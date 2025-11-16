@@ -12,8 +12,11 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "surname", nullable = false)
+    private String surname;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -39,12 +42,20 @@ public class Owner {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
