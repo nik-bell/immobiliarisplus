@@ -1,5 +1,11 @@
+import HeroMiglioraCasa from "../sections/HeroMiglioraCasa";
+
 function MiglioraCasa() {
-  return <h2>MiglioraCasa caricata</h2>;
+  return(
+    <>
+      <HeroMiglioraCasa />
+    </>
+  )
 }
 
 export default MiglioraCasa;
