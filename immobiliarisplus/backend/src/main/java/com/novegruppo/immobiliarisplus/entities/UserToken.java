@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_tokens")
-public class UserTokens {
+public class UserToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
