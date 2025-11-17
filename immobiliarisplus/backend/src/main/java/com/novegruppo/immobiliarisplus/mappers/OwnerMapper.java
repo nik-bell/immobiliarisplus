@@ -2,6 +2,7 @@ package com.novegruppo.immobiliarisplus.mappers;
 
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
 import com.novegruppo.immobiliarisplus.entities.Owner;
+
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
@@ -19,3 +20,4 @@ public interface OwnerMapper {
     @Mapping(target = "intakeDate", ignore = true)
     void updateEntityFromUpdate(OwnerDTO dto, @MappingTarget Owner entity);
 }
+
