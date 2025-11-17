@@ -1,7 +1,7 @@
 package com.novegruppo.immobiliarisplus.repositories;
 
-import com.novegruppo.immobiliarisplus.entities.UserTokens;
+import com.novegruppo.immobiliarisplus.entities.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserTokensRepository extends JpaRepository<UserTokens, Integer> {
+public interface UserTokensRepository extends JpaRepository<UserToken, Integer> {
 }
