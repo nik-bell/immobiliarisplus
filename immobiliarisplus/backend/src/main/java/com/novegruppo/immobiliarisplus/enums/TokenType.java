@@ -1,6 +1,6 @@
 package com.novegruppo.immobiliarisplus.enums;
 
-public enum UserTokenType {
+public enum TokenType {
     ACCESS,
     REFRESH
 }

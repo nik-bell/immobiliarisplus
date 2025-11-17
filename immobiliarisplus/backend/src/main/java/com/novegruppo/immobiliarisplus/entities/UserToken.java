@@ -1,6 +1,6 @@
 package com.novegruppo.immobiliarisplus.entities;
 
-import com.novegruppo.immobiliarisplus.enums.UserTokenType;
+import com.novegruppo.immobiliarisplus.enums.TokenType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -21,7 +21,7 @@ public class UserToken {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserTokenType type;
+    private TokenType type;
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
@@ -56,11 +56,11 @@ public class UserToken {
         this.token = token;
     }
 
-    public UserTokenType getType() {
+    public TokenType getType() {
         return type;
     }
 
-    public void setType(UserTokenType type) {
+    public void setType(TokenType type) {
         this.type = type;
     }
 
