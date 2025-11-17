@@ -1,5 +1,9 @@
+import HeroAssistenza from "../sections/HeroAssistenza";
+
 function Contattaci() {
-  return <h2>Contattaci caricata</h2>;
+  return(
+    <HeroAssistenza />
+  )
 }
 
 export default Contattaci;
