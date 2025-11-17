@@ -1,50 +1,33 @@
 package com.novegruppo.immobiliarisplus.dtos;
 
-public class OwnerDTO {
+import com.novegruppo.immobiliarisplus.enums.ContactPreference;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-    private Integer id;
-    private String fullName;
-    private String email;
-    private String phone;
+import java.time.LocalDateTime;
 
-    public OwnerDTO() {}
+public record OwnerDTO(
+        Integer id,
 
-    public OwnerDTO(Integer id, String fullName, String email, String phone) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-    }
+        @NotBlank(message = "Il nome non può essere vuoto.")
+        @Size(max = 100, message = "Il nome è troppo lungo.")
+        String name,
 
-    public Integer getId() {
-        return id;
-    }
+        @NotBlank(message = "Il cognome non può essere vuoto.")
+        @Size(max = 100, message = "Il cognome è troppo lungo.")
+        String surname,
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+        @NotBlank(message = "L'email non può essere vuota.")
+        @Email(message = "L'email non è valida.")
+        String email,
 
-    public String getFullName() {
-        return fullName;
-    }
+        @Size(max = 20, message = "Il numero di telefono è troppo lungo.")
+        String phone,
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+        @NotNull(message = "La preferenza di contatto non può essere nulla.")
+        ContactPreference contactPreference,
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-}
+        LocalDateTime createdAt
+) {}
