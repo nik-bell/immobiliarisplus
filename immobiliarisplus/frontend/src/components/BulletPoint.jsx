@@ -1,4 +1,4 @@
-const BulletList = ({ number, title, description, colorClass }) => {
+const BulletPoint = ({ number, title, description, colorClass }) => {
   return (
     <div className="flex items-start space-x-4 py-3">
       <div
@@ -19,4 +19,4 @@ const BulletList = ({ number, title, description, colorClass }) => {
   );
 };
 
-export default BulletList;
+export default BulletPoint;

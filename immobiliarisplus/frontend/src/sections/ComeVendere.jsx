@@ -1,4 +1,4 @@
-import BulletList from "../components/BulletList";
+import BulletPoint from "../components/BulletPoint";
 
 const ComeVendere = () => {
     const dettagliBulletPoint = [
@@ -34,7 +34,7 @@ const ComeVendere = () => {
                 </h2>
                 <div className="space-y-4">
                     {dettagliBulletPoint.map((dettaglioBulletPoint) => (
-                        <BulletList
+                        <BulletPoint
                             key={dettaglioBulletPoint.number}
                             number={dettaglioBulletPoint.number}
                             title={dettaglioBulletPoint.title}
