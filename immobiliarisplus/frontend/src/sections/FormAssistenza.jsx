@@ -7,7 +7,7 @@ const FormAssistenza = () => {
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-xl border border-gray-100">
+        <div className="p-8 bg-white rounded-lg shadow-xl border border-gray-100">
             <h2 className="text-xl font-normal text-teal-600 mb-6">
                 Invia un messaggio
             </h2>

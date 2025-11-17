@@ -65,7 +65,7 @@ const contactData = [
 const ContattiAssistenza = () => {
     return (
         <section className="py-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                 {contactData.map((contact, index) => (
                     <MetodoContatto
                         key={index}
