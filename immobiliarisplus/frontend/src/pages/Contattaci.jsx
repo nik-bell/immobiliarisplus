@@ -1,5 +1,6 @@
 import HeroAssistenza from "../sections/HeroAssistenza";
 import ContattiAssistenza from "../sections/ContattiAssistenza";
+import FormAssistenza from "../sections/FormAssistenza";
 
 function Contattaci() {
   return(
@@ -7,6 +8,7 @@ function Contattaci() {
     <HeroAssistenza />
     <div className="container">
       <ContattiAssistenza />
+      <FormAssistenza />
     </div>
     </>
   )
