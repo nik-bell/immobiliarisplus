@@ -1,12 +1,35 @@
 import HeroMiglioraCasa from "../sections/HeroMiglioraCasa";
 import Note from "../components/Note";
+import CtaMigliora from "../sections/CtaMigliora";
+import Button from "../components/Button"
+import StatCard from "../sections/StatCard";
 
 function MiglioraCasa() {
+  function handleRichiediConsulenza() {
+
+  }
   return (
     <>
       <HeroMiglioraCasa />
-      <div className="container">
+      <div className="container ">
         <Note className="border border-indigo-900 border-l-4 bg-gray-100 p-4 rounded-lg shadow-sm my-4"> Questi sono esempi di migliorie che possiamo offrire. Per usufruirne, clicca su "Richiedi consulenza" oppure fai una richiesta di preventivo tramite il form di valutazione.</Note>
+        <StatCard />
+        <CtaMigliora />
+        <div className="flex justify-center mb-4">
+          <Button onClick={handleRichiediConsulenza}
+                  className="
+                  px-6 py-3
+                  bg-teal-500 text-white
+                  font-semibold text-base
+                  rounded-lg
+                  shadow-md
+                  hover:bg-teal-400 hover:shadow-lg
+                  transition duration-150 ease-in-out
+                  focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50"
+          >
+            Richiedi consulenza
+          </Button>
+        </div>
       </div>
     </>
   )
