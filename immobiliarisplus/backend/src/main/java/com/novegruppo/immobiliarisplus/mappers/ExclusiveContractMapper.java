@@ -1,6 +1,7 @@
 package com.novegruppo.immobiliarisplus.mappers;
 
 import com.novegruppo.immobiliarisplus.entities.ExclusiveContract;
+import com.novegruppo.immobiliarisplus.entities.ExclusiveContractDTO;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
