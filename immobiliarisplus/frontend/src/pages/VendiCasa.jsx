@@ -1,12 +1,16 @@
 import ComeVendere from "../sections/ComeVendere";
 import CtaVendita from "../sections/CtaVendita";
+import HeroVendiCasa from "../sections/HeroVendiCasa";
 
 function VendiCasa() {
   return (
-    <div className="container xl:px-64">
-      <ComeVendere />
-      <CtaVendita />
-    </div>
+    <>
+      <HeroVendiCasa />
+      <div className="container xl:px-64">
+        <ComeVendere />
+        <CtaVendita />
+      </div>
+    </>
   )
 }
 

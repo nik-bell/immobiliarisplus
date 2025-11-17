@@ -6,7 +6,7 @@ export default function CtaVendita() {
 
     };
     return (
-        <div className="flex flex-col lg:flex-row gap-4 mb-4">
+        <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="pt-6 lg:w-1/2">
                 <Card
                     className="

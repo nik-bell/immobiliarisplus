@@ -28,7 +28,7 @@ const ComeVendere = () => {
         },
     ];
     return (
-            <div className="p-6 bg-gray-50 rounded-lg shadow-lg my-4">
+            <div className="p-6 bg-gray-50 rounded-lg shadow-lg mt-8 mb-4">
                 <h2 className="text-2xl font-normal text-gray-900 mb-6">
                     Perché vendere con ImmobiliarisPLUS
                 </h2>
