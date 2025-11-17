@@ -3,14 +3,21 @@ package com.novegruppo.immobiliarisplus.mappers;
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
 import com.novegruppo.immobiliarisplus.entities.Owner;
 
-public class OwnerMapper {
+import org.mapstruct.*;
 
-    public static OwnerDTO toDTO(Owner owner) {
-        return new OwnerDTO(
-                owner.getId(),
-                owner.getFullName(),
-                owner.getEmail(),
-                owner.getPhone()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface OwnerMapper {
+
+    @Mapping(source = "intakeDate", target = "createdAt")
+    OwnerDTO toDTO(Owner entity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "intakeDate", ignore = true)
+    Owner fromCreate(OwnerDTO dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "intakeDate", ignore = true)
+    void updateEntityFromUpdate(OwnerDTO dto, @MappingTarget Owner entity);
 }
+
