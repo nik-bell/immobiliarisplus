@@ -24,7 +24,7 @@ export default function HeroVendiCasa() {
                 <Button
                     onClick={handleValutazione}
                     className="
-            px-6 py-3
+                            px-6 py-3
                             bg-yellow-400 text-black
                             font-semibold text-base
                             rounded-lg

@@ -12,7 +12,7 @@ const ComeVendere = () => {
             number: 2,
             title: 'Marketing professionale',
             description: 'Foto professionali, virtual tour, pubblicazione su tutti i principali portali',
-            color: 'bg-blue-950',
+            color: 'bg-indigo-900',
         },
         {
             number: 3,
