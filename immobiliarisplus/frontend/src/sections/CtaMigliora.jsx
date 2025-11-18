@@ -1,7 +1,7 @@
 import Card from "../components/Card";
 import Button from "../components/Button";
 
-export default function CtaVendita() {
+export default function CtaMigliora() {
     const handleScopriDiPiu = () => {
 
     };
@@ -22,10 +22,10 @@ export default function CtaVendita() {
 
                     <div className="flex-grow">
                         <h3 className="text-3xl font-bold mb-3">
-                            Contratto Esclusiva
+                            Consulenza Gratuita
                         </h3>
                         <p className="text-lg font-light mb-8 opacity-90">
-                            Massima visibilità e gestione professionale della vendita
+                            Parla con un nostro esperto per personalizzare il piano di miglioramento
                         </p>
                     </div>
 
@@ -33,7 +33,7 @@ export default function CtaVendita() {
                         <Button
                             onClick={handleScopriDiPiu}
                             className="
-                                w-1/2
+                                w-1/1 md:w-1/2
                                 px-6 py-3
                                 bg-white text-teal-700
                                 font-semibold text-base
@@ -43,7 +43,7 @@ export default function CtaVendita() {
                                 transition duration-150 ease-in-out
                                 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                         >
-                            Scopri di più
+                            Richiedi consulenza
                         </Button>
                     </div>
                 </Card>
@@ -65,10 +65,10 @@ export default function CtaVendita() {
 
                     <div className="flex-grow">
                         <h3 className="text-3xl font-bold mb-3 text-blue-950">
-                            Migliora Casa
+                            Richiedi Preventivo
                         </h3>
                         <p className="text-lg font-light mb-8 opacity-90">
-                            Aumenta il valore prima di vendere con il nostro servizio dedicato
+                            Ottieni una valutazione e scopri come aumentare il valore della tua casa
                         </p>
                     </div>
 
@@ -76,7 +76,7 @@ export default function CtaVendita() {
                         <Button
                             onClick={handleScopriDiPiu}
                             className="
-                                w-1/2
+                                w-1/1 md:w-1/2
                                 px-6 py-3
                                 bg-yellow-400 text-black
                                 font-semibold text-base
@@ -86,7 +86,7 @@ export default function CtaVendita() {
                                 transition duration-150 ease-in-out
                                 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                         >
-                            Scopri di più
+                            Valuta Casa Ora
                         </Button>
                     </div>
                 </Card>
