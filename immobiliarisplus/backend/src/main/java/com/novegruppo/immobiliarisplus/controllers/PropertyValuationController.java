@@ -1,6 +1,8 @@
 package com.novegruppo.immobiliarisplus.controllers;
 
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
+import com.novegruppo.immobiliarisplus.dtos.PropertyValuationRequestDTO;
+import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
 import com.novegruppo.immobiliarisplus.services.PropertyValuationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,44 +15,47 @@ import java.util.List;
 @RequestMapping("/api/valuations")
 public class PropertyValuationController {
 
-    private final PropertyValuationService valuationService;
+    private final PropertyValuationService propertyValuationService;
 
-    public PropertyValuationController(PropertyValuationService valuationService) {
-        this.valuationService = valuationService;
+    public PropertyValuationController(PropertyValuationService propertyValuationService) {
+        this.propertyValuationService = propertyValuationService;
     }
 
     @GetMapping
     public List<PropertyValuationDTO> list() {
-        return valuationService.findAll();
+        return propertyValuationService.findAll();
     }
 
     @GetMapping("/{id}")
     public PropertyValuationDTO getById(@PathVariable Integer id) {
-        return valuationService.findById(id);
+        return propertyValuationService.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<PropertyValuationDTO> create(@RequestBody PropertyValuationDTO dto) {
-        PropertyValuationDTO created = valuationService.create(dto);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.id())
-                .toUri();
-
+        PropertyValuationDTO created = propertyValuationService.create(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.id()).toUri();
         return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
-    public PropertyValuationDTO update(@PathVariable Integer id,
-                                       @RequestBody PropertyValuationDTO dto) {
-        return valuationService.update(id, dto);
+    public PropertyValuationDTO update(@PathVariable Integer id, @RequestBody PropertyValuationDTO dto) {
+        return propertyValuationService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        valuationService.delete(id);
+        propertyValuationService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/calculate")
+    public ResponseEntity<?> calculateValuation(@RequestBody PropertyValuationRequestDTO request) {
+        try {
+            PropertyValuationResultDTO result = propertyValuationService.calculateAndSave(request);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

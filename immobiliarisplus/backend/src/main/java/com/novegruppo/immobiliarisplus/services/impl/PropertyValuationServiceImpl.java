@@ -18,6 +18,7 @@ import com.novegruppo.immobiliarisplus.repositories.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import com.novegruppo.immobiliarisplus.services.PropertyValuationService;
+import com.novegruppo.immobiliarisplus.services.AutoMailService;
 import com.novegruppo.immobiliarisplus.mappers.PropertyValuationMapper;
 import com.novegruppo.immobiliarisplus.exceptions.ResourceNotFoundException;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
