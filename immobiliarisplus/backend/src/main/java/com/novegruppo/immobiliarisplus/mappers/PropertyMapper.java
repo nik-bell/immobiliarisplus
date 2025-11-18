@@ -12,7 +12,7 @@ import org.mapstruct.*;
 public interface PropertyMapper {
 
     @Mapping(source = "owner.surname", target = "ownerSurname")
-    @Mapping(source = "size", target = "sizeMq")
+    @Mapping(source = "sizeMq", target = "sizeMq")
     @Mapping(source = "hasBalcony", target = "terrace")
     @Mapping(source = "hasElevator", target = "elevator")
     @Mapping(source = "hasGarage", target = "boxAuto")
@@ -21,7 +21,7 @@ public interface PropertyMapper {
     PropertyDTO toDTO(Property entity);
 
     @Mapping(source = "ownerId", target = "owner.id")
-    @Mapping(source = "sizeMq", target = "size")
+    @Mapping(source = "sizeMq", target = "sizeMq")
     @Mapping(source = "terrace", target = "hasBalcony")
     @Mapping(source = "elevator", target = "hasElevator")
     @Mapping(source = "boxAuto", target = "hasGarage")
@@ -31,7 +31,7 @@ public interface PropertyMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(source = "ownerId", target = "owner.id")
-    @Mapping(source = "sizeMq", target = "size")
+    @Mapping(source = "sizeMq", target = "sizeMq")
     @Mapping(source = "terrace", target = "hasBalcony")
     @Mapping(source = "elevator", target = "hasElevator")
     @Mapping(source = "boxAuto", target = "hasGarage")
