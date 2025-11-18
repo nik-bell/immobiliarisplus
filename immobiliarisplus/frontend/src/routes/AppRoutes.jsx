@@ -1,6 +1,5 @@
 import MainLayout from "../layout/MainLayout";
 import Homepage from "../pages/Homepage";
-import Blog from "../pages/Blog";
 import Contattaci from "../pages/Contattaci";
 import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
@@ -17,12 +16,6 @@ const appRoutes = [
         Component: Homepage,
         showInNav: true,
         title: "Home",
-      },
-      {
-        path: "blog",
-        Component: Blog,
-        showInNav: true,
-        title: "Blog",
       },
       {
         path: "contattaci",
