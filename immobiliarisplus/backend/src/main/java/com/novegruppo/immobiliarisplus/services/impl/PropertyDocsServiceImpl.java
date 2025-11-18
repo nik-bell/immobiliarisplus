@@ -10,6 +10,7 @@ import com.novegruppo.immobiliarisplus.repositories.PropertyRepository;
 import com.novegruppo.immobiliarisplus.services.PropertyDocsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +85,16 @@ public class PropertyDocsServiceImpl implements PropertyDocsService {
             throw new ResourceNotFoundException("PropertyDocs non trovato con id=" + id);
         }
         propertyDocsRepository.deleteById(id);
+    }
+
+    @Override
+    public PropertyDocsDTO upload(Integer propertyId, MultipartFile file) {
+        return null;
+    }
+
+    @Override
+    public Object download(Integer id) {
+        return null;
     }
 }
 
