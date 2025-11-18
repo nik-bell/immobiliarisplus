@@ -1,5 +1,5 @@
 import React from "react";
-import Hero from "../components/Hero";
+import HeroHomepage from "../sections/HeroHomepage";
 
 /* Feature Card */
 const FeatureCard = ({ icon, title, description }) => (
@@ -82,67 +82,53 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center">
-      {/* HERO */}
-      <Hero backgroundImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-          Vendi casa con più tranquillità
-        </h1>
-        <p className="text-base sm:text-lg mt-3 opacity-90">
-          Trasparenza, velocità e controllo in ogni fase della vendita
-        </p>
-        <div className="flex gap-3 justify-center mt-6 flex-wrap">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
-            Valuta casa in 3 min
-          </button>
-          <button className="bg-white/20 hover:bg-white/30 text-white font-semibold px-6 py-3 rounded-lg transition backdrop-blur">
-            Parla con un esperto
-          </button>
-        </div>
-      </Hero>
+    <>
+      <HeroHomepage />
+      <div className="w-full flex flex-col items-center">
 
-      {/* FEATURES SECTION */}
-      <section className="w-full max-w-6xl px-8 py-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
-          Perché scegliere ImmobiliarisPLUS
-        </h2>
-        <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
-          Un approccio innovativo per vendere casa senza stress
-        </p>
+        {/* FEATURES SECTION */}
+        <section className="w-full max-w-6xl px-8 py-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
+            Perché scegliere ImmobiliarisPLUS
+          </h2>
+          <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
+            Un approccio innovativo per vendere casa senza stress
+          </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {featuresData.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-            />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+            {featuresData.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
+            ))}
+          </div>
+        </section>
 
-      {/* STEPS SECTION */}
-      <section className="w-full bg-gray-50 border-t border-gray-200 py-16 px-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
-          Come funziona
-        </h2>
-        <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
-          Tre semplici passaggi per vendere casa
-        </p>
+        {/* STEPS SECTION */}
+        <section className="w-full bg-gray-50 border-t border-gray-200 py-16 px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
+            Come funziona
+          </h2>
+          <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
+            Tre semplici passaggi per vendere casa
+          </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
-          {stepsData.map((step) => (
-            <StepCard
-              key={step.number}
-              number={step.number}
-              title={step.title}
-              description={step.description}
-            />
-          ))}
-        </div>
-      </section>
-    </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto mt-10">
+            {stepsData.map((step) => (
+              <StepCard
+                key={step.number}
+                number={step.number}
+                title={step.title}
+                description={step.description}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
+    </>
   );
 };
 
