@@ -6,6 +6,8 @@ import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
 import NotFoundPage from "../pages/NotFoundPage";
+import AreaAgenti from "../pages/AreaAgenti";
+import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
 const appRoutes = [
   {
@@ -47,6 +49,18 @@ const appRoutes = [
         Component: MiglioraCasa,
         showInNav: true,
         title: "Migliora Casa",
+      },
+      {
+        path: "area-agenti",
+        Component: AreaAgentiLayout,
+        children: [
+          {
+            index: true,
+            Component: AreaAgenti,
+            title: "Area Agenti",
+            showInNav: true,
+          },
+        ],
       },
       {
         path: "*",
