@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 import { useState } from "react";
-import LoginModal from "./LoginModal";
+import LoginModal from "../layout/LoginModal";
 
 const TopNavbar = () => {
   const { isLoggedIn, userType } = useAuth();
