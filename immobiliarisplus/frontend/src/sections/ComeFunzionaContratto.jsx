@@ -6,7 +6,7 @@ const ComeFunzionaContratto = () => {
     
     return (
         <div className="p-8">
-            <Card className="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
+            <Card className="bg-white rounded-xl shadow-lg p-8 mx-auto">
                 <h2 className="text-3xl font-semibold mb-6 text-gray-800">
                     Come funziona il processo
                 </h2>

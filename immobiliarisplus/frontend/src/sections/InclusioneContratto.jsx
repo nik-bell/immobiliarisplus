@@ -4,7 +4,7 @@ import { ContractItem } from '../components/ContractItem';
 const InclusioneContratto = () => {
     return (
         <div className="p-8 ">
-            <Card className="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto border-l-4 border-l-indigo-900">
+            <Card className="bg-white rounded-xl shadow-lg p-8 mx-auto border-l-4 border-l-indigo-900">
 
                 <div className="flex items-center mb-6">
                     <svg

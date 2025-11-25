@@ -29,11 +29,11 @@ export default function CtaContratto() {
                         </p>
                     </div>
 
-                    <div className="flex justify-center">
+                    <div className="flex flex-col sm:flex-row justify-center items-center md:justify-between gap-3">
                         <Button
                             onClick={handleScopriDiPiu}
                             className="
-                                w-1/2
+                                w-1/1 md:w-1/2
                                 px-6 py-3
                                 bg-yellow-400 text-black
                                 font-semibold text-base
@@ -48,7 +48,7 @@ export default function CtaContratto() {
                         <Button
                             onClick={handleScopriDiPiu}
                             className="
-                                w-1/2
+                                w-1/1 md:w-1/2
                                 px-6 py-3
                                 bg-white text-teal-700
                                 font-semibold text-base

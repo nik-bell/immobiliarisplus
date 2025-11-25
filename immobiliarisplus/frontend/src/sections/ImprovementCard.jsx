@@ -8,7 +8,7 @@ const ImprovementCard = ({
     impactValue
 }) => {
 
-    const cardBaseClasses = "p-6 rounded-lg shadow-md mb-6 border border-gray-100";
+    const cardBaseClasses = "p-6 rounded-lg shadow-md mb-6 border border-gray-100 bg-white";
     const statsGridClasses = "grid grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-4 mt-6";
     const labelClasses = "text-sm text-gray-500";
     const valueClasses = "text-base font-medium text-gray-900";

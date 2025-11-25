@@ -3,7 +3,7 @@ import Card from "../components/Card";
 export default function SpiegazioneContratto() {
 
     return (
-        <Card className="bg-white rounded-xl shadow-lg p-8 max-w-2xl my-4 mx-auto">
+        <Card className="bg-white rounded-xl shadow-lg p-8 my-4 mx-auto">
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">
                 Cos'è il contratto di vendita in esclusiva?
             </h2>

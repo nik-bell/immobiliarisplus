@@ -6,7 +6,7 @@ const PercheScegliereEsclusiva = () => {
             <h2 className="text-3xl text-center mb-10 text-gray-800">
                 Perché scegliere l'esclusiva?
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
                 <Card className="bg-white rounded-lg shadow-md p-6 border-t-4 border-t-teal-500">
                     <div className="flex items-start">
                         <div className="p-3 rounded-lg bg-teal-50 text-teal-600 text-xl mr-4">
