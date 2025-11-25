@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../store/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
@@ -7,10 +8,15 @@ export default function LoginModal({ isOpen, onClose }) {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("utente");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     login({ name: username, type: role });
+    // se è agente o admin, redirigi direttamente all'area agenti
+    if (role === "agente" || role === "admin") {
+      navigate("/area-agenti");
+    }
     onClose();
   };
 
