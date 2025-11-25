@@ -22,6 +22,11 @@ export default function CasaModal() {
     setEditing({ info: false, contact: false, agent: false, notes: false });
   }, [selectedCasa]);
 
+  // view: 'details' (default) or 'documents'
+  const [view, setView] = useState("details");
+  const [showAddDoc, setShowAddDoc] = useState(false);
+  const [newDocName, setNewDocName] = useState("");
+
   const updateDraftProperty = (key, value) => {
     setDraft((d) => ({ ...d, property: { ...d.property, [key]: value } }));
   };
@@ -68,31 +73,96 @@ export default function CasaModal() {
           <button
             onClick={closeCasaModal}
             aria-label="Chiudi"
-            className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition"
+            className="p-2 rounded-lg hover:bg-gray-200 text-gray-600 transition"
           >
             <span className="text-lg">✕</span>
           </button>
         </div>
 
-        {/* Top actions */}
-        <div className="px-6 py-4 flex flex-wrap gap-3 items-center bg-white">
-          {/* Assegna / Cambia agente: visibile solo ad admin */}
-          {userType === "admin" && (
-            <button className="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium shadow-sm hover:bg-emerald-700 transition">
-              {c.assignedAgent ? "Cambia agente" : "Assegna"}
-            </button>
-          )}
-
-          {/* Appuntamento rimosso su richiesta */}
-
-          {/* Documenti (sostituisce 'Genera contratto') */}
-          <button className="px-4 py-2 border border-gray-200 rounded-md font-medium text-gray-700 hover:bg-gray-50">Documenti</button>
-
-          <button className="px-4 py-2 border border-emerald-600 text-emerald-600 rounded-md font-medium hover:bg-emerald-50">Invia proposta</button>
-        </div>
+        {/* Top actions removed — assign button moved to footer */}
 
         {/* Main content */}
-          <div className="px-8 py-6 space-y-6 text-sm text-gray-700">
+          <div className="px-8 py-4 space-y-4 text-sm text-gray-700">
+            {/* Menu toggle: Dettagli / Documenti */}
+            <div className="flex items-center justify-start gap-3">
+              <div className="inline-flex rounded-md bg-gray-100 p-1">
+                <button
+                  onClick={() => setView("details")}
+                  className={`px-3 py-1 rounded text-sm ${view === "details" ? "bg-white shadow" : "text-gray-600"}`}
+                >
+                  Dettagli
+                </button>
+                <button
+                  onClick={() => setView("documents")}
+                  className={`px-3 py-1 rounded text-sm ${view === "documents" ? "bg-white shadow" : "text-gray-600"}`}
+                >
+                  Documenti
+                </button>
+              </div>
+            </div>
+            {view === "documents" ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-800">Documenti</h3>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setView("details")}
+                      className="text-sm text-gray-600 hover:underline"
+                    >
+                      Torna ai dettagli
+                    </button>
+                    <button
+                      onClick={() => setShowAddDoc(true)}
+                      className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
+                    >
+                      Aggiungi documento
+                    </button>
+                  </div>
+                </div>
+
+                {(!draft.documents || draft.documents.length === 0) && !showAddDoc && (
+                  <div className="text-gray-600">Nessun documento presente al momento.</div>
+                )}
+
+                {draft.documents && draft.documents.length > 0 && (
+                  <ul className="space-y-2">
+                    {draft.documents.map((doc) => (
+                      <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
+                        <div className="text-sm text-gray-800">{doc.name}</div>
+                        <div className="flex items-center gap-2">
+                          <a href={doc.url || '#'} className="text-emerald-600 text-sm hover:underline">Apri</a>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {showAddDoc && (
+                  <div className="mt-3 bg-white p-4 rounded shadow-sm border">
+                    <label className="text-xs text-gray-500">Nome documento</label>
+                    <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
+                        onClick={() => {
+                          if (!newDocName) return;
+                          const newDoc = { id: Date.now().toString(), name: newDocName };
+                          const updated = { ...draft, documents: [...(draft.documents || []), newDoc] };
+                          setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
+                          openCasaModal(updated);
+                          setDraft(updated);
+                          setNewDocName("");
+                          setShowAddDoc(false);
+                        }}
+                      >
+                        Aggiungi
+                      </button>
+                      <button className="px-3 py-1 border rounded text-sm" onClick={() => setShowAddDoc(false)}>Annulla</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 flex flex-col gap-6">
                 {/* Informazioni immobile */}
@@ -245,18 +315,25 @@ export default function CasaModal() {
                 </section>
               </aside>
             </div>
+          )}
           </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-end gap-3">
+        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-end items-center gap-3">
+          {userType === "admin" && (
+            <button
+              className="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium shadow-sm hover:bg-emerald-700 transition text-sm"
+            >
+              Cambia agente assegnato
+            </button>
+          )}
+
           <button
             onClick={closeCasaModal}
             className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
           >
             Chiudi
           </button>
-
-          {/* footer save button rimosso su richiesta */}
         </div>
       </div>
     </div>
