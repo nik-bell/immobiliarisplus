@@ -4,6 +4,7 @@ import Contattaci from "../pages/Contattaci";
 import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
+import ContrattoEsclusiva from "../pages/ContrattoEsclusiva"
 import NotFoundPage from "../pages/NotFoundPage";
 import Test from "../pages/test";
 import AreaAgenti from "../pages/AreaAgenti";
@@ -73,6 +74,12 @@ const appRoutes = [
         ],
       },
 
+      {
+        path: "contratto-esclusiva",
+        Component: ContrattoEsclusiva,
+        showInNav: false,
+        title: "Contratto Esclusiva",
+      },
       {
         path: "*",
         Component: NotFoundPage,

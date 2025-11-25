@@ -4,7 +4,6 @@ const API_BASE_URL = "http://127.0.0.1:8081/api";
 
 // module-scoped auth token (set by caller)
 let authToken = null;
-
 export function setAuthToken(token) {
   authToken = token;
 }
