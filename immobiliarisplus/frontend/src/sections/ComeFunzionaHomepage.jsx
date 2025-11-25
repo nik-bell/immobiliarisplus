@@ -26,7 +26,7 @@ const ComeFunzionaHomepage = () => {
     const cardWrapperClasses = "bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition transform hover:-translate-y-1 h-full";
 
     return (
-        <section className="w-full bg-gray-50 border-t border-gray-200 py-16 px-6">
+        <section className="w-full border-t border-gray-200 py-16 px-6">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
                 Come funziona vendita
             </h2>
