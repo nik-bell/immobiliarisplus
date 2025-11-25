@@ -27,6 +27,42 @@ export default function ValutaCasaStep1() {
         )}
       </div>
 
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">CAP</label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            value={p.zipCode}
+            onChange={(e) =>
+              dispatch({
+                type: "UPDATE_PROPERTY",
+                payload: { zipCode: e.target.value },
+              })
+            }
+          />
+          {state.errors.zipCode && (
+            <p className="text-sm text-red-600">{state.errors.zipCode}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Città</label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            value={p.city}
+            onChange={(e) =>
+              dispatch({
+                type: "UPDATE_PROPERTY",
+                payload: { city: e.target.value },
+              })
+            }
+          />
+          {state.errors.city && (
+            <p className="text-sm text-red-600">{state.errors.city}</p>
+          )}
+        </div>
+      </div>
+
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">
           Tipologia immobile

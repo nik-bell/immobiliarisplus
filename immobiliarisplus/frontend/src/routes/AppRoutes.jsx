@@ -6,6 +6,7 @@ import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
 import NotFoundPage from "../pages/NotFoundPage";
+import Test from "../pages/test";
 
 const appRoutes = [
   {
@@ -48,6 +49,15 @@ const appRoutes = [
         showInNav: true,
         title: "Migliora Casa",
       },
+
+      // Route Test 
+      {
+        path: "test",
+        Component: Test,
+        showInNav: false,
+        title: "Test API",
+      },
+
       {
         path: "*",
         Component: NotFoundPage,
