@@ -31,7 +31,7 @@ const NostriValori = () => {
     const textClasses = "text-gray-600 text-sm mt-1";
 
     return (
-        <section className="w-full py-16 bg-white">
+        <section className="w-full py-16 bg-gray-50">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8">
                 I nostri valori
             </h2>

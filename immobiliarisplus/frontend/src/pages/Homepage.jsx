@@ -2,6 +2,8 @@ import HeroHomepage from "../sections/HeroHomepage";
 import PercheSceglierci from "../sections/PercheSceglierci";
 import ComeFunzionaHomepage from "../sections/ComeFunzionaHomepage";
 import NostriValori from "../sections/NostriValori";
+import ComeFunzionaSection from "../sections/ComeFunzionaSection";
+
 
 const HomePage = () => {
   return (
@@ -12,6 +14,7 @@ const HomePage = () => {
       </div>
       <NostriValori />
         <ComeFunzionaHomepage />
+        <ComeFunzionaSection />
     </>
   );
 };

@@ -4,20 +4,20 @@ import BulletPoint from '../components/BulletPoint';
 const stepsData = [
     {
         number: 1,
-        title: 'Analisi personalizzata',
-        description: 'Valutiamo il tuo immobile e identifichiamo gli interventi con il miglior ROI',
+        title: 'Valuta la tua casa',
+        description: 'Compila il form in 3 minuti con i dati essenziali del tuo immobile',
         color: 'bg-indigo-900',
     },
     {
         number: 2,
-        title: "Piano d'azione",
-        description: 'Creiamo un piano dettagliato con preventivi da partner certificati',
+        title: "Ricevi la valutazione",
+        description: 'In 72 ore ricevi un range di valutazione dettagliato e personalizzato',
         color: 'bg-teal-500',
     },
     {
         number: 3,
-        title: 'Realizzazione',
-        description: 'Coordiniamo i lavori e ti aggiorniamo costantemente sui progressi',
+        title: 'Vendi con noi',
+        description: 'Ricevi il contratto in esclusiva e monitora tutto dalla tua dashboard',
         color: 'bg-yellow-400',
     },
 ];
@@ -28,7 +28,7 @@ const ComeFunzionaHomepage = () => {
     return (
         <section className="w-full bg-gray-50 border-t border-gray-200 py-16 px-6">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
-                Come funziona
+                Come funziona vendita
             </h2>
             <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2 mb-10">
                 Tre semplici passaggi per vendere casa
