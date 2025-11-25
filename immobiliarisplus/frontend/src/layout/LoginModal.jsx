@@ -1,23 +1,59 @@
 import { useState } from "react";
 import { useAuth } from "../store/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { login as apiLogin, setAuthToken } from "../api/api";
 
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const { login } = useAuth();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("utente");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ name: username, type: role });
-    // se è agente o admin, redirigi direttamente all'area agenti
-    if (role === "agente" || role === "admin") {
-      navigate("/area-agenti");
-    }
-    onClose();
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const resp = await apiLogin({ email, password });
+        if (resp && resp.token) {
+          setAuthToken(resp.token);
+
+          // determine role coming from API (could be resp.role or resp.user.role)
+          const apiRole = (resp.role || resp.user?.role || role || "USER").toString();
+          const mapRole = (r) => {
+            const upper = String(r).toUpperCase();
+            if (upper === "ADMIN") return "admin";
+            if (upper === "AGENT" || upper === "AGENTE") return "agente";
+            return "utente";
+          };
+          const mappedType = mapRole(apiRole);
+
+          const userData = resp.user
+            ? { ...resp.user, type: mappedType }
+            : { name: email, type: mappedType };
+
+          login(userData);
+          console.log("Login avvenuto con successo:", { name: userData.name, type: userData.type });
+          if (userData.type === "agente" || userData.type === "admin") {
+            navigate("/area-agenti");
+          }
+          onClose();
+        } else {
+          setError("Credenziali non valide");
+        }
+      } catch (err) {
+        setError("Errore durante il login");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
   return (
@@ -27,15 +63,24 @@ export default function LoginModal({ isOpen, onClose }) {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
-            type="text"
-            placeholder="Nome utente"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
             required
           />
 
-          <select
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border rounded-md px-3 py-2 w-full"
+            required
+          />
+
+          {/* <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
@@ -43,13 +88,16 @@ export default function LoginModal({ isOpen, onClose }) {
             <option value="utente">Utente</option>
             <option value="admin">Admin</option>
             <option value="agente">Agente</option>
-          </select>
+          </select> */}
+
+          {error && <div className="text-sm text-red-600">{error}</div>}
 
           <button
             type="submit"
             className="bg-blue-600 text-white rounded-md py-2 w-full hover:bg-blue-700"
+            disabled={loading}
           >
-            Conferma
+            {loading ? "Caricamento..." : "Conferma"}
           </button>
 
           <button

@@ -6,10 +6,11 @@ import FeatureIcon from "../components/FeatureIcon";
 export default function CasaModal() {
   const { modalOpen, selectedCasa, closeCasaModal, setAllCases, openCasaModal } = useCasa();
 
+  const { userType } = useAuth();
+
   if (!modalOpen || !selectedCasa) return null;
 
   const c = selectedCasa;
-  const { userType } = useAuth();
 
   // draft per edit inline
   const [draft, setDraft] = useState(c);

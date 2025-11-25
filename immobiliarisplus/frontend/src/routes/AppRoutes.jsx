@@ -9,6 +9,8 @@ import Test from "../pages/test";
 import AreaAgenti from "../pages/AreaAgenti";
 import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
+import RoleProtectedRoute from "../components/RoleProtectedRoute";
+
 const appRoutes = [
   {
     path: "/",
@@ -44,8 +46,6 @@ const appRoutes = [
         showInNav: true,
         title: "Migliora Casa",
       },
-
-      // Route Test 
       {
         path: "test",
         Component: Test,
@@ -53,18 +53,26 @@ const appRoutes = [
         title: "Test API",
       },
 
+      // 🔐 AREA AGENTI PROTETTA
       {
         path: "area-agenti",
-        Component: AreaAgentiLayout,
+        Component: () => <RoleProtectedRoute allowedRoles={["admin", "agente"]} />,
         children: [
           {
-            index: true,
-            Component: AreaAgenti,
-            title: "Area Agenti",
-            showInNav: true,
+            // layout route (not an index) so it can have children
+            Component: AreaAgentiLayout,
+            children: [
+              {
+                index: true,
+                Component: AreaAgenti,
+                title: "Area Agenti",
+                showInNav: true,
+              },
+            ],
           },
         ],
       },
+
       {
         path: "*",
         Component: NotFoundPage,
