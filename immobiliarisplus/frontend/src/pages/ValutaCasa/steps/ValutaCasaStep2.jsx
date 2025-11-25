@@ -13,16 +13,18 @@ export default function ValutaCasaStep2() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-lg font-semibold mb-4">Step 2 — Caratteristiche</h2>
+    <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
+      <h2 className="text-3xl font-semibold pb-2">Dettagli dell'immobile</h2>
+      <p className="pb-4">Più dettagli fornisci, più accurata sarà la valutazione</p>
 
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">
-          Numero di camere
+          Numero di camere *
         </label>
         <input
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
+          min={0}
           value={d.rooms}
           onChange={(e) =>
             dispatch({
@@ -30,6 +32,7 @@ export default function ValutaCasaStep2() {
               payload: { rooms: e.target.value },
             })
           }
+          placeholder="Es. 4"
         />
         {state.errors.rooms && (
           <p className="text-sm text-red-600">{state.errors.rooms}</p>
@@ -38,11 +41,12 @@ export default function ValutaCasaStep2() {
 
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">
-          Numero di bagni
+          Numero di bagni *
         </label>
         <input
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none "
           type="number"
+          min={0}
           value={d.bathrooms}
           onChange={(e) =>
             dispatch({
@@ -50,6 +54,7 @@ export default function ValutaCasaStep2() {
               payload: { bathrooms: e.target.value },
             })
           }
+          placeholder="Es. 2"
         />
         {state.errors.bathrooms && (
           <p className="text-sm text-red-600">{state.errors.bathrooms}</p>
@@ -57,10 +62,11 @@ export default function ValutaCasaStep2() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Piano</label>
+        <label className="block text-sm font-medium mb-1">Piano *</label>
         <input
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
+          min={0}
           value={d.floor}
           onChange={(e) =>
             dispatch({
@@ -68,6 +74,7 @@ export default function ValutaCasaStep2() {
               payload: { floor: e.target.value },
             })
           }
+          placeholder="Es: 0"
         />
         {state.errors.floor && (
           <p className="text-sm text-red-600">{state.errors.floor}</p>
