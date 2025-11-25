@@ -1,11 +1,11 @@
 import FormContextProvider from "../../providers/FormContextProvider";
+import useValutaCasaForm from "./useValutaCasaForm";
 
 import ValutaCasaStep1 from "./steps/ValutaCasaStep1";
 import ValutaCasaStep2 from "./steps/ValutaCasaStep2";
 import ValutaCasaStep3 from "./steps/ValutaCasaStep3";
 import NavigationButtons from "./NavigationButtons";
-
-import useValutaCasaForm from "./useValutaCasaForm";
+import BarraStep from "./BarraStep";
 
 function StepsRenderer() {
   const { state } = useValutaCasaForm();
@@ -18,15 +18,32 @@ function StepsRenderer() {
 export default function ValutaCasa() {
   return (
     <FormContextProvider>
-      <div className="bg-gray-50 py-8">
+      <div className="flex-1 min-w-10 px-2">
+        <div className="h-0.5 w-full bg-gray-200"></div>
+      </div>
+      <div className=" bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-6">Valuta la tua casa</h1>
-
+          <StepperWrapper />
+        </div>
+        <div className="flex-1 min-w-10 px-2 mb-8">
+          <div className="h-0.5 w-full bg-gray-200"></div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4">
           <StepsRenderer />
-
           <NavigationButtons />
         </div>
       </div>
     </FormContextProvider>
+  );
+}
+
+function StepperWrapper() {
+  const { state } = useValutaCasaForm();
+  const currentStep = state.step;
+
+  return (
+    <div>
+      <BarraStep currentStep={currentStep} />
+    </div>
   );
 }
