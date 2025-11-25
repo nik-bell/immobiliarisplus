@@ -29,9 +29,6 @@ const MainNavbar = () => {
           >
             Migliora casa
           </NavLink>
-          <NavLink to="/blog" className="text-gray-600 hover:text-gray-900">
-            Blog
-          </NavLink>
         </div>
 
         {/* Right - CTAs */}

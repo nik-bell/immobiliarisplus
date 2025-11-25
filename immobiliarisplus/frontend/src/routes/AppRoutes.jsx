@@ -1,12 +1,13 @@
 import MainLayout from "../layout/MainLayout";
 import Homepage from "../pages/Homepage";
-import Blog from "../pages/Blog";
 import Contattaci from "../pages/Contattaci";
 import ValutaCasa from "../pages/ValutaCasa/ValutaCasa";
 import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
 import NotFoundPage from "../pages/NotFoundPage";
 import Test from "../pages/test";
+import AreaAgenti from "../pages/AreaAgenti";
+import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
 const appRoutes = [
   {
@@ -18,12 +19,6 @@ const appRoutes = [
         Component: Homepage,
         showInNav: true,
         title: "Home",
-      },
-      {
-        path: "blog",
-        Component: Blog,
-        showInNav: true,
-        title: "Blog",
       },
       {
         path: "contattaci",
@@ -58,6 +53,18 @@ const appRoutes = [
         title: "Test API",
       },
 
+      {
+        path: "area-agenti",
+        Component: AreaAgentiLayout,
+        children: [
+          {
+            index: true,
+            Component: AreaAgenti,
+            title: "Area Agenti",
+            showInNav: true,
+          },
+        ],
+      },
       {
         path: "*",
         Component: NotFoundPage,
