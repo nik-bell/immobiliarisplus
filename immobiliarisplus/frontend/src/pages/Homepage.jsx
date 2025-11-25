@@ -3,6 +3,7 @@ import PercheSceglierci from "../sections/PercheSceglierci";
 import ComeFunzionaHomepage from "../sections/ComeFunzionaHomepage";
 import NostriValori from "../sections/NostriValori";
 import ComeFunzionaSection from "../sections/ComeFunzionaSection";
+import ChiSiamo from "../sections/ChiSiamo";
 
 
 const HomePage = () => {
@@ -15,6 +16,7 @@ const HomePage = () => {
       <NostriValori />
         <ComeFunzionaHomepage />
         <ComeFunzionaSection />
+        <ChiSiamo />
     </>
   );
 };
