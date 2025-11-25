@@ -1,4 +1,5 @@
 import useValutaCasaForm from "../useValutaCasaForm";
+import NavigationButtons from "../NavigationButtons";
 
 export default function ValutaCasaStep2() {
   const { state, dispatch } = useValutaCasaForm();
@@ -89,6 +90,7 @@ export default function ValutaCasaStep2() {
           ))}
         </div>
       </div>
+      <NavigationButtons />
     </div>
   );
 }

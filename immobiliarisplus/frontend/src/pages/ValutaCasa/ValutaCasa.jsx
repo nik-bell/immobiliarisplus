@@ -4,7 +4,6 @@ import useValutaCasaForm from "./useValutaCasaForm";
 import ValutaCasaStep1 from "./steps/ValutaCasaStep1";
 import ValutaCasaStep2 from "./steps/ValutaCasaStep2";
 import ValutaCasaStep3 from "./steps/ValutaCasaStep3";
-import NavigationButtons from "./NavigationButtons";
 import BarraStep from "./BarraStep";
 
 function StepsRenderer() {
@@ -21,7 +20,7 @@ export default function ValutaCasa() {
       <div className="flex-1 min-w-10 px-2">
         <div className="h-0.5 w-full bg-gray-200"></div>
       </div>
-      <div className=" bg-gray-50">
+      <div className=" bg-gray-100">
         <div className="max-w-4xl mx-auto px-4">
           <StepperWrapper />
         </div>
@@ -30,7 +29,6 @@ export default function ValutaCasa() {
         </div>
         <div className="max-w-4xl mx-auto px-4">
           <StepsRenderer />
-          <NavigationButtons />
         </div>
       </div>
     </FormContextProvider>

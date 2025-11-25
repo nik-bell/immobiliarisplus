@@ -1,4 +1,5 @@
 import useValutaCasaForm from "../useValutaCasaForm";
+import NavigationButtons from "../NavigationButtons";
 
 export default function ValutaCasaStep3() {
   const { state, dispatch, submitForm } = useValutaCasaForm();
@@ -114,6 +115,7 @@ export default function ValutaCasaStep3() {
           Invia Richiesta
         </button>
       </div>
+      <NavigationButtons />
     </div>
   );
 }
