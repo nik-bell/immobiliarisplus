@@ -3,6 +3,7 @@ import SpiegazioneContratto from '../sections/SpiegazioneContratto';
 import PercheScegliereEsclusiva from '../sections/PercheScegliereEsclusiva';
 import ComeFunzionaContratto from "../sections/ComeFunzionaContratto";
 import InclusioneContratto from "../sections/InclusioneContratto";
+import FAQContratto from "../sections/FAQContratto";
 
 function ContattoEsclusiva() {
     return (
@@ -13,6 +14,7 @@ function ContattoEsclusiva() {
                 <PercheScegliereEsclusiva />
                 <ComeFunzionaContratto />
                 <InclusioneContratto />
+                <FAQContratto />
             </div>
         </>
     )
