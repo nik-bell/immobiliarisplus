@@ -4,6 +4,7 @@ import PercheScegliereEsclusiva from '../sections/PercheScegliereEsclusiva';
 import ComeFunzionaContratto from "../sections/ComeFunzionaContratto";
 import InclusioneContratto from "../sections/InclusioneContratto";
 import FAQContratto from "../sections/FAQContratto";
+import Note from "../components/Note";
 
 function ContattoEsclusiva() {
     return (
@@ -15,6 +16,7 @@ function ContattoEsclusiva() {
                 <ComeFunzionaContratto />
                 <InclusioneContratto />
                 <FAQContratto />
+                <Note className="border border-indigo-900 border-l-4 bg-gray-100 p-4 rounded-lg shadow-sm my-6"> Prima di firmare qualsiasi contratto, ti consigliamo di leggerlo attentamente e, se necessario, farlo visionare da un legale di fiducia. La trasparenza è alla base del nostro lavoro.</Note>
             </div>
         </>
     )
