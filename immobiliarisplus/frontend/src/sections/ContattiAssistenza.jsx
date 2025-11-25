@@ -1,7 +1,7 @@
 import Card from "../components/Card";
 
 const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = false, link }) => {
-    const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center";
+    const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center bg-white";
     const valueBaseClasses = "mt-2 font-semibold";
 
     return (
