@@ -30,7 +30,7 @@ function MiglioraCasa() {
           ))}
         </div>
         <CtaMigliora />
-        <ComeFunziona />
+    
         <div className="flex justify-center mb-4">
           <Button onClick={handleRichiediConsulenza}
             className="
