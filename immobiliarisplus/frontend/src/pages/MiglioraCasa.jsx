@@ -27,7 +27,7 @@ function MiglioraCasa() {
           ))}
         </div>
         <CtaMigliora />
-        <ComeFunziona />
+    
         <div className="flex justify-center mb-4">
           <Link 
             to= '/contattaci'
