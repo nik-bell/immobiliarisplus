@@ -1,17 +1,18 @@
 import Hero from "../components/Hero";
 import { Link } from "react-router-dom";
-import HeroImage from "../assets/homepage-immobiliaris.jpeg"
-
+import HeroImageJpg from "../assets/homepage/homepage-immobiliaris.jpeg";
+import HeroImageWebp from "../assets/homepage/homepage-immobiliaris.webp";
+import HeroImageAvif from "../assets/homepage/homepage-immobiliaris.avif";
 
 
 
 export default function HeroHomepage() {
-    const handleValutazione = () => {
-    };
     return (
         <div className="min-h-[90vh]">
             <Hero
-                backgroundImage={HeroImage}
+                backgroundImage={HeroImageJpg}   
+                backgroundImageWebp={HeroImageWebp} 
+                backgroundImageAvif={HeroImageAvif}
                 className="min-h-[90vh] lg:min-h-[90vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">

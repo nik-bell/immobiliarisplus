@@ -1,16 +1,17 @@
 import Hero from "../components/Hero";
 import { Link } from "react-router-dom";
-
-import HeroImage from "../assets/migliora-casa-immobiliaris.jpg"
-
-
+import HeroImageJpg from "../assets/migliora-casa/migliora-casa-immobiliaris.jpg";
+import HeroImageWebp from "../assets/migliora-casa/migliora-casa-immobiliaris.webp";
+import HeroImageAvif from "../assets/migliora-casa/migliora-casa-immobiliaris.avif";
 
 
 export default function HeroMiglioraCasa() {
     return (
         <div className="min-h-[90vh]">
             <Hero
-                backgroundImage={HeroImage}
+                backgroundImage={HeroImageJpg}
+                backgroundImageWebp={HeroImageWebp}
+                backgroundImageAvif={HeroImageAvif}
                 className="min-h-[90vh] lg:min-h-[90vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
