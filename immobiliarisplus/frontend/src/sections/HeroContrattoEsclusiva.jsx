@@ -1,15 +1,16 @@
 import Hero from "../components/Hero";
-
-import HeroImage from "../assets/contratto-esclusiva.jpeg"
-
-
+import HeroImageJpg from "../assets/contratto-esclusiva/contratto-esclusiva.jpeg";
+import HeroImageWebp from "../assets/contratto-esclusiva/contratto-esclusiva.webp";
+import HeroImageAvif from "../assets/contratto-esclusiva/contratto-esclusiva.avif";
 
 
 export default function HeroContrattoEsclusiva() {
     return (
         <div className="min-h-[90vh]">
             <Hero
-                backgroundImage={HeroImage}
+                backgroundImage={HeroImageJpg}
+                backgroundImageWebp={HeroImageWebp}
+                backgroundImageAvif={HeroImageAvif}
                 className="min-h-[90vh] lg:min-h-[90vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
