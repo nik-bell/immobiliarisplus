@@ -36,7 +36,7 @@ export default function ValutaCasa() {
       </div>
       <div className=" bg-gray-100">
         <StepperContent />
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <StepsRenderer />
         </div>
       </div>
