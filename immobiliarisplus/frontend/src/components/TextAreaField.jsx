@@ -1,5 +1,5 @@
 const TextAreaField = ({ label, id, placeholder, value, onChange }) => {
-    const textareaStyle = "w-full p-3 h-32 bg-gray-50 border border-gray-100 rounded-lg resize-none focus:ring-teal-500 focus:border-teal-500 transition duration-150";
+    const textareaStyle = "w-full p-3 h-32 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none";
 
     return (
         <div className="mb-4">

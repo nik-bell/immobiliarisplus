@@ -1,5 +1,5 @@
 const InputField = ({ label, id, type = 'text', placeholder, value, onChange, className = '', optional = false }) => {
-    const inputStyle = "w-full p-3 bg-gray-50 border border-gray-100 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition duration-150";
+    const inputStyle = "w-full p-3 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none";
     
     return (
         <div className={`mb-4 ${className}`}>

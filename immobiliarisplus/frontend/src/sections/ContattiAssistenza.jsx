@@ -1,9 +1,22 @@
 import Card from "../components/Card";
 
-const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = false, link }) => {
+const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton, link, color}) => {
+    let buttoColor=''
+    switch (color) {
+        case 'yellow':
+            buttoColor = "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500 text-gray-900";
+            break;
+        case 'green':
+            buttoColor = "bg-teal-500 hover:bg-teal-600 focus:ring-teal-500 text-white";
+            break;
+        case 'blue':
+            buttoColor = "bg-indigo-900 hover:bg-indigo-700 focus:ring-indigo-900 text-white";
+            break;
+        default:
+            buttoColor = "bg-gray-500 hover:bg-gray-600 focus:ring-gray-500";
+    }
     const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center bg-white";
-    const valueBaseClasses = "mt-2 font-semibold";
-
+    const baseButton = "font-semibold py-2 px-6 rounded-full inline-block transition duration-150 mt-3"
     return (
         <Card className={cardClasses}>
             <div className="flex flex-col items-center">
@@ -15,20 +28,14 @@ const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = f
             </div>
 
             <div className="mt-auto">
-                {isButton ? (
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-full inline-block transition duration-150"
-                    >
-                        {value}
-                    </a>
-                ) : (
-                    <p className={`${valueBaseClasses} ${valueColor}`}>
-                        {value}
-                    </p>
-                )}
+                <a
+                    href={link}
+                    target={link.startsWith('http') ? "_blank" : "_self"}
+                    rel={link.startsWith('http') ? "noopener noreferrer" : ""}
+                    className={`${baseButton} ${buttoColor}`}
+                >
+                    {value}
+                </a>
             </div>
         </Card>
     );
@@ -41,15 +48,17 @@ const contactData = [
         subtitle: 'Lun-Ven 9:00-18:00',
         value: '+39 02 1234 5678',
         valueColor: 'text-teal-500',
-        isButton: false,
+        link: 'tel:+390212345678',
+        color: 'green'
     },
     {
         icon: '✉️',
         title: 'Email',
         subtitle: 'Risposta in 24h',
-        value: 'info@immobiliarisplus.it',
+        value: 'Informazioni',
         valueColor: 'text-gray-700',
-        isButton: false,
+        link: 'mailto:info@immobiliarisplus.com',
+        color: 'blue'
     },
     {
         icon: '📍',
@@ -57,8 +66,8 @@ const contactData = [
         subtitle: 'Via Jacopo Durandi 10, Torino',
         value: 'Mostra sulla mappa',
         valueColor: 'text-yellow-400',
-        isButton: true,
-        link: 'https://maps.app.goo.gl/YourMapLinkHere'
+        link: "https://www.google.com/maps/search/Via+Jacopo+Durandi+10,+Torino",
+        color: 'yellow'
     },
 ];
 
@@ -74,7 +83,8 @@ const ContattiAssistenza = () => {
                         subtitle={contact.subtitle}
                         value={contact.value}
                         valueColor={contact.valueColor}
-                        isButton={contact.isButton}
+                        link={contact.link}
+                        color={contact.color}
                     />
                 ))}
             </div>
