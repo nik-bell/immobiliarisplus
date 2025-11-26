@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function NotFoundPage() {
   return (
-    <div className="flex flex-col items-center justify-center h-[90vh] text-center">
+    <div className="flex flex-col items-center justify-center text-center mt-35">
       <div className="mb-[20px]">
         <img
           src={NotFoundImage}

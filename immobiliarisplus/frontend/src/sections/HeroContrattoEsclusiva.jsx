@@ -7,10 +7,10 @@ import HeroImage from "../assets/contratto-esclusiva.jpeg"
 
 export default function HeroContrattoEsclusiva() {
     return (
-        <div className="min-h-[80vh]">
+        <div className="min-h-[90vh]">
             <Hero
                 backgroundImage={HeroImage}
-                className="min-h-[60vh] lg:min-h-[80vh]"
+                className="min-h-[90vh] lg:min-h-[90vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
                     Come funziona il contratto di vendita in esclusiva
