@@ -1,23 +1,211 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link href="/dist/styles.css" rel="stylesheet">
   <!-- Widget Iubenda Preferenze -->
   <script type="text/javascript"
     src="https://embeds.iubenda.com/widgets/29e3a33d-40e8-4125-8f31-35d615ad73db.js"></script>
   <script type="text/javascript" src="https://cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
 
+  <!-- FAVICON -->
   <link rel="icon" type="image/png" href="public/my-favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="public/my-favicon/favicon.svg" />
   <link rel="shortcut icon" href="public/my-favicon/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="public/my-favicon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Immobiliaris" />
   <link rel="manifest" href="public/my-favicon/site.webmanifest" />
+
+  <!-- JSON -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "RealEstateAgent",
+      "@id": "https://www.DOMINIO.it/#organization", 
+      "name": "Immobiliaris Plus",
+      "alternateName": "Immobiliaris Plus - Gruppo Indomus",
+      "legalName": "Immobiliaris Plus S.r.l.",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Gruppo Indomus"
+      },
+      "url": "https://www.DOMINIO.it",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.DOMINIO.it/assets/logo.png",
+        "width": 112,
+        "height": 112
+      },
+      "image": "https://www.DOMINIO.it/assets/social-share-image.jpg",
+      "description": "Agenzia immobiliare in Piemonte specializzata nella valutazione e vendita di immobili residenziali. Offriamo valutazioni gratuite entro 72 ore e strategie di vendita innovative per massimizzare il valore del tuo immobile.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Via Jacopo Durandi 10",
+        "addressLocality": "Torino",
+        "postalCode": "10100",
+        "addressRegion": "TO",
+        "addressCountry": "IT"
+      },
+      "telephone": "+39 02 1234 5678",
+      "email": "info@immobiliarisplus.it",
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Torino"
+        },
+        {
+          "@type": "City",
+          "name": "Cuneo"
+        },
+        {
+          "@type": "City",
+          "name": "Alessandria"
+        },
+        {
+          "@type": "City",
+          "name": "Asti"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Piemonte"
+        }
+      ],
+      "priceRange": "$$",
+      "sameAs": [
+        "https://www.facebook.com/immobiliarisplus",
+        "https://www.instagram.com/immobiliarisplus"
+      ],
+      "knowsAbout": [
+        "Compravendita Immobiliare",
+        "Valutazione Immobili",
+        "Mercato Immobiliare Piemontese",
+        "Investimenti Immobiliari"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.DOMINIO.it/#website",
+      "url": "https://www.DOMINIO.it",
+      "name": "Immobiliaris Plus - Vendi casa in Piemonte",
+      "description": "Il portale immobiliare smart per valutare e vendere la tua casa a Torino e in Piemonte. Valutazione gratuita in 72h.",
+      "publisher": {
+        "@id": "https://www.DOMINIO.it/#organization"
+      },
+      "inLanguage": "it-IT",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.DOMINIO.it/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.DOMINIO.it/#service-valuation",
+      "serviceType": "Valutazione Immobiliare",
+      "name": "Valutazione Immobile Gratuita",
+      "provider": {
+        "@id": "https://www.DOMINIO.it/#organization"
+      },
+      "areaServed": {
+        "@type": "AdministrativeArea",
+        "name": "Piemonte"
+      },
+      "description": "Servizio di valutazione immobiliare professionale e automatizzata. Ricevi una stima del valore di mercato del tuo immobile entro 72 ore dalla richiesta.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.DOMINIO.it/#service-selling",
+      "serviceType": "Vendita Immobiliare",
+      "name": "Vendita Immobile in Esclusiva",
+      "provider": {
+        "@id": "https://www.DOMINIO.it/#organization"
+      },
+      "description": "Servizio completo di vendita immobiliare: servizio fotografico, home staging virtuale, promozione su portali premium e gestione delle visite per vendere al miglior prezzo.",
+      "slogan": "Il modo più smart per vendere il tuo immobile"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.DOMINIO.it/#service-migliora-casa",
+      "serviceType": "Migliora Casa",
+      "name": "Migliora Casa - Consulenza Valorizzazione",
+      "provider": {
+        "@id": "https://www.DOMINIO.it/#organization"
+      },
+      "description": "Consulenza strategica per incrementare il valore di mercato del tuo immobile prima della vendita. Analizziamo le potenzialità della casa e suggeriamo interventi mirati di ristrutturazione, manutenzione e restyling per massimizzare il profitto.",
+      "slogan": "Aumenta il valore della tua casa con gli interventi giusti"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.DOMINIO.it/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanto tempo ci vuole per ricevere la valutazione del mio immobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Con Immobiliaris, garantiamo una valutazione professionale del tuo immobile entro 72 ore dalla compilazione del form di onboarding."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "In quali zone operate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Operiamo principalmente nelle città medio-grandi del Piemonte, tra cui Torino, Cuneo, Alessandria e Asti, oltre alle relative province."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Come funziona il servizio di vendita?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ci occupiamo di tutto: dalla valutazione iniziale alla promozione con campagne digitali mirate, fino alla gestione delle trattative e alla firma del contratto, offrendo un servizio 'chiavi in mano' moderno e trasparente."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Vendi casa con Immobiliaris Plus: Valutazione in 72 ore" />
+  <meta property="og:description"
+    content="Il nuovo modo smart per vendere casa in Piemonte. Scopri quanto vale il tuo immobile con la nostra valutazione basata sui dati." />
+  <meta property="og:url" content="https://www.immobiliaris-plus.it/" />
+  <meta property="og:site_name" content="Immobiliaris Plus" />
+  <meta property="og:image" content="https://www.immobiliaris-plus.it/og-image.jpg" />
+  <meta property="og:image:alt" content="Immobiliaris Plus - Valutazione e Vendita Immobili" />
+  <meta property="og:locale" content="it_IT" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Immobiliaris Plus | Vendi casa in Piemonte" />
+  <meta name="twitter:description"
+    content="Valutazione gratuita in 72h. Il partner digitale per la vendita del tuo immobile." />
+  <meta name="twitter:image" content="./public/my-favicon/favicon-96x96.png" />
+
+  <meta name="geo.region" content="IT-21" />
+  <meta name="geo.placename" content="Torino" />
+
+  <title>Immobiliaris Plus | Vendi casa in Piemonte in modo Smart</title>
+
+  <meta name="description"
+    content="Valuta e vendi il tuo immobile a Torino e in Piemonte. Valutazione gratuita in 72h, home staging e strategia digitale per vendere al miglior prezzo." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.immobiliaris-plus.it/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Immobiliaris Plus</title>
 </head>
 
 <body>
