@@ -1,23 +1,27 @@
 import BulletPointImg from "../components/BulletPointImg";
+import PrimoAgente from "../assets/primo-agente.jpg";
+import SecondoAgente from "../assets/secondo-agente.jpg";
+import TerzoAgente from "../assets/terzo-agente.jpg";
+import QuartoAgente from "../assets/quarto-agente.jpg";
 
 const chiSiamoData = [
   {
-    imgSrc: "https://th.bing.com/th/id/OIP.LjSMIAtg8P_h13e-XlnoGAHaEK?w=307&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+    imgSrc: PrimoAgente,
     title: "Mario Rossi",
     description: "Fondatore e CEO, con 15 anni di esperienza nel settore immobiliare."
   },
   {
-    imgSrc: "https://th.bing.com/th/id/OIP.KfEy8OTT2LG3jec7Dd7pbwHaE8?w=223&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+    imgSrc: SecondoAgente,
     title: "Laura Bianchi",
     description: "Responsabile marketing, cura la comunicazione e le strategie digitali."
   },
   {
-    imgSrc: "https://th.bing.com/th/id/OIP.QP3qEw8hDF5zo6DYMfr6DQHaD3?w=285&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+    imgSrc: TerzoAgente,
     title: "Giulia Verdi",
     description: "Agente senior, supporta i clienti durante tutto il processo di vendita."
   },
   {
-    imgSrc: "https://th.bing.com/th/id/OIP.U0RMRqIszPKcI7pnd6eCdwHaGn?w=205&h=183&c=7&r=0&o=7&pid=1.7&rm=3",
+    imgSrc: QuartoAgente,
     title: "Luca Neri",
     description: "Specialista valutazioni immobiliari e analisi di mercato."
   }
