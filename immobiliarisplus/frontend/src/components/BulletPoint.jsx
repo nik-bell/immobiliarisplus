@@ -13,11 +13,11 @@ const BulletPoint = ({ number, title, description, colorClass, className = '' })
       >
         {number}
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <h3 className="text-lg font-semibold text-gray-800">
           {title}
         </h3>
-        <p className="text-base text-gray-600">
+        <p className="text-base text-gray-600 text-left">
           {description}
         </p>
       </div>

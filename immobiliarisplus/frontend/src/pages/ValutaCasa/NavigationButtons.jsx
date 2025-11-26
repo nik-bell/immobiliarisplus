@@ -1,7 +1,7 @@
 import useValutaCasaForm from "./useValutaCasaForm";
 
 export default function NavigationButtons() {
-  const { state, nextStep, prevStep } = useValutaCasaForm();
+  const { state, nextStep, prevStep, submitForm } = useValutaCasaForm();
 
   // Se il form è stato inviato, non mostrare i bottoni di navigazione
   if (state.isSubmitted) {
@@ -13,7 +13,7 @@ export default function NavigationButtons() {
       {state.step > 1 ? (
         <button
           onClick={prevStep}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          className="px-4 py-2 bg-white rounded-lg hover:bg-gray-300 border border-gray-200"
         >
           Indietro
         </button>
@@ -21,12 +21,19 @@ export default function NavigationButtons() {
         <div />
       )}
 
-      {state.step < 3 && (
+      {state.step < 3 ? (
         <button
           onClick={nextStep}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-700"
         >
-          Avanti
+          Continua
+        </button>
+      ) : (
+        <button
+          onClick={submitForm}
+          className="bg-yellow-400 text-gary-900 px-4 py-2 rounded hover:bg-yellow-500"
+        >
+          Invia Richiesta
         </button>
       )}
     </div>

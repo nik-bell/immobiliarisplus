@@ -13,7 +13,7 @@ export const ContractItem = ({ text }) => {
                     clipRule="evenodd"
                 />
             </svg>
-            <p className="ml-3 text-base text-gray-700">
+            <p className="text-left ml-3 text-base text-gray-700">
                 {text}
             </p>
         </div>

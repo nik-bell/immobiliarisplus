@@ -1,19 +1,22 @@
 import useValutaCasaForm from "../useValutaCasaForm";
+import NavigationButtons from "../NavigationButtons";
+
 
 export default function ValutaCasaStep1() {
   const { state, dispatch } = useValutaCasaForm();
   const p = state.property;
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-lg font-semibold mb-4">
-        Step 1 — Dettagli dell'immobile
+    <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
+      <h2 className="text-3xl font-semibold pb-2">
+        Dati essenziali della casa
       </h2>
+      <p className="pb-4">Iniziamo con le informazioni di base per una valutazione accurata</p>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Via e numero</label>
+        <label className="block text-sm font-medium mb-1">Indirizzo *</label>
         <input
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           value={p.address}
           onChange={(e) =>
             dispatch({
@@ -21,7 +24,9 @@ export default function ValutaCasaStep1() {
               payload: { address: e.target.value },
             })
           }
+          placeholder="Inizia a digitare..."
         />
+        <p className="text-sm font-light">inserisci l'indirizzo per ricevere una valutazione basata sui prezzi reali della tua zona.</p>
         {state.errors.address && (
           <p className="text-sm text-red-600">{state.errors.address}</p>
         )}
@@ -65,10 +70,10 @@ export default function ValutaCasaStep1() {
 
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">
-          Tipologia immobile
+          Tipologia immobile *
         </label>
         <select
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           value={p.propertyType}
           onChange={(e) =>
             dispatch({
@@ -77,7 +82,7 @@ export default function ValutaCasaStep1() {
             })
           }
         >
-          <option value="">—</option>
+          <option value="" disabled hidden>Selezioniona tipologia</option>
           <option value="appartamento">Appartamento</option>
           <option value="casa">Casa indipendente</option>
           <option value="ufficio">Ufficio</option>
@@ -89,9 +94,9 @@ export default function ValutaCasaStep1() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Condizioni</label>
+        <label className="block text-sm font-medium mb-1">Condizioni *</label>
         <select
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           value={p.condition}
           onChange={(e) =>
             dispatch({
@@ -100,7 +105,7 @@ export default function ValutaCasaStep1() {
             })
           }
         >
-          <option value="">—</option>
+          <option value="" disabled hidden>Selezioniona le condizioni</option>
           <option value="nuovo">Nuovo</option>
           <option value="ottimo">Ottimo</option>
           <option value="buono">Buono</option>
@@ -112,10 +117,11 @@ export default function ValutaCasaStep1() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Metri quadrati</label>
+        <label className="block text-sm font-medium mb-1">Superficie (m²) *</label>
         <input
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
+          min={0}
           value={p.surfaceM2}
           onChange={(e) =>
             dispatch({
@@ -123,11 +129,14 @@ export default function ValutaCasaStep1() {
               payload: { surfaceM2: e.target.value },
             })
           }
+          placeholder="Es. 85"
         />
         {state.errors.surfaceM2 && (
           <p className="text-sm text-red-600">{state.errors.surfaceM2}</p>
         )}
       </div>
+      
+      <NavigationButtons />
     </div>
   );
 }
