@@ -20,5 +20,10 @@ public record PropertyDocsDTO(
         @NotBlank(message = "Il nome del file non può essere vuoto.")
         @Size(max = 255, message = "Il nome del file è troppo lungo.")
         String fileName
-) {}
+) {
+
+    public Object bytes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bytes'");
+    }}
 

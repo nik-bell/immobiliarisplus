@@ -25,7 +25,7 @@ public class Property {
     private PropertyType type;
 
     @Column(name="size_mq", nullable = false)
-    private int size;
+    private int sizeMq;
 
     @Column(name="rooms", nullable = false)
     private int rooms;
@@ -102,12 +102,12 @@ public class Property {
         this.type = type;
     }
 
-    public int getSize() {
-        return size;
+    public int getSizeMq() {
+        return sizeMq;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setSizeMq(int sizeMq) {
+        this.sizeMq = sizeMq;
     }
 
     public int getRooms() {

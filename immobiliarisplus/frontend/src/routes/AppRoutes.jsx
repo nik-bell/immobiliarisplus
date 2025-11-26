@@ -6,6 +6,9 @@ import VendiCasa from "../pages/VendiCasa";
 import MiglioraCasa from "../pages/MiglioraCasa";
 import ContrattoEsclusiva from "../pages/ContrattoEsclusiva"
 import NotFoundPage from "../pages/NotFoundPage";
+import Test from "../pages/test";
+import AreaAgenti from "../pages/AreaAgenti";
+import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
 const appRoutes = [
   {
@@ -41,6 +44,27 @@ const appRoutes = [
         Component: MiglioraCasa,
         showInNav: true,
         title: "Migliora Casa",
+      },
+
+      // Route Test 
+      {
+        path: "test",
+        Component: Test,
+        showInNav: false,
+        title: "Test API",
+      },
+
+      {
+        path: "area-agenti",
+        Component: AreaAgentiLayout,
+        children: [
+          {
+            index: true,
+            Component: AreaAgenti,
+            title: "Area Agenti",
+            showInNav: true,
+          },
+        ],
       },
       {
         path: "contratto-esclusiva",

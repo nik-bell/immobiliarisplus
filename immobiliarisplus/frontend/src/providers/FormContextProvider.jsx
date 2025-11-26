@@ -10,6 +10,8 @@ const initialState = {
   // ---- STEP 1 ----
   property: {
     address: "",
+    zipCode: "",
+    city: "",
     propertyType: "",
     condition: "",
     surfaceM2: "",
