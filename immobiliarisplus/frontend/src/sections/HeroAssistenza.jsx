@@ -7,10 +7,10 @@ import HeroImage from "../assets/assistenza-immobiliaris.jpeg"
 
 export default function HeroAssistenza() {
     return (
-        <div className="min-h-[60vh]">
+        <div className="min-h-[70vh]">
             <Hero
                 backgroundImage={HeroImage}
-                className="min-h-[60vh] lg:min-h-[60vh]"
+                className="min-h-[70vh] lg:min-h-[70vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
                     Assistenza
