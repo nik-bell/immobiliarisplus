@@ -2,9 +2,6 @@ import Card from "../components/Card";
 import { Link } from "react-router-dom";
 
 export default function CtaVendita() {
-    const handleScopriDiPiu = () => {
-
-    };
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="pt-6 lg:w-1/2">
