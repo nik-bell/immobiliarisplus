@@ -60,8 +60,6 @@ const appRoutes = [
         showInNav: true,
         title: "Migliora Casa",
       },
-
-      // Route Test 
       {
         path: "test",
         element: load(Test),
@@ -69,6 +67,7 @@ const appRoutes = [
         title: "Test API",
       },
 
+      // 🔐 AREA AGENTI PROTETTA
       {
         path: "area-agenti",
         element: <AreaAgentiLayout />,
@@ -81,6 +80,7 @@ const appRoutes = [
           },
         ],
       },
+
       {
         path: "contratto-esclusiva",
         element: load(ContrattoEsclusiva),

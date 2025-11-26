@@ -1,8 +1,10 @@
 import { useCasa } from "../../store/CasaContext";
 import Badge from "./Badge";
+import { useAuth } from "../../store/AuthContext";
 
 export default function CasaTableRow({ casa }) {
   const { openCasaModal } = useCasa();
+  const { userType } = useAuth();
 
   // handler click riga: apre modale
   const handleRowClick = () => {
@@ -34,8 +36,10 @@ export default function CasaTableRow({ casa }) {
         <Badge status={casa.status} />
       </td>
 
-      {/* Agente assegnato */}
-      <td className="px-4 py-3">{casa.assignedAgent || "-"}</td>
+      {/* Agente assegnato (visibile solo ad admin) */}
+      {userType === "admin" && (
+        <td className="px-4 py-3">{casa.assignedAgent || "-"}</td>
+      )}
 
       {/* Azioni: icona info che apre modale */}
       <td className="px-4 py-3 text-right">
