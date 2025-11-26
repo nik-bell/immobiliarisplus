@@ -1,5 +1,5 @@
 import Hero from "../components/Hero";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 import HeroImage from "../assets/migliora-casa-immobiliaris.jpg"
 
@@ -7,8 +7,6 @@ import HeroImage from "../assets/migliora-casa-immobiliaris.jpg"
 
 
 export default function HeroMiglioraCasa() {
-    const handleValutazione = () => {
-    };
     return (
         <div className="min-h-[80vh]">
             <Hero
@@ -24,10 +22,10 @@ export default function HeroMiglioraCasa() {
                 <p className="text-xl md:text-2xl font-light mb-5 text-white opacity-90">
                     ROI medio: +140%
                 </p>
-                <Button
-                    onClick={handleValutazione}
+                <Link
+                    to='/contattaci'
                     className="
-            px-6 py-3
+                            px-6 py-3
                             bg-yellow-400 text-black
                             font-semibold text-base
                             rounded-lg
@@ -37,7 +35,7 @@ export default function HeroMiglioraCasa() {
                             focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                 >
                     Richiedi consulenza
-                </Button>
+                </Link>
             </Hero>
         </div >
     )

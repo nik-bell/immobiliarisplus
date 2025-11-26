@@ -1,10 +1,7 @@
 import Card from "../components/Card";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 export default function CtaValutazioneSuccesso() {
-    const handleVaiAContrattoEsclusiva = () => {
-
-    };
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="pt-6 lg:w-1/2">
@@ -29,8 +26,8 @@ export default function CtaValutazioneSuccesso() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleVaiAContrattoEsclusiva}
+                        <Link
+                            to='/contratto-esclusiva'
                             className="
                             w-1/1 md:w-1/2
                             px-6 py-3
@@ -43,7 +40,7 @@ export default function CtaValutazioneSuccesso() {
                             focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                         >
                             Scopri l'Esclusiva
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>
@@ -72,8 +69,8 @@ export default function CtaValutazioneSuccesso() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleVaiAContrattoEsclusiva}
+                        <Link
+                            to='/migliora-casa'
                             className="
                                 w-1/1 md:w-1/2
                                 px-6 py-3
@@ -86,7 +83,7 @@ export default function CtaValutazioneSuccesso() {
                                 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                         >
                             Scopri di più
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>
