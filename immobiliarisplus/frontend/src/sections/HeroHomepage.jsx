@@ -1,5 +1,5 @@
 import Hero from "../components/Hero";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
 import HeroImage from "../assets/homepage-immobiliaris.jpeg"
 
 
@@ -21,8 +21,8 @@ export default function HeroHomepage() {
                     Trasparenza, velocità e controllo in ogni fase della vendita
                 </p>
                 <div className="flex gap-3 justify-center mt-6 flex-wrap">
-                    <Button
-                        onClick={handleValutazione}
+                    <Link
+                        to='/valuta-casa'
                         className="
                             px-6 py-3
                             bg-blue-600 text-white
@@ -34,9 +34,9 @@ export default function HeroHomepage() {
                             focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
                     >
                         Valuta casa in 3 step
-                    </Button>
-                    <Button
-                        onClick={handleValutazione}
+                    </Link>
+                    <Link
+                        to="/contattaci"
                         className="
                             px-6 py-3
                             bg-white/20 text-white
@@ -49,7 +49,7 @@ export default function HeroHomepage() {
                             focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-opacity-50"
                     >
                         Parla con un esperto
-                    </Button>
+                    </Link>
                 </div>
             </Hero>
         </div >
