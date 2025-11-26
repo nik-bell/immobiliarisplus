@@ -1,5 +1,6 @@
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
+import ScrollToTop from "../../../components/ScrollToTop";
 
 
 export default function ValutaCasaStep1() {
@@ -8,6 +9,7 @@ export default function ValutaCasaStep1() {
 
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
+    <ScrollToTop />
       <h2 className="text-3xl font-semibold pb-2">
         Dati essenziali della casa
       </h2>
