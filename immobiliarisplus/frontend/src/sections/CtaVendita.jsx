@@ -1,5 +1,5 @@
 import Card from "../components/Card";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 export default function CtaVendita() {
     const handleScopriDiPiu = () => {
@@ -30,8 +30,8 @@ export default function CtaVendita() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleScopriDiPiu}
+                        <Link
+                            to="/contratto-esclusiva"
                             className="
                                 w-1/2
                                 px-6 py-3
@@ -44,7 +44,7 @@ export default function CtaVendita() {
                                 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                         >
                             Scopri di più
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>
@@ -73,8 +73,8 @@ export default function CtaVendita() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleScopriDiPiu}
+                        <Link
+                            to="/migliora-casa"
                             className="
                                 w-1/2
                                 px-6 py-3
@@ -87,7 +87,7 @@ export default function CtaVendita() {
                                 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                         >
                             Scopri di più
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>

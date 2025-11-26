@@ -1,14 +1,9 @@
 import Hero from "../components/Hero";
-import Button from "../components/Button";
-
+import { Link } from "react-router-dom";
 import HeroImage from "../assets/vendi-casa-immobiliaris.jpeg"
 
 
-
-
 export default function HeroVendiCasa() {
-    const handleValutazione = () => {
-    };
     return (
         <div className="min-h-[80vh]">
             <Hero
@@ -21,8 +16,8 @@ export default function HeroVendiCasa() {
                 <p className="text-xl md:text-2xl font-light mb-10 text-white opacity-90">
                     Il modo più smart per vendere il tuo immobile
                 </p>
-                <Button
-                    onClick={handleValutazione}
+                <Link
+                    to="/valuta-casa"
                     className="
                             px-6 py-3
                             bg-yellow-400 text-black
@@ -34,7 +29,7 @@ export default function HeroVendiCasa() {
                             focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                 >
                     Inizia valutazione
-                </Button>
+                </Link>
             </Hero>
         </div >
     )
