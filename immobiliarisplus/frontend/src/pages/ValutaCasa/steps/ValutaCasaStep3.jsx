@@ -30,15 +30,6 @@ export default function ValutaCasaStep3() {
     }
   };
 
-  if (state.isSubmitted) {
-    return (
-      <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold pb-2">Conferma Invio</h2>
-        <p className="text-green-600">{state.submitMessage}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-3xl font-semibold pb-2">I tuoi contatti</h2>

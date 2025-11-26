@@ -13,7 +13,7 @@ const BarraStep = ({ currentStep }) => {
                 {steps.map((step, index) => {
                     const isCurrent = step.id === currentStep;
                     const isCompleted = step.id < currentStep;
-                    
+
                     let circleClasses = 'bg-gray-200 text-gray-500';
                     let nameClasses = 'text-gray-600';
                     let lineClasses = 'bg-gray-200';
@@ -22,9 +22,9 @@ const BarraStep = ({ currentStep }) => {
                         circleClasses = 'bg-indigo-900 text-white';
                         nameClasses = 'text-indigo-900 font-medium';
                     } else if (isCompleted) {
-                        circleClasses = 'bg-teal-500 text-white'; 
+                        circleClasses = 'bg-teal-500 text-white';
                         nameClasses = 'text-teal-900';
-                        lineClasses = 'bg-teal-500'; 
+                        lineClasses = 'bg-teal-500';
                     }
 
                     return (
@@ -34,18 +34,18 @@ const BarraStep = ({ currentStep }) => {
                                     className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold ${circleClasses}`}
                                 >
                                     {isCompleted ? (
-                                        <svg 
-                                            className="w-6 h-6 text-white" 
-                                            fill="none" 
-                                            stroke="currentColor" 
-                                            viewBox="0 0 24 24" 
+                                        <svg
+                                            className="w-6 h-6 text-white"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg"
                                         >
-                                            <path 
-                                                strokeLinecap="round" 
-                                                strokeLinejoin="round" 
-                                                strokeWidth={2} 
-                                                d="M5 13l4 4L19 7" 
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M5 13l4 4L19 7"
                                             />
                                         </svg>
                                     ) : (
