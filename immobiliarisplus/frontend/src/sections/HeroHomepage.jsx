@@ -10,8 +10,8 @@ export default function HeroHomepage() {
     return (
         <div className="min-h-[90vh]">
             <Hero
-                backgroundImage={HeroImageJpg}   
-                backgroundImageWebp={HeroImageWebp} 
+                backgroundImage={HeroImageJpg}
+                backgroundImageWebp={HeroImageWebp}
                 backgroundImageAvif={HeroImageAvif}
                 className="min-h-[90vh] lg:min-h-[90vh]"
             >
@@ -26,13 +26,13 @@ export default function HeroHomepage() {
                         to='/valuta-casa'
                         className="
                             px-6 py-3
-                            bg-blue-600 text-white
+                            bg-teal-700 text-white
                             font-semibold text-base
                             rounded-lg
                             shadow-md
-                            hover:bg-blue-700 hover:shadow-lg
+                            hover:bg-teal-400 hover:shadow-lg
                             transition duration-150 ease-in-out
-                            focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50"
+                            focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50"
                     >
                         Valuta casa in 3 step
                     </Link>
@@ -40,14 +40,13 @@ export default function HeroHomepage() {
                         to="/contattaci"
                         className="
                             px-6 py-3
-                            bg-white/20 text-white
+                            bg-yellow-400 text-gray-900
                             font-semibold text-base
                             rounded-lg
                             shadow-md
-                            backdrop-blur
-                            hover:bg-white/30 hover:shadow-lg
+                            hover:bg-yellow-300 hover:shadow-lg
                             transition duration-150 ease-in-out
-                            focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-opacity-50"
+                            focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                     >
                         Parla con un esperto
                     </Link>
