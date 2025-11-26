@@ -50,7 +50,7 @@ const MainNavbar = () => {
                                     h-0.5 bg-gray-800 rounded transition-all duration-300 absolute w-5 
                                     ${isMenuOpen
                       ? 'rotate-45 translate-y-0'
-                      : '-translate-y-1'} // <-- Spostato in alto di 4px (prima era 8px)
+                      : '-translate-y-1'}
                                 `}
                 ></div>
                 <div
@@ -58,7 +58,7 @@ const MainNavbar = () => {
                               h-0.5 bg-gray-800 rounded transition-all duration-300 absolute w-5 
                              ${isMenuOpen
                       ? '-rotate-45 translate-y-0'
-                      : 'translate-y-1'} // <-- Spostato in basso di 4px (prima era 8px)
+                      : 'translate-y-1'}
                        `}
                 ></div>
               </div>
