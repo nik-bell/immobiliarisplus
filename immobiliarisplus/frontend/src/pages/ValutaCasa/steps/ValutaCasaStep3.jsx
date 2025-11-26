@@ -1,5 +1,6 @@
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
+import ScrollToTop from "../../../components/ScrollToTop";
 
 
 export default function ValutaCasaStep3() {
@@ -32,6 +33,7 @@ export default function ValutaCasaStep3() {
 
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
+      <ScrollToTop />
       <h2 className="text-3xl font-semibold pb-2">I tuoi contatti</h2>
       <p className="pb-4">Dove possiamo inviarti la valutazione dettagliata?</p>
 
