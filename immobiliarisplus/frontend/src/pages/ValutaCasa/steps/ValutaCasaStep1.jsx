@@ -38,7 +38,7 @@ export default function ValutaCasaStep1() {
         <div>
           <label className="block text-sm font-medium mb-1">CAP</label>
           <input
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
             value={p.zipCode}
             onChange={(e) =>
               dispatch({
@@ -46,6 +46,7 @@ export default function ValutaCasaStep1() {
                 payload: { zipCode: e.target.value },
               })
             }
+            placeholder="Es: 10100"
           />
           {state.errors.zipCode && (
             <p className="text-sm text-red-600">{state.errors.zipCode}</p>
@@ -55,7 +56,7 @@ export default function ValutaCasaStep1() {
         <div>
           <label className="block text-sm font-medium mb-1">Città</label>
           <input
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
             value={p.city}
             onChange={(e) =>
               dispatch({
@@ -63,6 +64,7 @@ export default function ValutaCasaStep1() {
                 payload: { city: e.target.value },
               })
             }
+            placeholder="Torino"
           />
           {state.errors.city && (
             <p className="text-sm text-red-600">{state.errors.city}</p>
