@@ -1,19 +1,18 @@
 import Hero from "../components/Hero";
-import Button from "../components/Button";
-
-import HeroImage from "../assets/migliora-casa-immobiliaris.jpg"
-
-
+import { Link } from "react-router-dom";
+import HeroImageJpg from "../assets/migliora-casa/migliora-casa-immobiliaris.jpg";
+import HeroImageWebp from "../assets/migliora-casa/migliora-casa-immobiliaris.webp";
+import HeroImageAvif from "../assets/migliora-casa/migliora-casa-immobiliaris.avif";
 
 
 export default function HeroMiglioraCasa() {
-    const handleValutazione = () => {
-    };
     return (
-        <div className="min-h-[80vh]">
+        <div className="min-h-[90vh]">
             <Hero
-                backgroundImage={HeroImage}
-                className="min-h-[60vh] lg:min-h-[80vh]"
+                backgroundImage={HeroImageJpg}
+                backgroundImageWebp={HeroImageWebp}
+                backgroundImageAvif={HeroImageAvif}
+                className="min-h-[90vh] lg:min-h-[90vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
                     Servizio "Migliora Casa"
@@ -24,10 +23,10 @@ export default function HeroMiglioraCasa() {
                 <p className="text-xl md:text-2xl font-light mb-5 text-white opacity-90">
                     ROI medio: +140%
                 </p>
-                <Button
-                    onClick={handleValutazione}
+                <Link
+                    to='/contattaci'
                     className="
-            px-6 py-3
+                            px-6 py-3
                             bg-yellow-400 text-black
                             font-semibold text-base
                             rounded-lg
@@ -37,7 +36,7 @@ export default function HeroMiglioraCasa() {
                             focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                 >
                     Richiedi consulenza
-                </Button>
+                </Link>
             </Hero>
         </div >
     )
