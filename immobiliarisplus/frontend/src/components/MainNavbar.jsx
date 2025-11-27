@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logoText from "../assets/scritta-logo.png";
+import LogoSVG from "../assets/Logo.svg";
 
 const MainNavbar = () => {
   return (
@@ -8,11 +8,7 @@ const MainNavbar = () => {
         {/* Left - logo scritto */}
         <div className="flex items-center">
           <NavLink to="/" className="flex items-center">
-            <img 
-              src={logoText} 
-              alt="Logo" 
-              className="h-11 w-auto object-contain" 
-            /> 
+               <img src={LogoSVG} alt="Logo" className="h-11 w-auto" />
           </NavLink>
         </div>
 
@@ -23,7 +19,6 @@ const MainNavbar = () => {
               Valuta casa
             </button>
           </NavLink>
-          
         </div>
       </div>
 
