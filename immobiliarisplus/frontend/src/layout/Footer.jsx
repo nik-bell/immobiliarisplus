@@ -4,6 +4,9 @@ import { useState } from "react";
 import CookiePolicy from "../components/CookiePolicy";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 
+// IMPORTA QUI IL LOGO SVG
+import Logo from "../assets/Logo.svg";
+
 function Footer() {
   const [email, setEmail] = useState("");
   const [consenso, setConsenso] = useState(false);
@@ -16,52 +19,36 @@ function Footer() {
       return;
     }
 
-    console.log("Email inviata:", email); // log per test (scambiare con api)
+    console.log("Email inviata:", email);
     alert("Iscrizione completata!");
   };
 
   return (
     <footer className="w-full bg-black text-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        {/* LOGO */}
         <div>
-          <NavLink to="/" className="text-lg font-bold text-white">
-            ImmobiliarisPlus
+          <NavLink to="/" className="flex items-center">
+            <img src={Logo} alt="Logo" className="h-10 w-auto" />
           </NavLink>
+
           <p className="mt-2 text-sm text-gray-400">
             Vendi casa con più tranquillità. Trasparenza, velocità e controllo.
           </p>
         </div>
 
+        {/* SERVIZI */}
         <div>
           <h5 className="font-semibold mb-2 text-white">Servizi</h5>
           <ul className="space-y-1 text-sm">
-            <li>
-              <NavLink
-                to="/valuta-casa"
-                className="text-gray-400 hover:text-white"
-              >
-                Valuta casa
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/vendi-casa"
-                className="text-gray-400 hover:text-white"
-              >
-                Vendi casa
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/migliora-casa"
-                className="text-gray-400 hover:text-white"
-              >
-                Migliora casa
-              </NavLink>
-            </li>
+            <li><NavLink to="/valuta-casa" className="text-gray-400 hover:text-white">Valuta casa</NavLink></li>
+            <li><NavLink to="/vendi-casa" className="text-gray-400 hover:text-white">Vendi casa</NavLink></li>
+            <li><NavLink to="/migliora-casa" className="text-gray-400 hover:text-white">Migliora casa</NavLink></li>
           </ul>
         </div>
 
+        {/* CONTATTI */}
         <div>
           <h5 className="font-semibold mb-2 text-white">Contatti</h5>
           <p className="text-sm text-gray-400">+39 02 1234 5678</p>
@@ -69,11 +56,13 @@ function Footer() {
           <p className="text-sm text-gray-400 mt-2">Torino, Italia</p>
         </div>
 
+        {/* NEWSLETTER */}
         <div>
           <h5 className="font-semibold mb-2 text-white">Newsletter</h5>
           <p className="text-sm mb-3 text-gray-400">
             Ricevi consigli e novità dal mercato immobiliare
           </p>
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <input
               type="email"
@@ -107,27 +96,20 @@ function Footer() {
       <hr className="border-gray-700" />
 
       <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-        <div className="flex items-center gap-4">
-          <p>© 2025 ImmobiliarisPLUS. Tutti i diritti riservati.</p>
-        </div>
-        <div className="flex items-center gap-4">
-          <CookiePolicy />
-          <PrivacyPolicy />
-          <a href="#" className="hover:underline text-gray-400 hover:text-white">
-            Termini e condizioni
-          </a>
+        <div>
+          © 2025 ImmobiliarisPLUS. Tutti i diritti riservati.
         </div>
 
         <div className="flex items-center gap-4">
-          <a href="#" className="hover:underline text-gray-400 hover:text-white">
-            facebook
-          </a>
-          <a href="#" className="hover:underline text-gray-400 hover:text-white">
-            instagram
-          </a>
-          <a href="#" className="hover:underline text-gray-400 hover:text-white">
-            linkedin
-          </a>
+          <CookiePolicy />
+          <PrivacyPolicy />
+          <a href="#" className="hover:underline hover:text-white">Termini e condizioni</a>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <a href="#" className="hover:underline hover:text-white">facebook</a>
+          <a href="#" className="hover:underline hover:text-white">instagram</a>
+          <a href="#" className="hover:underline hover:text-white">linkedin</a>
         </div>
       </div>
     </footer>
