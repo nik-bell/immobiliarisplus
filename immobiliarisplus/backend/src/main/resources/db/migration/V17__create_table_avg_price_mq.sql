@@ -1,0 +1,10 @@
+CREATE TABLE avg_price_mq (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    zip_code VARCHAR(5) NOT NULL UNIQUE,
+    city VARCHAR(100) NOT NULL,
+    price_mq DECIMAL(10,2) NOT NULL
+);
+
+
+
+

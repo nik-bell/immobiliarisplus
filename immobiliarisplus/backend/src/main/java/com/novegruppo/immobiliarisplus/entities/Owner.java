@@ -2,6 +2,8 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.ContactPreference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CurrentTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,8 +29,9 @@ public class Owner {
     @Column(name = "contact_preferences", nullable = false)
     private ContactPreference contactPreference;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @CurrentTimestamp
+    @Column(name = "intake_date", updatable = false, nullable= false)
+    private LocalDateTime intakeDate;
 
 
 
@@ -82,12 +85,11 @@ public class Owner {
         this.contactPreference = contactPreference;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getIntakeDate() {
+        return intakeDate;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setIntakeDate(LocalDateTime intakeDate) {
+        this.intakeDate = intakeDate;
     }
-
 }

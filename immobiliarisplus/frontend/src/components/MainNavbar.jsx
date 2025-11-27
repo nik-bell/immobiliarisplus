@@ -21,6 +21,11 @@ const renderNavLinks = () =>
   ));
 
 const MainNavbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const navLinkClasses = "block text-2xl py-4 px-6 text-gray-800 hover:bg-gray-100 transition duration-300";
   return (
     <nav className="w-full bg-white shadow relative">
       {/* Top Bar */}
@@ -53,7 +58,13 @@ const MainNavbar = () => {
       >
         {renderNavLinks()}
       </div>
-    </nav>
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={toggleMenu}
+        />
+      )}
+    </>
   );
 };
 

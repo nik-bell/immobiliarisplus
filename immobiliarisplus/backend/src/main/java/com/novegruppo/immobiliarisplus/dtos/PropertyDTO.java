@@ -51,4 +51,9 @@ public record PropertyDTO(
         LocalDateTime createdAt,
 
         LocalDateTime updatedAt
-) {}
+) {
+
+    public Object ownerId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ownerId'");
+    }}

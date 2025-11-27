@@ -7,5 +7,5 @@ CREATE TABLE user_tokens (
     used BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_user_tokens_user FOREIGN KEY (user_id)
-        REFERENCES users(id) ON DELETE CASCADE
+        REFERENCES user(id) ON DELETE CASCADE
 );

@@ -1,10 +1,7 @@
 import Card from "../components/Card";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 export default function CtaMigliora() {
-    const handleScopriDiPiu = () => {
-
-    };
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="pt-6 lg:w-1/2">
@@ -30,8 +27,8 @@ export default function CtaMigliora() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleScopriDiPiu}
+                        <Link
+                            to="/contattaci"
                             className="
                                 w-1/1 md:w-1/2
                                 px-6 py-3
@@ -44,7 +41,7 @@ export default function CtaMigliora() {
                                 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                         >
                             Richiedi consulenza
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>
@@ -73,8 +70,8 @@ export default function CtaMigliora() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button
-                            onClick={handleScopriDiPiu}
+                        <Link
+                            to="/contattaci"
                             className="
                                 w-1/1 md:w-1/2
                                 px-6 py-3
@@ -87,7 +84,7 @@ export default function CtaMigliora() {
                                 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                         >
                             Valuta Casa Ora
-                        </Button>
+                        </Link>
                     </div>
                 </Card>
             </div>

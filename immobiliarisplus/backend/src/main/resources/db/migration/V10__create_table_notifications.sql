@@ -6,5 +6,5 @@ CREATE TABLE notifications (
     is_read BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_notifications_user FOREIGN KEY (recipient_id)
-        REFERENCES users(id) ON DELETE CASCADE
+        REFERENCES user(id) ON DELETE CASCADE
 );
