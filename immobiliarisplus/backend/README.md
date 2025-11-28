@@ -15,13 +15,13 @@
 
 ## Team
 
-| Membro | Ruolo |
-|--------|-------|
-| **Nesma Abd El Aziz** | Backend Developer |
-| **Nicolas Bellotti** | Backend Developer |
-| **Maria Cernat** | Backend Developer |
+| Membro | Ruolo | GitHub Name |
+|--------|-------|-------|
+| **Nesma Abd El Aziz** | Backend Developer | **NesmaAbd**
+| **Nicolas Bellotti** | Backend Developer | **nik-bell**
+| **Maria Cernat** | Backend Developer | **mariacernat**
 
-> **Mentor** : Vincent Franciosa
+> **Mentor** : Vincent Franciosa | V1n5Fr4n
 
 ---
 
