@@ -1,4 +1,3 @@
-cat > src/main/java/com/novegruppo/immobiliarisplus/dtos/frontend/PropertyDetailsDTO.java <<'EOF'
 package com.novegruppo.immobiliarisplus.dtos.frontend;
 
 public record PropertyDetailsDTO(
@@ -7,4 +6,3 @@ public record PropertyDetailsDTO(
     String floor,
     PropertyFeaturesDTO features
 ) {}
-EOF

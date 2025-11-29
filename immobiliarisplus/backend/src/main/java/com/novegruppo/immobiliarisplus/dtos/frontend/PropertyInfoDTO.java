@@ -1,4 +1,3 @@
-cat > src/main/java/com/novegruppo/immobiliarisplus/dtos/frontend/PropertyInfoDTO.java <<'EOF'
 package com.novegruppo.immobiliarisplus.dtos.frontend;
 
 public record PropertyInfoDTO(
@@ -9,4 +8,4 @@ public record PropertyInfoDTO(
     String condition,
     Integer surfaceM2
 ) {}
-EOF
+
