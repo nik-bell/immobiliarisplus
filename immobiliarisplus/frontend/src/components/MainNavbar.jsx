@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import LogoSVG from "../assets/Logo.svg";
 
 // Lista centralizzata dei link di navigazione
@@ -64,7 +65,7 @@ const MainNavbar = () => {
           onClick={toggleMenu}
         />
       )}
-    </>
+    </nav>
   );
 };
 
