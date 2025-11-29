@@ -4,10 +4,12 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyCreateDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
+import com.novegruppo.immobiliarisplus.dtos.PropertyAddressDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyFrontendDTO;
 import com.novegruppo.immobiliarisplus.mappers.PropertyFrontendMapper;
 import com.novegruppo.immobiliarisplus.services.PropertyService;
 import com.novegruppo.immobiliarisplus.services.OwnerService;
+import com.novegruppo.immobiliarisplus.services.PropertyAddressService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,12 @@ public class PropertyController {
 
     private final PropertyService propertyService;
     private final OwnerService ownerService;
+    private final PropertyAddressService propertyAddressService;
 
-    public PropertyController(PropertyService propertyService, OwnerService ownerService) {
+    public PropertyController(PropertyService propertyService, OwnerService ownerService, PropertyAddressService propertyAddressService) {
         this.propertyService = propertyService;
         this.ownerService = ownerService;
+        this.propertyAddressService = propertyAddressService;
     }
 
     // ---------------------------
@@ -70,7 +74,6 @@ public class PropertyController {
 
     @GetMapping("/frontend/{id}")
     public ResponseEntity<PropertyFrontendDTO> getFrontendById(@PathVariable Integer id) {
-        // Recupera la property (attenzione: findById potrebbe lanciare eccezione se non trovata)
         PropertyDTO property;
         try {
             property = propertyService.findById(id);
@@ -78,17 +81,18 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
 
-        // Recupera l'owner solo se presente
-        OwnerDTO owner = null;
-        if (property != null && property.ownerId() != null) {
-            try {
-                owner = ownerService.findById(property.ownerId());
-            } catch (RuntimeException ignored) {
-                // se non trovato o errore, lasciamo owner = null (frontend supporta campi vuoti)
-            }
+        // Recupera owner se possibile (ownerId non implementato in PropertyDTO: lasciamo owner null)
+        OwnerDTO owner = null; // In futuro: aggiungere corretta logica recupero owner
+
+        // Recupera indirizzo collegato se presente (stesso id della property come PK condivisa)
+        PropertyAddressDTO address = null;
+        try {
+            address = propertyAddressService.findById(id);
+        } catch (RuntimeException ignored) {
+            // indirizzo opzionale
         }
 
-        PropertyFrontendDTO frontend = PropertyFrontendMapper.toFrontendDTO(property, owner);
+        PropertyFrontendDTO frontend = PropertyFrontendMapper.toFrontendDTO(property, owner, address);
         return ResponseEntity.ok(frontend);
     }
 }

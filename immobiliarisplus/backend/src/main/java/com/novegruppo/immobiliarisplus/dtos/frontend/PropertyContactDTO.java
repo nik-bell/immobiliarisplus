@@ -1,4 +1,3 @@
-cat > src/main/java/com/novegruppo/immobiliarisplus/dtos/frontend/PropertyContactDTO.java <<'EOF'
 package com.novegruppo.immobiliarisplus.dtos.frontend;
 
 public record PropertyContactDTO(
@@ -8,4 +7,3 @@ public record PropertyContactDTO(
     String phone,
     Boolean privacyAccepted
 ) {}
-EOF
