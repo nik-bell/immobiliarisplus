@@ -37,14 +37,14 @@ public class NotificationController {
         if (roles.contains("ROLE_" + UserRole.ADMIN.name())) {
             return all;
         }
-        // AGENT e OWNER vedono solo le proprie notifiche (per userId)
+        // AGENT e OWNER vedono solo le proprie notifiche (per recipientId)
         String email = SecurityUtil.getUsername();
         if (email != null) {
             UserDTO current = userService.findAll().stream()
                     .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
                     .findFirst().orElse(null);
             if (current != null) {
-                return all.stream().filter(n -> current.id().equals(n.userId())).toList();
+                return all.stream().filter(n -> current.id().equals(n.recipientId())).toList();
             }
         }
         return List.of();
@@ -65,7 +65,7 @@ public class NotificationController {
             UserDTO current = userService.findAll().stream()
                     .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
                     .findFirst().orElse(null);
-            if (current != null && current.id().equals(dto.userId())) {
+            if (current != null && current.id().equals(dto.recipientId())) {
                 return dto;
             }
         }
@@ -104,7 +104,7 @@ public class NotificationController {
             UserDTO current = userService.findAll().stream()
                     .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
                     .findFirst().orElse(null);
-            if (current != null && current.id().equals(existing.userId())) {
+            if (current != null && current.id().equals(existing.recipientId())) {
                 return notificationService.update(id, dto);
             }
         }
