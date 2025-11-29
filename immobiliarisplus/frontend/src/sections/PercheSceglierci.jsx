@@ -1,45 +1,66 @@
 import Card from "../components/Card";
 
+// Icone SVG
+import IconMoving from "../assets/icone/moving/moving_verde/moving_verde.svg";
+import IconSchedule from "../assets/icone/schedule_orologio/schedule_giallo/schedule_giallo.svg";
+import IconCheckContract from "../assets/icone/contrattocheck/contrattocheck_verde/contrattocheck_verde.svg";
+import IconHome from "../assets/icone/home/Home_nero/Home_nero.svg";
+import IconStar from "../assets/icone/star/star_gialla/star_gialla.svg";
+import IconShield from "../assets/icone/shield/shield_nero/shield_nero.svg";
+
 const featuresData = [
-    {
-        icon: "📈",
-        title: "Valutazione precisa",
-        description: "Algoritmo AVM basato su dati reali di mercato. Range accurato basato su zona e condizioni.",
+    { 
+      icon: IconMoving,  
+      title: "Valutazione precisa", 
+      description: "Algoritmo AVM basato su dati reali di mercato. Range accurato basato su zona e condizioni."
+     },
+    { 
+      icon: IconShield,  
+      title: "Massima trasparenza", 
+      description: "Controlla ogni fase della vendita dalla tua dashboard personale." 
+    },
+    { 
+        icon: IconSchedule, 
+        title: "Velocità garantita", 
+        description: "Valutazione in 72 ore. Lead prioritari in 24h." 
     },
     {
-        icon: "🔒",
-        title: "Massima trasparenza",
-        description: "Controlla ogni fase della vendita dalla tua dashboard personale.",
+        icon: IconCheckContract, 
+        title: "Contratto digitale", 
+        description: "Clausole chiare, conformi alla normativa vigente." 
+    },
+    { 
+        icon: IconHome, 
+        title: "Migliora il valore", 
+        description: "Consigli mirati per aumentare il valore del tuo immobile con stima ROI." 
     },
     {
-        icon: "⏱️",
-        title: "Velocità garantita",
-        description: "Valutazione in 72 ore. Lead prioritari in 24h.",
-    },
-    {
-        icon: "📄",
-        title: "Contratto digitale",
-        description: "Clausole chiare, conformi alla normativa vigente. Firmi di persona o via raccomandata.",
-    },
-    {
-        icon: "🏠",
-        title: "Migliora il valore",
-        description: "Consigli mirati per aumentare il valore del tuo immobile con stima ROI.",
-    },
-    {
-        icon: "⭐",
-        title: "Assistenza dedicata",
-        description: "Agente personale, supporto chat e telefono durante orari lavorativi.",
+        icon: IconStar, 
+        title: "Assistenza dedicata", 
+        description: "Agente personale, supporto chat e telefono." 
     },
 ];
 
+//  Colore bordo superiore per ogni card
+const topBorderColors = [
+    "border-t-4 border-[#2CC6A3]", // verde
+    "border-t-4 border-black",      // nero
+    "border-t-4 border-[#F4C542]",  // giallo
+    "border-t-4 border-[#2CC6A3]",  // verde
+    "border-t-4 border-black",      // nero
+    "border-t-4 border-[#F4C542]"   // giallo
+];
+
 const PercheSceglierci = () => {
-    const cardWrapperClasses = "bg-white rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1";
-    const cardContentClasses = "p-6 text-center flex flex-col items-center h-full";
-    const iconClasses = "text-4xl mb-3 text-teal-600";
+    const cardWrapperClasses =
+        "bg-white rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1";
+
+    const cardContentClasses =
+        "p-6 text-center flex flex-col items-center h-full";
+
+    const iconClasses = "w-10 h-10 mb-3";
     const titleClasses = "text-lg font-semibold text-gray-900 mb-2";
     const descriptionClasses = "text-gray-600 text-sm";
-
 
     return (
         <>
@@ -49,18 +70,20 @@ const PercheSceglierci = () => {
             <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
                 Un approccio innovativo per vendere casa senza stress
             </p>
+
             <section className="py-12">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
                     {featuresData.map((feature, index) => (
-
-                        <Card key={index} className={cardWrapperClasses}>
+                        <Card
+                            key={index}
+                            className={`${cardWrapperClasses} ${topBorderColors[index]}`}
+                        >
                             <div className={cardContentClasses}>
-                                <div className={iconClasses}>{feature.icon}</div>
+                                <img src={feature.icon} alt="icon" className={iconClasses} />
                                 <h3 className={titleClasses}>{feature.title}</h3>
                                 <p className={descriptionClasses}>{feature.description}</p>
                             </div>
                         </Card>
-
                     ))}
                 </div>
             </section>

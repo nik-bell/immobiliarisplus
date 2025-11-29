@@ -1,5 +1,9 @@
 import Card from "../components/Card";
 
+import IconCall from "../assets/icone/call/call_nero/call_nero.svg";
+import IconEmail from "../assets/icone/mail/mail_nero/mail_nero.svg";
+import IconLocation from "../assets/icone/explore_nearby/explore_nearby_nero/explore_nearby_nero.svg";
+
 const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = false, link }) => {
     const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center";
     const valueBaseClasses = "mt-2 font-semibold";
@@ -7,9 +11,14 @@ const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = f
     return (
         <Card className={cardClasses}>
             <div className="flex flex-col items-center">
-                <div className={`${valueColor} text-4xl mb-4`}>
-                    {icon}
-                </div>
+
+                
+                <img 
+                    src={icon} 
+                    alt={title} 
+                    className="w-12 h-12 mb-4 opacity-90"
+                />
+
                 <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
                 <p className="text-sm text-gray-500 mb-4">{subtitle}</p>
             </div>
@@ -36,36 +45,36 @@ const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = f
 
 const contactData = [
     {
-        icon: '📞',
-        title: 'Telefono',
-        subtitle: 'Lun-Ven 9:00-18:00',
-        value: '+39 02 1234 5678',
-        valueColor: 'text-teal-500',
+        icon: IconCall,
+        title: "Telefono",
+        subtitle: "Lun-Ven 9:00-18:00",
+        value: "+39 02 1234 5678",
+        valueColor: "text-teal-500",
         isButton: false,
     },
     {
-        icon: '✉️',
-        title: 'Email',
-        subtitle: 'Risposta in 24h',
-        value: 'info@immobiliarisplus.it',
-        valueColor: 'text-gray-700',
+        icon: IconEmail,
+        title: "Email",
+        subtitle: "Risposta in 24h",
+        value: "info@immobiliarisplus.it",
+        valueColor: "text-gray-700",
         isButton: false,
     },
     {
-        icon: '📍',
-        title: 'Vienici a trovare',
-        subtitle: 'Via Jacopo Durandi 10, Torino',
-        value: 'Mostra sulla mappa',
-        valueColor: 'text-yellow-400',
+        icon: IconLocation,
+        title: "Vienici a trovare",
+        subtitle: "Via Jacopo Durandi 10, Torino",
+        value: "Mostra sulla mappa",
+        valueColor: "text-yellow-400",
         isButton: true,
-        link: 'https://maps.app.goo.gl/YourMapLinkHere'
+        link: "https://maps.app.goo.gl/YourMapLinkHere",
     },
 ];
 
 const ContattiAssistenza = () => {
     return (
         <section className="py-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {contactData.map((contact, index) => (
                     <MetodoContatto
                         key={index}
@@ -75,6 +84,7 @@ const ContattiAssistenza = () => {
                         value={contact.value}
                         valueColor={contact.valueColor}
                         isButton={contact.isButton}
+                        link={contact.link}
                     />
                 ))}
             </div>
