@@ -149,6 +149,25 @@ export default function FormContextProvider({ children }) {
     setError(null);
     try {
       // NORMALIZE: coerce numeric fields to numbers (backend often expects numbers, not strings)
+      const mapPropertyType = (pt) => {
+        if (!pt) return null;
+        const v = String(pt).toLowerCase();
+        if (v.includes("appart")) return "APARTMENT";
+        if (v.includes("casa") || v.includes("ind")) return "HOUSE";
+        if (v.includes("uff") || v.includes("ufficio")) return "OFFICE";
+        return "OTHER"; // fallback to OTHER
+      };
+
+      const mapCondition = (c) => {
+        if (!c) return null;
+        const v = String(c).toLowerCase();
+        if (v.includes("nuov")) return "NEW";
+        if (v.includes("ristr") || v.includes("recent")) return "RECENTLY_RENOVATED";
+        if (v.includes("ottim") || v.includes("buon")) return "GOOD_CONDITION";
+        if (v.includes("ristr" ) || v.includes("da_ristr")) return "TO_RENOVATE";
+        return "GOOD_CONDITION";
+      };
+
       const payload = {
         property: {
           ...formData.property,
@@ -156,6 +175,9 @@ export default function FormContextProvider({ children }) {
           sizeMq: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
           // compatibility: also include the legacy field name `surfaceM2` in numeric form
           surfaceM2: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
+          // map to backend enums
+          propertyType: mapPropertyType(formData.property.propertyType),
+          condition: mapCondition(formData.property.condition),
         },
         details: {
           ...formData.details,
