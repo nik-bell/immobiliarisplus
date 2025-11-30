@@ -116,7 +116,8 @@ public class PropertyValuationController {
                 try {
                     EmployeeDTO employee = employeeService.findById(v.employeeId());
                     assignedAgentName = employee.name() + " " + employee.surname();
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
             out.put("assignedAgent", assignedAgentName);
             out.put("valuationFinal", v.estimatedPriceMax());
@@ -163,12 +164,14 @@ public class PropertyValuationController {
         out.put("valuationRange", (v.estimatedPriceMin() != null && v.estimatedPriceMax() != null) ? String.format("%.0f - %.0f €", v.estimatedPriceMin(), v.estimatedPriceMax()) : null);
         out.put("valuationFinal", v.estimatedPriceMax());
         out.put("status", v.status() != null ? v.status() : ValuationStatus.NEW);
+        out.put("notes", v.notes());
         String agentName = null;
         if (v.employeeId() != null) {
             try {
                 EmployeeDTO e = employeeService.findById(v.employeeId());
                 agentName = e.name() + " " + e.surname();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         out.put("assignedAgent", agentName);
         out.put("documents", new ArrayList<>());
@@ -176,27 +179,52 @@ public class PropertyValuationController {
     }
 
     // Update valutazione (ADMIN + AGENT se assegnata) - aggiorna uno o più campi
-    @PatchMapping("/dashboard/{id}")
-    public ResponseEntity<PropertyValuationDTO> updateValuation(@PathVariable Integer id, @RequestBody Map<String, Object> updates) {
-        PropertyValuationDTO current = service.findById(id);
+    @PatchMapping(value = "/dashboard/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateValuation(@PathVariable Integer id, @RequestBody(required = false) Map<String, Object> updates) {
+        if (updates == null || updates.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Request body JSON mancante o vuoto"));
+        }
 
-        // Controllo permessi
+        PropertyValuationDTO current = service.findById(id);
+        // Permessi
         if (!SecurityUtil.hasRole("ADMIN")) {
             if (!(SecurityUtil.hasRole("AGENT") && current.employeeId() != null)) {
-                return ResponseEntity.status(403).build();
+                return ResponseEntity.status(403).body(Map.of("error", "Non autorizzato"));
             }
         }
 
-        // Aggiorna i campi forniti
-        if (updates.containsKey("status")) {
-            String statusStr = (String) updates.get("status");
-            ValuationStatus status = ValuationStatus.valueOf(statusStr);
-            current = service.updateStatus(id, status);
-        }
+        try {
+            // Aggiorna i campi forniti
+            if (updates.containsKey("status")) {
+                Object raw = updates.get("status");
+                if (raw == null) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'status' nullo"));
+                }
+                String statusStr = String.valueOf(raw).trim();
+                if (statusStr.isEmpty()) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'status' vuoto"));
+                }
+                try {
+                    ValuationStatus status = ValuationStatus.valueOf(statusStr.toUpperCase());
+                    current = service.updateStatus(id, status);
+                } catch (IllegalArgumentException ex) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                            "error", "Valore 'status' non valido",
+                            "allowed", List.of("NEW","IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED")
+                    ));
+                }
+            }
 
-        if (updates.containsKey("notes")) {
-            String notes = (String) updates.get("notes");
-            current = service.updateNotes(id, notes);
+            if (updates.containsKey("notes")) {
+                Object raw = updates.get("notes");
+                String notes = raw != null ? String.valueOf(raw) : null;
+                current = service.updateNotes(id, notes);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Errore durante l'aggiornamento",
+                    "message", e.getMessage()
+            ));
         }
 
         return ResponseEntity.ok(current);
