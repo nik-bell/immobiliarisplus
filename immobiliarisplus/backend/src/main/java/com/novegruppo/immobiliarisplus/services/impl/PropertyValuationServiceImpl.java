@@ -10,6 +10,7 @@ import java.util.Map;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationRequestDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyContactDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
 import com.novegruppo.immobiliarisplus.entities.*;
@@ -111,27 +112,28 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
     @Override
     public PropertyValuationResultDTO calculateAndSave(PropertyValuationRequestDTO request) {
         // Extract nested objects for easier access
-        PropertyInfoDTO propertyInfo = request.propertyFrontendDTO().property();
-        PropertyDetailsDTO propertyDetails = request.propertyFrontendDTO().details();
+        PropertyInfoDTO propertyInfo = request.property();
+        PropertyDetailsDTO propertyDetails = request.details();
+        PropertyContactDTO propertyContact = request.contact();
 
-        OwnerDTO ownerData = request.ownerDTO();
+        //OwnerDTO ownerData = request.ownerDTO();
 
         // 1. Validazione
         if (propertyInfo.surfaceM2() == null || propertyInfo.surfaceM2() <= 0) {
             throw new IllegalArgumentException("Superficie non valida");
         }
-        if (ownerData.email() == null || ownerData.email().isBlank()) {
+        if (propertyContact.email() == null || propertyContact.email().isBlank()) {
             throw new IllegalArgumentException("Email owner obbligatoria");
         }
 
         // 2. Crea/Recupera Owner
-        Owner owner = ownerRepository.findByEmail(ownerData.email())
+        Owner owner = ownerRepository.findByEmail(propertyContact.email())
                 .orElseGet(() -> {
                     Owner newOwner = new Owner();
-                    newOwner.setName(ownerData.name());
-                    newOwner.setSurname(ownerData.surname());
-                    newOwner.setEmail(ownerData.email());
-                    newOwner.setPhone(ownerData.phone());
+                    newOwner.setName(propertyContact.name());
+                    newOwner.setSurname(propertyContact.surname());
+                    newOwner.setEmail(propertyContact.email());
+                    newOwner.setPhone(propertyContact.phone());
                     newOwner.setContactPreference(ContactPreference.EMAIL);
                     newOwner.setIntakeDate(LocalDateTime.now());
                     return ownerRepository.save(newOwner);
