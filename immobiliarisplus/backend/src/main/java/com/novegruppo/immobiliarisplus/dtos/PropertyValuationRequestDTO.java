@@ -1,12 +1,16 @@
 package com.novegruppo.immobiliarisplus.dtos;
 
-import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyFrontendDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyContactDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
 
-import java.math.BigDecimal;
+
 
 public record PropertyValuationRequestDTO(
 
-    PropertyFrontendDTO propertyFrontendDTO,
+    PropertyInfoDTO property,
+    PropertyDetailsDTO details,
+    PropertyContactDTO contact
     // Dati immobile
 //    String zipCode,
 //    String city,
@@ -24,11 +28,6 @@ public record PropertyValuationRequestDTO(
 //    Boolean hasBasement,
 //    Boolean hasGarage,
 
-    OwnerDTO ownerDTO
-    // Dati owner
-//    String ownerName,
-//    String ownerSurname,
-//    String ownerEmail,
-//    String ownerPhone
+
 ) {}
 
