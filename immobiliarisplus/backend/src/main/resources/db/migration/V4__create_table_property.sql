@@ -6,7 +6,7 @@ CREATE TABLE property (
     size_mq INT,
     rooms INT,
     bathrooms INT,
-    floor INT,
+    floors INT,
     heating_type ENUM('CENTRAL', 'AUTONOMOUS', 'NONE') DEFAULT 'AUTONOMOUS',
     energy_class ENUM('A', 'B', 'C', 'D', 'E', 'F', 'G'),
     description TEXT,

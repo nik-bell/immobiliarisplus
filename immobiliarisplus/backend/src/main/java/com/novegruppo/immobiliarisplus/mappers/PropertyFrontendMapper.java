@@ -35,7 +35,7 @@ public class PropertyFrontendMapper {
         PropertyDetailsDTO details = new PropertyDetailsDTO(
                 property != null ? property.rooms() : null,
                 property != null ? property.bathrooms() : null,
-                property != null && property.floor() != null ? property.floor().toString() : null,
+                property != null ? property.floor() : null,
                 features
         );
 

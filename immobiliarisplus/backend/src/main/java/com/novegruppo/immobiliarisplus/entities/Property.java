@@ -33,8 +33,8 @@ public class Property {
     @Column(name="bathrooms", nullable = false)
     private int bathrooms;
 
-    @Enumerated(EnumType.STRING)
-    private Floor floor;
+    @Column(name="floors", nullable = false)
+    private int floors;
 
     @Enumerated(EnumType.STRING)
     private HeatingType heatingType;
@@ -126,13 +126,11 @@ public class Property {
         this.bathrooms = bathrooms;
     }
 
-    public Floor getFloor() {
-        return floor;
+    public int getFloors() {
+        return floors;
     }
 
-    public void setFloor(Floor floor) {
-        this.floor = floor;
-    }
+    public void setFloors(int floors) { this.floors = floors;}
 
     public HeatingType getHeatingType() {
         return heatingType;
