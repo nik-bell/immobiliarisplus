@@ -4,7 +4,7 @@ CREATE TABLE property_valuation (
     employee_id INT,
     improve_property BOOLEAN DEFAULT FALSE,
     exclusive_contract BOOLEAN DEFAULT FALSE,
-    priority ENUM('LOW', 'MEDIUM', 'HIGH') DEFAULT 'MEDIUM',
+    status ENUM('NEW', 'CONFRIMED', 'REJECTED', 'IN_PROGRESS', 'AWAITING_CLIENT_RESPONSE') DEFAULT 'NEW',
     estimated_price_min DECIMAL(12,2),
     estimated_price_max DECIMAL(12,2),
     price_per_mq DECIMAL(10,2),
