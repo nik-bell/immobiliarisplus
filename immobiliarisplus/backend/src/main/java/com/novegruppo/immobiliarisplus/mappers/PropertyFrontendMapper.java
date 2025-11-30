@@ -13,7 +13,7 @@ public class PropertyFrontendMapper {
         String cap = address != null ? address.cap() : null;
         String city = address != null ? address.city() : null;
 
-        PropertyInfoDTO info = new PropertyInfoDTO(
+        PropertyInfoDTO propertyInfo = new PropertyInfoDTO(
                 street,
                 cap,
                 city,
@@ -47,6 +47,6 @@ public class PropertyFrontendMapper {
                 true                    // privacyAccepted lato frontend (puoi cambiare)
         );
 
-        return new PropertyFrontendDTO(info, details, contact);
+        return new PropertyFrontendDTO(propertyInfo, details, contact, features);
     }
 }
