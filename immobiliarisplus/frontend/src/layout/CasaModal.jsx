@@ -185,7 +185,7 @@ export default function CasaModal() {
                     {editing.info ? (
                       <div className="flex flex-col gap-2">
                         <label className="text-xs text-gray-500">Superficie (m²)</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property.surfaceM2 ?? ''} onChange={(e) => updateDraftProperty('surfaceM2', Number(e.target.value))} />
+                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
                         <label className="text-xs text-gray-500">Valutazione AVM</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.valuationRange ?? ''} onChange={(e) => updateDraftRoot('valuationRange', e.target.value)} />
                         <label className="text-xs text-gray-500">Tipologia</label>
@@ -200,7 +200,7 @@ export default function CasaModal() {
                       </div>
                     ) : (
                       <>
-                        <div><span className="font-medium">Superficie:</span> {draft.property.surfaceM2} m²</div>
+                        <div><span className="font-medium">Superficie:</span> {draft.property.sizeMq} m²</div>
                         <div><span className="font-medium">Valutazione AVM:</span> {draft.valuationRange}</div>
                         <div><span className="font-medium">Tipologia:</span> {draft.property.propertyType}</div>
                         <div><span className="font-medium">Stato:</span> {draft.property.condition}</div>

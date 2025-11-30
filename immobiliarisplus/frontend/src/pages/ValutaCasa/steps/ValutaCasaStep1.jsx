@@ -126,17 +126,17 @@ export default function ValutaCasaStep1() {
           className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
           min={0}
-          value={p.surfaceM2}
+          value={p.sizeMq}
           onChange={(e) =>
             dispatch({
               type: "UPDATE_PROPERTY",
-              payload: { surfaceM2: e.target.value },
+              payload: { sizeMq: e.target.value },
             })
           }
           placeholder="Es. 85"
         />
-        {state.errors.surfaceM2 && (
-          <p className="text-sm text-red-600">{state.errors.surfaceM2}</p>
+        {state.errors.sizeMq && (
+          <p className="text-sm text-red-600">{state.errors.sizeMq}</p>
         )}
       </div>
       

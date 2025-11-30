@@ -41,7 +41,24 @@ export async function createValuation(valuationData) {
       body: JSON.stringify(valuationData),
     });
 
-    if (!response.ok) throw new Error("Errore nella creazione della valutazione");
+    if (!response.ok) {
+      // try to read JSON error body, fallback to text
+      let bodyText = null;
+      try {
+        const json = await response.json();
+        bodyText = JSON.stringify(json);
+      } catch (e) {
+        try {
+          bodyText = await response.text();
+        } catch (__) {
+          bodyText = null;
+        }
+      }
+      const msg = `Errore nella creazione della valutazione: ${response.status} ${response.statusText}${bodyText ? " - " + bodyText : ""}`;
+      console.error("createValuation ERROR:", msg, "payload:", valuationData);
+      throw new Error(msg);
+    }
+
     return await response.json();
   } catch (error) {
     console.error("createValuation ERROR:", error);
