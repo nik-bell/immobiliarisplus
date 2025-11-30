@@ -47,6 +47,6 @@ public class PropertyFrontendMapper {
                 true                    // privacyAccepted lato frontend (puoi cambiare)
         );
 
-        return new PropertyFrontendDTO(propertyInfo, details, contact, features);
+        return new PropertyFrontendDTO(propertyInfo, details, contact);
     }
 }
