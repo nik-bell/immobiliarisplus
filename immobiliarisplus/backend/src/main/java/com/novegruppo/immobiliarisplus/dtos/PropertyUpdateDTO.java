@@ -7,7 +7,7 @@ public record PropertyUpdateDTO(
         Integer sizeMq,
         Integer rooms,
         Integer bathrooms,
-        String floor,
+        Integer floor,
         String heatingType,
         String energyClass,
         String description,

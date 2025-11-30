@@ -1,8 +1,9 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import FormContext from "../store/FormContext";
 import validateStep1 from "../pages/ValutaCasa/validators/validateStep1";
 import validateStep2 from "../pages/ValutaCasa/validators/validateStep2";
 import validateStep3 from "../pages/ValutaCasa/validators/validateStep3";
+import { createValuation } from "../api/api";
 
 const initialState = {
   step: 1,
@@ -14,7 +15,7 @@ const initialState = {
     city: "",
     propertyType: "",
     condition: "",
-    surfaceM2: "",
+    sizeMq: "",
   },
 
   // ---- STEP 2 ----
@@ -125,7 +126,10 @@ export default function FormContextProvider({ children }) {
     dispatch({ type: "PREV_STEP" });
   }
 
-  function submitForm() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function submitForm() {
     // Valida lo step 3
     if (!validateCurrentStep()) {
       return;
@@ -138,13 +142,80 @@ export default function FormContextProvider({ children }) {
       contact: state.contact,
     };
 
-    // Console.log
-    console.log("Dati del form:", formData);
+    // Console.log (utile in dev)
+    console.log("Dati del form (inviando a API):", formData);
 
-    // Mostra messaggio di conferma
-    const message = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
-    dispatch({ type: "SET_SUBMIT_MESSAGE", payload: message });
-    dispatch({ type: "SET_SUBMITTED" });
+    setLoading(true);
+    setError(null);
+    try {
+      // NORMALIZE: coerce numeric fields to numbers (backend often expects numbers, not strings)
+      const mapPropertyType = (pt) => {
+        if (!pt) return null;
+        const v = String(pt).toLowerCase();
+        if (v.includes("appart")) return "APARTMENT";
+        if (v.includes("casa") || v.includes("ind")) return "HOUSE";
+        if (v.includes("uff") || v.includes("ufficio")) return "OFFICE";
+        return "OTHER"; // fallback to OTHER
+      };
+
+      const mapCondition = (c) => {
+        if (!c) return null;
+        const v = String(c).toLowerCase();
+        if (v.includes("nuov")) return "NEW";
+        if (v.includes("ristr") || v.includes("recent")) return "RECENTLY_RENOVATED";
+        if (v.includes("ottim") || v.includes("buon")) return "GOOD_CONDITION";
+        if (v.includes("ristr" ) || v.includes("da_ristr")) return "TO_RENOVATE";
+        return "GOOD_CONDITION";
+      };
+
+      const payload = {
+        property: {
+          ...formData.property,
+          // send sizeMq as numeric float to backend
+          sizeMq: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
+          // compatibility: also include the legacy field name `surfaceM2` in numeric form
+          surfaceM2: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
+          // map to backend enums
+          propertyType: mapPropertyType(formData.property.propertyType),
+          condition: mapCondition(formData.property.condition),
+        },
+        details: {
+          ...formData.details,
+          rooms: formData.details.rooms ? Number(formData.details.rooms) : null,
+          bathrooms: formData.details.bathrooms ? Number(formData.details.bathrooms) : null,
+          floor: formData.details.floor ? Number(formData.details.floor) : null,
+        },
+        contact: {
+          ...formData.contact,
+          privacyAccepted: !!formData.contact.privacyAccepted,
+        },
+      };
+
+      console.log("Invio payload normalizzato a createValuation:", payload);
+      console.log("sizeMq type (payload):", typeof payload.property.sizeMq, payload.property.sizeMq);
+
+      // Chiamata al backend (POST /api/valuations/calculate)
+      const resp = await createValuation(payload);
+
+      if (!resp) {
+        // createValuation returns null on error
+        throw new Error("Nessuna risposta valida dal server");
+      }
+
+      // Prepara messaggio di successo. Se l'API ritorna un range/price, mostralo.
+      const baseMessage = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
+      const range = resp.valuationRange || resp.recommendedPrice || resp.range || null;
+      const fullMessage = range ? `${baseMessage} Valutazione stimata: ${JSON.stringify(range)}` : baseMessage;
+
+      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: fullMessage });
+      dispatch({ type: "SET_SUBMITTED" });
+    } catch (err) {
+      console.error("submitForm API error:", err);
+      setError(err.message || "Errore durante l'invio della richiesta");
+      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Errore durante l'invio della richiesta." });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

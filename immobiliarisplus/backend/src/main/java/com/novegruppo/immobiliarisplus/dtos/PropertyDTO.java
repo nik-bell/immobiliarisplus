@@ -28,7 +28,9 @@ public record PropertyDTO(
         @Min(value = 1, message = "Il numero di bagni deve essere almeno 1.")
         Integer bathrooms,
 
-        Floor floor,
+        @NotNull(message = "Il numero del piano non può essere nullo.")
+        @Min(value = 0, message = "Il numero del piano deve essere almeno 0.")
+        int floor,
 
         HeatingType heatingType,
 

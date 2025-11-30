@@ -9,7 +9,7 @@ export default function CasaTableHeader() {
   // colonne con key path usate per sort
   const allColumns = [
     { key: "property.address", label: "Indirizzo" },
-    { key: "property.surfaceM2", label: "Mq" },
+    { key: "property.sizeMq", label: "Mq" },
     { key: "valuationRange", label: "Valutazione attuale" },
     { key: "status", label: "Stato" },
     { key: "assignedAgent", label: "Agente" },

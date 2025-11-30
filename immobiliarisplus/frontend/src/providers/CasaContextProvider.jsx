@@ -25,7 +25,7 @@ export default function CasaContextProvider({ children }) {
     terminati: "terminati",
   };
 
-  // funzione helper per leggere chiavi nested (es: "property.surfaceM2")
+  // funzione helper per leggere chiavi nested (es: "property.sizeMq")
   const getByPath = (obj, path) => {
     if (!path) return undefined;
     return path

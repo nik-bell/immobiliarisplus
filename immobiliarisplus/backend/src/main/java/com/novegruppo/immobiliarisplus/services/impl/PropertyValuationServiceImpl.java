@@ -9,6 +9,9 @@ import java.util.Map;
 
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationRequestDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyContactDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
+import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
 import com.novegruppo.immobiliarisplus.entities.*;
 import com.novegruppo.immobiliarisplus.enums.ContactPreference;
 import com.novegruppo.immobiliarisplus.enums.Floor;
@@ -107,22 +110,29 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
 
     @Override
     public PropertyValuationResultDTO calculateAndSave(PropertyValuationRequestDTO request) {
+        // Extract nested objects for easier access
+        PropertyInfoDTO propertyInfo = request.property();
+        PropertyDetailsDTO propertyDetails = request.details();
+        PropertyContactDTO propertyContact = request.contact();
+
+        //OwnerDTO ownerData = request.ownerDTO();
+
         // 1. Validazione
-        if (request.sizeMq() == null || request.sizeMq().compareTo(BigDecimal.ZERO) <= 0) {
+        if (propertyInfo.surfaceM2() == null || propertyInfo.surfaceM2() <= 0) {
             throw new IllegalArgumentException("Superficie non valida");
         }
-        if (request.ownerEmail() == null || request.ownerEmail().isBlank()) {
+        if (propertyContact.email() == null || propertyContact.email().isBlank()) {
             throw new IllegalArgumentException("Email owner obbligatoria");
         }
 
         // 2. Crea/Recupera Owner
-        Owner owner = ownerRepository.findByEmail(request.ownerEmail())
+        Owner owner = ownerRepository.findByEmail(propertyContact.email())
                 .orElseGet(() -> {
                     Owner newOwner = new Owner();
-                    newOwner.setName(request.ownerName());
-                    newOwner.setSurname(request.ownerSurname());
-                    newOwner.setEmail(request.ownerEmail());
-                    newOwner.setPhone(request.ownerPhone());
+                    newOwner.setName(propertyContact.name());
+                    newOwner.setSurname(propertyContact.surname());
+                    newOwner.setEmail(propertyContact.email());
+                    newOwner.setPhone(propertyContact.phone());
                     newOwner.setContactPreference(ContactPreference.EMAIL);
                     newOwner.setIntakeDate(LocalDateTime.now());
                     return ownerRepository.save(newOwner);
@@ -131,46 +141,47 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         // 3. Crea Property
         Property property = new Property();
         property.setOwner(owner);
-        property.setType(PropertyType.valueOf(request.propertyType()));
-        property.setSizeMq(request.sizeMq().intValue());
-        property.setRooms(request.numberOfRooms());
-        property.setBathrooms(request.numberOfBathrooms());
-        property.setFloor(Floor.valueOf(request.floor()));
-        property.setHeatingType(HeatingType.valueOf(request.heatingType()));
-        property.setHasBalcony(Boolean.TRUE.equals(request.hasTerrace()));
-        property.setHasElevator(Boolean.TRUE.equals(request.hasElevator()));
-        property.setHasGarden(Boolean.TRUE.equals(request.hasGarden()));
-        property.setHasBasement(Boolean.TRUE.equals(request.hasBasement()));
-        property.setHasGarage(Boolean.TRUE.equals(request.hasGarage()));
+        property.setType(PropertyType.valueOf(propertyInfo.propertyType()));
+        property.setSizeMq(propertyInfo.surfaceM2());
+        property.setRooms(propertyDetails.rooms());
+        property.setBathrooms(propertyDetails.bathrooms());
+        property.setFloors(propertyDetails.floor());
+        property.setHeatingType(HeatingType.AUTONOMOUS); // Default, non presente nel DTO frontend
+        property.setHasBalcony(Boolean.TRUE.equals(propertyDetails.features().terrazzo()));
+        property.setHasElevator(Boolean.TRUE.equals(propertyDetails.features().ascensore()));
+        property.setHasGarden(Boolean.TRUE.equals(propertyDetails.features().giardino()));
+        property.setHasBasement(Boolean.TRUE.equals(propertyDetails.features().cantina()));
+        property.setHasGarage(Boolean.TRUE.equals(propertyDetails.features().garage()));
         property.setCreatedAt(LocalDateTime.now());
         property = propertyRepository.save(property);
 
         // 4. Crea PropertyAddress
         PropertyAddress address = new PropertyAddress();
         address.setProperty(property);
-        address.setStreet(request.address());
-        address.setCity(request.city());
-        address.setCap(request.zipCode());
+        address.setStreet(propertyInfo.address());
+        address.setCity(propertyInfo.city());
+        address.setCap(propertyInfo.zipCode());
         property = propertyRepository.save(property);
 
         // 5. Calcola valutazione
-        BigDecimal basePerMq = resolveBasePrice(request.zipCode());
+        BigDecimal basePerMq = resolveBasePrice(propertyInfo.zipCode());
         if (basePerMq == null || basePerMq.compareTo(BigDecimal.ZERO) == 0) {
-            throw new IllegalStateException("Nessun prezzo €/mq configurato per CAP/Città: " + request.zipCode());
+            throw new IllegalStateException("Nessun prezzo €/mq configurato per CAP/Città: " + propertyInfo.zipCode());
         }
 
-        BigDecimal conditionCoeff = CONDITION_COEFF.getOrDefault(request.condition(), BigDecimal.ONE);
-        BigDecimal typeCoeff = TYPE_COEFF.getOrDefault(request.propertyType(), BigDecimal.ONE);
-        BigDecimal heatingCoeff = HEATING_COEFF.getOrDefault(request.heatingType(), BigDecimal.ONE);
+        BigDecimal conditionCoeff = CONDITION_COEFF.getOrDefault(propertyInfo.condition(), BigDecimal.ONE);
+        BigDecimal typeCoeff = TYPE_COEFF.getOrDefault(propertyInfo.propertyType(), BigDecimal.ONE);
+        BigDecimal heatingCoeff = HEATING_COEFF.getOrDefault("AUTONOMOUS", BigDecimal.ONE); // Default
 
         BigDecimal extraCoeff = BigDecimal.ONE
-                .add(Boolean.TRUE.equals(request.hasTerrace()) ? new BigDecimal("0.03") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(request.hasElevator()) ? new BigDecimal("0.02") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(request.hasGarden()) ? new BigDecimal("0.05") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(request.hasBasement()) ? new BigDecimal("0.01") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(request.hasGarage()) ? new BigDecimal("0.04") : BigDecimal.ZERO);
+                .add(Boolean.TRUE.equals(propertyDetails.features().terrazzo()) ? new BigDecimal("0.03") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().ascensore()) ? new BigDecimal("0.02") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().giardino()) ? new BigDecimal("0.05") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().cantina()) ? new BigDecimal("0.01") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().garage()) ? new BigDecimal("0.04") : BigDecimal.ZERO);
 
-        BigDecimal estimatedValue = request.sizeMq()
+        BigDecimal surfaceM2Decimal = new BigDecimal(propertyInfo.surfaceM2());
+        BigDecimal estimatedValue = surfaceM2Decimal
                 .multiply(basePerMq)
                 .multiply(conditionCoeff)
                 .multiply(typeCoeff)
@@ -213,10 +224,10 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
                 <p>Grazie per aver scelto ImmobiliarisPlus!</p>
                 """,
                     owner.getName(), owner.getSurname(),
-                    request.address(), request.city(), request.zipCode(),
-                    request.propertyType(),
-                    request.sizeMq().setScale(0, RoundingMode.HALF_UP),
-                    request.condition(),
+                    propertyInfo.address(), propertyInfo.city(), propertyInfo.zipCode(),
+                    propertyInfo.propertyType(),
+                    surfaceM2Decimal.setScale(0, RoundingMode.HALF_UP),
+                    propertyInfo.condition(),
                     estimatedValue.toPlainString(),
                     minValue.toPlainString(), maxValue.toPlainString()
             );
