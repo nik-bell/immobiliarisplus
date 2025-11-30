@@ -12,7 +12,6 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
-import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyFeaturesDTO;
 import com.novegruppo.immobiliarisplus.entities.*;
 import com.novegruppo.immobiliarisplus.enums.ContactPreference;
 import com.novegruppo.immobiliarisplus.enums.Floor;
@@ -114,7 +113,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         // Extract nested objects for easier access
         PropertyInfoDTO propertyInfo = request.propertyFrontendDTO().property();
         PropertyDetailsDTO propertyDetails = request.propertyFrontendDTO().details();
-        PropertyFeaturesDTO propertyFeatures = request.propertyFrontendDTO().features();
+
         OwnerDTO ownerData = request.ownerDTO();
 
         // 1. Validazione
@@ -147,11 +146,11 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         property.setBathrooms(propertyDetails.bathrooms());
         property.setFloor(Floor.valueOf(propertyDetails.floor()));
         property.setHeatingType(HeatingType.AUTONOMOUS); // Default, non presente nel DTO frontend
-        property.setHasBalcony(Boolean.TRUE.equals(propertyFeatures.terrazzo()));
-        property.setHasElevator(Boolean.TRUE.equals(propertyFeatures.ascensore()));
-        property.setHasGarden(Boolean.TRUE.equals(propertyFeatures.giardino()));
-        property.setHasBasement(Boolean.TRUE.equals(propertyFeatures.cantina()));
-        property.setHasGarage(Boolean.TRUE.equals(propertyFeatures.garage()));
+        property.setHasBalcony(Boolean.TRUE.equals(propertyDetails.features().terrazzo()));
+        property.setHasElevator(Boolean.TRUE.equals(propertyDetails.features().ascensore()));
+        property.setHasGarden(Boolean.TRUE.equals(propertyDetails.features().giardino()));
+        property.setHasBasement(Boolean.TRUE.equals(propertyDetails.features().cantina()));
+        property.setHasGarage(Boolean.TRUE.equals(propertyDetails.features().garage()));
         property.setCreatedAt(LocalDateTime.now());
         property = propertyRepository.save(property);
 
@@ -174,11 +173,11 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         BigDecimal heatingCoeff = HEATING_COEFF.getOrDefault("AUTONOMOUS", BigDecimal.ONE); // Default
 
         BigDecimal extraCoeff = BigDecimal.ONE
-                .add(Boolean.TRUE.equals(propertyFeatures.terrazzo()) ? new BigDecimal("0.03") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(propertyFeatures.ascensore()) ? new BigDecimal("0.02") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(propertyFeatures.giardino()) ? new BigDecimal("0.05") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(propertyFeatures.cantina()) ? new BigDecimal("0.01") : BigDecimal.ZERO)
-                .add(Boolean.TRUE.equals(propertyFeatures.garage()) ? new BigDecimal("0.04") : BigDecimal.ZERO);
+                .add(Boolean.TRUE.equals(propertyDetails.features().terrazzo()) ? new BigDecimal("0.03") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().ascensore()) ? new BigDecimal("0.02") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().giardino()) ? new BigDecimal("0.05") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().cantina()) ? new BigDecimal("0.01") : BigDecimal.ZERO)
+                .add(Boolean.TRUE.equals(propertyDetails.features().garage()) ? new BigDecimal("0.04") : BigDecimal.ZERO);
 
         BigDecimal surfaceM2Decimal = new BigDecimal(propertyInfo.surfaceM2());
         BigDecimal estimatedValue = surfaceM2Decimal
