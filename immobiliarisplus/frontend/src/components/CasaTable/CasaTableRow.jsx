@@ -26,7 +26,7 @@ export default function CasaTableRow({ casa }) {
       <td className="px-4 py-3">{casa.property.address}</td>
 
       {/* Mq */}
-      <td className="px-4 py-3">{casa.property.surfaceM2} m²</td>
+      <td className="px-4 py-3">{casa.property.sizeMq} m²</td>
 
       {/* Valutazione (stringa) */}
       <td className="px-4 py-3">{casa.valuationRange}</td>

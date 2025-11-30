@@ -5,7 +5,7 @@ export default [
       address: "Via Dante Alighieri 15, Milano",
       propertyType: "Appartamento",
       condition: "Buono",
-      surfaceM2: 85,
+      sizeMq: 85,
     },
     details: {
       rooms: 3,
@@ -43,7 +43,7 @@ export default [
       address: "Via Roma 42, Torino",
       propertyType: "Villa",
       condition: "Da ristrutturare",
-      surfaceM2: 120,
+      sizeMq: 120,
     },
     details: {
       rooms: 5,
