@@ -4,7 +4,7 @@ import { useState } from "react";
 import LoginModal from "../layout/LoginModal";
 
 const TopNavbar = () => {
-  const { isLoggedIn, userType } = useAuth();
+  const { isLoggedIn, userType, user, logout } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
@@ -23,14 +23,38 @@ const TopNavbar = () => {
               >
                 Login
               </button>
-            ) : userType === "agente" ? (
-              <NavLink to="/area-agenti" className="hover:underline">
-                Area Agenti
-              </NavLink>
             ) : (
-              <NavLink to="/area-personale" className="hover:underline">
-                Area Personale
-              </NavLink>
+              <>
+                {userType === "agente" || userType === "admin" ? (
+                  <NavLink to="/area-agenti" className="hover:underline">
+                    Area Agenti
+                  </NavLink>
+                ) : (
+                  <NavLink to="/area-personale" className="hover:underline">
+                    Area Personale
+                  </NavLink>
+                )}
+
+                {(userType === "admin" || userType === "agente") && (
+                  <>
+                    <span className="px-2 text-gray-400">|</span>
+                    <span className={
+                      `text-xs px-2 py-0.5 rounded ${
+                        userType === "admin" ? "bg-emerald-600 text-white" : "bg-gray-700 text-white"
+                      }`
+                    }>
+                      {userType === "admin" ? "Admin" : "Agente"}
+                    </span>
+                  </>
+                )}
+
+                <button
+                  onClick={() => logout()}
+                  className="ml-4 hover:underline text-sm"
+                >
+                  Logout
+                </button>
+              </>
             )}
           </div>
         </div>

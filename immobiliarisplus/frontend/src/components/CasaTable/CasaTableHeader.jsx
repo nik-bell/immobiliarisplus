@@ -1,10 +1,13 @@
 import { useCasa } from "../../store/CasaContext";
+import { useAuth } from "../../store/AuthContext";
 
 export default function CasaTableHeader() {
   const { toggleSort, sortKey, sortDir } = useCasa();
 
+  const { userType } = useAuth();
+
   // colonne con key path usate per sort
-  const columns = [
+  const allColumns = [
     { key: "property.address", label: "Indirizzo" },
     { key: "property.surfaceM2", label: "Mq" },
     { key: "valuationRange", label: "Valutazione attuale" },
@@ -12,6 +15,12 @@ export default function CasaTableHeader() {
     { key: "assignedAgent", label: "Agente" },
     { key: "actions", label: "" }, // colonna icons/azioni
   ];
+
+  // mostra la colonna Agente solo agli admin
+  const columns = allColumns.filter((c) => {
+    if (c.key === "assignedAgent" && userType !== "admin") return false;
+    return true;
+  });
 
   // icona freccia per indicare sorting
   const sortIndicator = (key) => {

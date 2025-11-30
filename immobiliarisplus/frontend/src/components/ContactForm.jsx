@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import InputField from './InputField';
 import TextAreaField from './TextAreaField';
 import Button from "./Button.jsx";
 
-const ContactForm = ({ onSubmit }) => {
-    const [formData, setFormData] = useState({
+const ContactForm = forwardRef(({ onSubmit }, ref) => {
+    const INITIAL_STATE = {
         nome: '',
         cognome: '',
         email: '',
         telefono: '',
         messaggio: '',
-    });
+    };
+
+    const [formData, setFormData] = useState(INITIAL_STATE);
+    const resetForm = () => {
+        setFormData(INITIAL_STATE);
+    };
+
+    useImperativeHandle(ref, () => ({
+        resetForm
+    }));
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +32,6 @@ const ContactForm = ({ onSubmit }) => {
 
     const gridClasses = "grid grid-cols-1 md:grid-cols-2 md:gap-4";
     const buttonStyle = " px-6 py-3 bg-teal-500 text-white font-semibold text-base rounded-lg shadow-md hover:bg-teal-400 hover:shadow-lg transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50";
-
 
     return (
         <form onSubmit={handleSubmit} className="p-0">
@@ -60,11 +68,10 @@ const ContactForm = ({ onSubmit }) => {
                 label="Telefono"
                 id="telefono"
                 name="telefono"
-                type="tel"
+                type="number"
                 placeholder="es: 333 123 4567"
                 value={formData.telefono}
                 onChange={handleChange}
-                optional={true}
             />
 
             <TextAreaField
@@ -80,6 +87,6 @@ const ContactForm = ({ onSubmit }) => {
             </Button>
         </form>
     );
-};
+});
 
 export default ContactForm;
