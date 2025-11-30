@@ -2,7 +2,7 @@ package com.novegruppo.immobiliarisplus.controllers;
 
 import com.novegruppo.immobiliarisplus.dtos.EmployeeDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
-import com.novegruppo.immobiliarisplus.enums.Priority;
+import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
 import com.novegruppo.immobiliarisplus.services.EmployeeService;
 import com.novegruppo.immobiliarisplus.services.PropertyValuationService;
 
@@ -66,49 +66,15 @@ public class EmployeeController {
             @PathVariable Integer valuationId,
             @PathVariable Integer employeeId
     ) {
-        PropertyValuationDTO dto = valuationService.findById(valuationId);
-
-        PropertyValuationDTO updated = new PropertyValuationDTO(
-                dto.id(),
-                dto.propertyId(),
-                employeeId,
-                dto.improveProperty(),
-                dto.exclusiveContract(),
-                dto.priority(),
-                dto.estimatedPriceMin(),
-                dto.estimatedPriceMax(),
-                dto.pricePerMq(),
-                dto.confidenceScore(),
-                dto.dataSource(),
-                dto.createdAt()
-        );
-
-        return valuationService.update(valuationId, updated);
+        return valuationService.assignEmployee(valuationId, employeeId);
     }
 
-     //Aggiorna la priorità (stato) della valutazione.
-    @PutMapping("/valuation/{valuationId}/priority")
-    public PropertyValuationDTO updatePriority(
+     //Aggiorna lo status della valutazione.
+    @PutMapping("/valuation/{valuationId}/status")
+    public PropertyValuationDTO updateStatus(
             @PathVariable Integer valuationId,
-            @RequestParam Priority priority
+            @RequestParam ValuationStatus status
     ) {
-        PropertyValuationDTO dto = valuationService.findById(valuationId);
-
-        PropertyValuationDTO updated = new PropertyValuationDTO(
-                dto.id(),
-                dto.propertyId(),
-                dto.employeeId(),
-                dto.improveProperty(),
-                dto.exclusiveContract(),
-                priority,  // Cambiamo SOLO questo
-                dto.estimatedPriceMin(),
-                dto.estimatedPriceMax(),
-                dto.pricePerMq(),
-                dto.confidenceScore(),
-                dto.dataSource(),
-                dto.createdAt()
-        );
-
-        return valuationService.update(valuationId, updated);
+        return valuationService.updateStatus(valuationId, status);
     }
 }

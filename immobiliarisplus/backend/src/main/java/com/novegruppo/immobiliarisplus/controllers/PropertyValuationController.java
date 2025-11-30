@@ -3,168 +3,246 @@ package com.novegruppo.immobiliarisplus.controllers;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationRequestDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
-import com.novegruppo.immobiliarisplus.enums.UserRole;
-import com.novegruppo.immobiliarisplus.security.SecurityUtil;
+import com.novegruppo.immobiliarisplus.dtos.EmployeeDTO;
+import com.novegruppo.immobiliarisplus.entities.Property;
+import com.novegruppo.immobiliarisplus.entities.PropertyAddress;
+import com.novegruppo.immobiliarisplus.entities.Owner;
+import com.novegruppo.immobiliarisplus.repositories.PropertyRepository;
+import com.novegruppo.immobiliarisplus.repositories.PropertyAddressRepository;
 import com.novegruppo.immobiliarisplus.services.PropertyValuationService;
-import com.novegruppo.immobiliarisplus.services.UserService;
-import com.novegruppo.immobiliarisplus.services.PropertyService;
-import com.novegruppo.immobiliarisplus.services.EmployeeService;
-import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
+import com.novegruppo.immobiliarisplus.services.EmployeeService;import com.novegruppo.immobiliarisplus.services.UserService;
 import com.novegruppo.immobiliarisplus.dtos.UserDTO;
+import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
+import com.novegruppo.immobiliarisplus.security.SecurityUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/valuations")
 public class PropertyValuationController {
 
-    private final PropertyValuationService propertyValuationService;
-    private final UserService userService;
-    private final PropertyService propertyService;
+    private final PropertyValuationService service;
+    private final PropertyRepository propertyRepository;
+    private final PropertyAddressRepository propertyAddressRepository;
     private final EmployeeService employeeService;
+    private final UserService userService;
 
-    public PropertyValuationController(PropertyValuationService propertyValuationService,
-                                       UserService userService,
-                                       PropertyService propertyService,
-                                       EmployeeService employeeService) {
-        this.propertyValuationService = propertyValuationService;
-        this.userService = userService;
-        this.propertyService = propertyService;
+    public PropertyValuationController(PropertyValuationService service,
+                                       PropertyRepository propertyRepository,
+                                       PropertyAddressRepository propertyAddressRepository,
+                                       EmployeeService employeeService,
+                                       UserService userService) {
+        this.service = service;
+        this.propertyRepository = propertyRepository;
+        this.propertyAddressRepository = propertyAddressRepository;
         this.employeeService = employeeService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public List<PropertyValuationDTO> list() {
-        List<PropertyValuationDTO> all = propertyValuationService.findAll();
-        if (!SecurityUtil.isAuthenticated()) {
-            return List.of();
-        }
-        Set<String> roles = SecurityUtil.getRoles();
-        if (roles.contains("ROLE_" + UserRole.ADMIN.name())) {
-            return all;
-        }
-        String email = SecurityUtil.getUsername();
-        if (email == null || email.isBlank()) return List.of();
-        UserDTO current = userService.findAll().stream()
-                .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
-                .findFirst()
-                .orElse(null);
-        if (current == null) return List.of();
-        if (roles.contains("ROLE_" + UserRole.AGENT.name())) {
-            Integer employeeId = employeeService.findAll().stream()
-                    .filter(e -> e.userId() != null && e.userId().equals(current.id()))
-                    .map(com.novegruppo.immobiliarisplus.dtos.EmployeeDTO::id)
-                    .findFirst().orElse(null);
-            if (employeeId == null) return List.of();
-            return all.stream().filter(v -> employeeId.equals(v.employeeId())).toList();
-        }
-        if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
-            Integer ownerId = current.ownerId();
-            if (ownerId == null) return List.of();
-            List<Integer> myPropertyIds = propertyService.findAll().stream()
-                    .filter(p -> ownerId.equals(p.ownerId()))
-                    .map(PropertyDTO::id)
-                    .toList();
-            return all.stream().filter(v -> myPropertyIds.contains(v.propertyId())).toList();
-        }
-        return List.of();
+    public ResponseEntity<List<PropertyValuationDTO>> list() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public PropertyValuationDTO getById(@PathVariable Integer id) {
-        PropertyValuationDTO dto = propertyValuationService.findById(id);
-        if (!SecurityUtil.isAuthenticated()) {
-            return null;
-        }
-        Set<String> roles = SecurityUtil.getRoles();
-        if (roles.contains("ROLE_" + UserRole.ADMIN.name())) {
-            return dto;
-        }
-        String email = SecurityUtil.getUsername();
-        if (email == null || email.isBlank()) return null;
-        UserDTO current = userService.findAll().stream()
-                .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
-                .findFirst()
-                .orElse(null);
-        if (current == null) return null;
-        if (roles.contains("ROLE_" + UserRole.AGENT.name())) {
-            Integer employeeId = employeeService.findAll().stream()
-                    .filter(e -> e.userId() != null && e.userId().equals(current.id()))
-                    .map(com.novegruppo.immobiliarisplus.dtos.EmployeeDTO::id)
-                    .findFirst().orElse(null);
-            if (employeeId != null && employeeId.equals(dto.employeeId())) {
-                return dto;
-            }
-            return null;
-        }
-        if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
-            Integer ownerId = current.ownerId();
-            if (ownerId != null) {
-                PropertyDTO property = propertyService.findById(dto.propertyId());
-                if (ownerId.equals(property.ownerId())) {
-                    return dto;
-                }
-            }
-            return null;
-        }
-        return null;
-    }
-
-    @PostMapping
-    public ResponseEntity<PropertyValuationDTO> create(@RequestBody PropertyValuationDTO dto) {
-        if (!SecurityUtil.hasRole(UserRole.ADMIN.name())) {
-            return ResponseEntity.status(403).build();
-        }
-        PropertyValuationDTO created = propertyValuationService.create(dto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.id()).toUri();
-        return ResponseEntity.created(location).body(created);
-    }
-
-    @PutMapping("/{id}")
-    public PropertyValuationDTO update(@PathVariable Integer id, @RequestBody PropertyValuationDTO dto) {
-        if (SecurityUtil.hasRole(UserRole.ADMIN.name())) {
-            return propertyValuationService.update(id, dto);
-        }
-        if (SecurityUtil.hasRole(UserRole.AGENT.name())) {
-            PropertyValuationDTO existing = propertyValuationService.findById(id);
-            String email = SecurityUtil.getUsername();
-            if (email != null) {
-                UserDTO current = userService.findAll().stream().filter(u -> u.email() != null && u.email().equalsIgnoreCase(email)).findFirst().orElse(null);
-                if (current != null) {
-                    Integer employeeId = employeeService.findAll().stream()
-                            .filter(e -> e.userId() != null && e.userId().equals(current.id()))
-                            .map(com.novegruppo.immobiliarisplus.dtos.EmployeeDTO::id)
-                            .findFirst().orElse(null);
-                    if (employeeId != null && employeeId.equals(existing.employeeId())) {
-                        return propertyValuationService.update(id, dto);
-                    }
-                }
-            }
-        }
-        return null;
+    public ResponseEntity<PropertyValuationDTO> get(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        if (!SecurityUtil.hasRole(UserRole.ADMIN.name())) {
-            return ResponseEntity.status(403).build();
-        }
-        propertyValuationService.delete(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<?> calculateValuation(@RequestBody PropertyValuationRequestDTO request) {
-        try {
-            PropertyValuationResultDTO result = propertyValuationService.calculateAndSave(request);
-            return ResponseEntity.ok(result);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<PropertyValuationResultDTO> calculate(@RequestBody PropertyValuationRequestDTO request) {
+        PropertyValuationResultDTO result = service.calculateAndSave(request);
+        return ResponseEntity.ok(result);
     }
+
+    // Endpoint dashboard: LISTA minimale conforme al frontend (sostituisce la precedente versione completa)
+    @GetMapping("/dashboard")
+    public ResponseEntity<List<Map<String, Object>>> listForDashboard() {
+        List<PropertyValuationDTO> all = service.findAll();
+        List<PropertyValuationDTO> filtered;
+        if (SecurityUtil.hasRole("ADMIN")) {
+            filtered = all;
+        } else if (SecurityUtil.hasRole("AGENT")) {
+            String username = SecurityUtil.getUsername();
+            if (username == null) {
+                filtered = List.of();
+            } else {
+                UserDTO user = userService.findAll().stream()
+                        .filter(u -> u.email() != null && u.email().equalsIgnoreCase(username))
+                        .findFirst().orElse(null);
+                if (user == null) {
+                    filtered = List.of();
+                } else {
+                    Integer employeeId = employeeService.findAll().stream()
+                            .filter(e -> e.userId() != null && e.userId().equals(user.id()))
+                            .map(EmployeeDTO::id)
+                            .findFirst().orElse(null);
+                    if (employeeId == null) {
+                        filtered = List.of();
+                    } else {
+                        filtered = all.stream().filter(v -> employeeId.equals(v.employeeId())).toList();
+                    }
+                }
+            }
+        } else {
+            filtered = List.of();
+        }
+
+        List<Map<String, Object>> payload = filtered.stream().map(v -> {
+            Map<String, Object> out = new HashMap<>();
+            out.put("id", v.id());
+
+            Property property = v.propertyId() != null ? propertyRepository.findById(v.propertyId()).orElse(null) : null;
+            PropertyAddress address = v.propertyId() != null ? propertyAddressRepository.findById(v.propertyId()).orElse(null) : null;
+
+            Map<String, Object> propertyMap = new HashMap<>();
+            propertyMap.put("address", address != null ? address.getStreet() + ", " + address.getCity() : null);
+            propertyMap.put("sizeMq", property != null ? property.getSizeMq() : null);
+            out.put("property", propertyMap);
+
+            String assignedAgentName = null;
+            if (v.employeeId() != null) {
+                try {
+                    EmployeeDTO employee = employeeService.findById(v.employeeId());
+                    assignedAgentName = employee.name() + " " + employee.surname();
+                } catch (Exception ignored) {
+                }
+            }
+            out.put("assignedAgent", assignedAgentName);
+            out.put("valuationFinal", v.estimatedPriceMax());
+            out.put("status", v.status() != null ? v.status() : ValuationStatus.NEW);
+            return out;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(payload);
+    }
+
+    // Dettaglio completo valutazione by id
+    @GetMapping("/dashboard/{id}")
+    public ResponseEntity<Map<String, Object>> getDashboardDetail(@PathVariable Integer id) {
+        PropertyValuationDTO v = service.findById(id);
+        if (SecurityUtil.hasRole("AGENT") && v.employeeId() == null) {
+            return ResponseEntity.status(403).build();
+        }
+        Map<String, Object> out = new HashMap<>();
+        out.put("id", v.id());
+        Property property = v.propertyId() != null ? propertyRepository.findById(v.propertyId()).orElse(null) : null;
+        PropertyAddress address = v.propertyId() != null ? propertyAddressRepository.findById(v.propertyId()).orElse(null) : null;
+        Owner owner = property != null ? property.getOwner() : null;
+        Map<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("address", address != null ? address.getStreet() + ", " + address.getCity() : null);
+        propertyMap.put("propertyType", property != null ? property.getType() : null);
+        propertyMap.put("condition", property != null ? property.getStatus() : null);
+        propertyMap.put("sizeMq", property != null ? property.getSizeMq() : null);
+        out.put("property", propertyMap);
+        Map<String, Object> details = new HashMap<>();
+        if (property != null) {
+            details.put("rooms", property.getRooms());
+            details.put("bathrooms", property.getBathrooms());
+            details.put("floor", property.getFloors());
+        }
+        out.put("details", details);
+        Map<String, Object> contact = new HashMap<>();
+        if (owner != null) {
+            contact.put("name", owner.getName());
+            contact.put("surname", owner.getSurname());
+            contact.put("email", owner.getEmail());
+            contact.put("phone", owner.getPhone());
+        }
+        out.put("contact", contact);
+        out.put("valuationRange", (v.estimatedPriceMin() != null && v.estimatedPriceMax() != null) ? String.format("%.0f - %.0f €", v.estimatedPriceMin(), v.estimatedPriceMax()) : null);
+        out.put("valuationFinal", v.estimatedPriceMax());
+        out.put("status", v.status() != null ? v.status() : ValuationStatus.NEW);
+        out.put("notes", v.notes());
+        String agentName = null;
+        if (v.employeeId() != null) {
+            try {
+                EmployeeDTO e = employeeService.findById(v.employeeId());
+                agentName = e.name() + " " + e.surname();
+            } catch (Exception ignored) {
+            }
+        }
+        out.put("assignedAgent", agentName);
+        out.put("documents", new ArrayList<>());
+        return ResponseEntity.ok(out);
+    }
+
+    // Update valutazione (ADMIN + AGENT se assegnata) - aggiorna uno o più campi
+    @PatchMapping(value = "/dashboard/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateValuation(@PathVariable Integer id, @RequestBody(required = false) Map<String, Object> updates) {
+        if (updates == null || updates.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Request body JSON mancante o vuoto"));
+        }
+
+        PropertyValuationDTO current = service.findById(id);
+        // Permessi
+        if (!SecurityUtil.hasRole("ADMIN")) {
+            if (!(SecurityUtil.hasRole("AGENT") && current.employeeId() != null)) {
+                return ResponseEntity.status(403).body(Map.of("error", "Non autorizzato"));
+            }
+        }
+
+        try {
+            // Aggiorna i campi forniti
+            if (updates.containsKey("status")) {
+                Object raw = updates.get("status");
+                if (raw == null) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'status' nullo"));
+                }
+                String statusStr = String.valueOf(raw).trim();
+                if (statusStr.isEmpty()) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'status' vuoto"));
+                }
+                try {
+                    ValuationStatus status = ValuationStatus.valueOf(statusStr.toUpperCase());
+                    current = service.updateStatus(id, status);
+                } catch (IllegalArgumentException ex) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                            "error", "Valore 'status' non valido",
+                            "allowed", List.of("NEW","IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED")
+                    ));
+                }
+            }
+
+            if (updates.containsKey("notes")) {
+                Object raw = updates.get("notes");
+                String notes = raw != null ? String.valueOf(raw) : null;
+                current = service.updateNotes(id, notes);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Errore durante l'aggiornamento",
+                    "message", e.getMessage()
+            ));
+        }
+
+        return ResponseEntity.ok(current);
+    }
+
+    // Assegna agente (solo ADMIN)
+    @PutMapping("/dashboard/{id}/assign/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PropertyValuationDTO> assignAgent(@PathVariable Integer id, @PathVariable Integer employeeId) {
+        return ResponseEntity.ok(service.assignEmployee(id, employeeId));
+    }
+
+    // Delete valutazione (solo ADMIN)
+    @DeleteMapping("/dashboard/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteDashboard(@PathVariable Integer id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

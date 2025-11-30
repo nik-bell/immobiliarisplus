@@ -9,7 +9,9 @@ public record PropertyDTO(
         @NotNull(message = "L'ID non può essere nullo.")
         Integer id,
 
-        // Cognome del proprietario esposto in lettura al posto dell'ownerId
+        Integer ownerId,
+
+        // Cognome del proprietario esposto in lettura
         String ownerSurname,
 
         PropertyStatus status,
@@ -53,9 +55,4 @@ public record PropertyDTO(
         LocalDateTime createdAt,
 
         LocalDateTime updatedAt
-) {
-
-    public Object ownerId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ownerId'");
-    }}
+) {}

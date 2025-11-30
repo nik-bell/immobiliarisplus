@@ -13,10 +13,7 @@ import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyContactDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
 import com.novegruppo.immobiliarisplus.entities.*;
-import com.novegruppo.immobiliarisplus.enums.ContactPreference;
-import com.novegruppo.immobiliarisplus.enums.Floor;
-import com.novegruppo.immobiliarisplus.enums.HeatingType;
-import com.novegruppo.immobiliarisplus.enums.PropertyType;
+import com.novegruppo.immobiliarisplus.enums.*;
 import com.novegruppo.immobiliarisplus.repositories.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -58,13 +55,15 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
     private final PropertyValuationRepository propertyValuationRepository;
     private final PricePerMqRepository pricePerMqRepository;
     private final AutoMailService autoMailService;
+    private final PropertyAddressRepository propertyAddressRepository;
 
     public PropertyValuationServiceImpl(PropertyValuationRepository propertyValuationRepository,
                                         OwnerRepository ownerRepository,
                                         PropertyRepository propertyRepository,
                                         PropertyValuationMapper propertyValuationMapper,
                                         PricePerMqRepository pricePerMqRepository,
-                                        AutoMailService autoMailService) {
+                                        AutoMailService autoMailService,
+                                        PropertyAddressRepository propertyAddressRepository) {
 
         this.propertyValuationMapper = propertyValuationMapper;
         this.ownerRepository = ownerRepository;
@@ -72,6 +71,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         this.propertyValuationRepository = propertyValuationRepository;
         this.pricePerMqRepository = pricePerMqRepository;
         this.autoMailService = autoMailService;
+        this.propertyAddressRepository = propertyAddressRepository;
     }
 
     @Transactional(readOnly = true)
@@ -141,12 +141,15 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         // 3. Crea Property
         Property property = new Property();
         property.setOwner(owner);
+        property.setStatus(com.novegruppo.immobiliarisplus.enums.PropertyStatus.valueOf(propertyInfo.condition()));
         property.setType(PropertyType.valueOf(propertyInfo.propertyType()));
         property.setSizeMq(propertyInfo.surfaceM2());
         property.setRooms(propertyDetails.rooms());
         property.setBathrooms(propertyDetails.bathrooms());
         property.setFloors(propertyDetails.floor());
-        property.setHeatingType(HeatingType.AUTONOMOUS); // Default, non presente nel DTO frontend
+        property.setHeatingType(HeatingType.AUTONOMOUS);
+        property.setEnergyClass(EnergyClass.G); // Default
+        property.setDescription("Immobile inserito tramite valutazione automatica"); // Default
         property.setHasBalcony(Boolean.TRUE.equals(propertyDetails.features().terrazzo()));
         property.setHasElevator(Boolean.TRUE.equals(propertyDetails.features().ascensore()));
         property.setHasGarden(Boolean.TRUE.equals(propertyDetails.features().giardino()));
@@ -161,7 +164,8 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         address.setStreet(propertyInfo.address());
         address.setCity(propertyInfo.city());
         address.setCap(propertyInfo.zipCode());
-        property = propertyRepository.save(property);
+        address.setProvince(deriveProvinceFromCity(propertyInfo.city())); // Campo obbligatorio
+        propertyAddressRepository.save(address);
 
         // 5. Calcola valutazione
         BigDecimal basePerMq = resolveBasePrice(propertyInfo.zipCode());
@@ -204,6 +208,8 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         valuation.setEstimatedPriceMin(minValue.doubleValue());
         valuation.setEstimatedPriceMax(maxValue.doubleValue());
         valuation.setPricePerMq(basePerMq.doubleValue());
+        valuation.setStatus(ValuationStatus.NEW);
+        valuation.setNotes(null);
         valuation.setCreatedAt(LocalDateTime.now());
         propertyValuationRepository.save(valuation);
 
@@ -212,7 +218,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
             String subject = "Riepilogo valutazione immobile";
             String html = String.format("""
                 <h3>Gentile %s %s,</h3>
-                <p>Ecco il riepilogo della valutazione del tuo immobile:</p>
+                <p>Ecco il riepilogo della valutazione del suo immobile:</p>
                 <ul>
                   <li><strong>Indirizzo:</strong> %s, %s %s</li>
                   <li><strong>Tipologia:</strong> %s</li>
@@ -256,4 +262,53 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         }
         return BigDecimal.ZERO;
     }
+
+    private String deriveProvinceFromCity(String city) {
+        if (city == null || city.isBlank()) {
+            return "N/A";
+        }
+
+        return switch (city.toLowerCase()) {
+            case "asti" -> "AT";
+            case "alessandria" -> "AL";
+            case "torino" -> "TO";
+            case "cuneo" -> "CN";
+
+            default -> city.substring(0, Math.min(2, city.length())).toUpperCase();
+        };
+    }
+
+    @Override
+    public PropertyValuationDTO assignEmployee(Integer valuationId, Integer employeeId) {
+        PropertyValuation entity = propertyValuationRepository.findById(valuationId)
+                .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));
+        if (employeeId != null) {
+            Employee employee = new Employee();
+            employee.setId(employeeId);
+            entity.setEmployee(employee);
+        } else {
+            entity.setEmployee(null);
+        }
+        propertyValuationRepository.save(entity);
+        return propertyValuationMapper.toDTO(entity);
+    }
+
+    @Override
+    public PropertyValuationDTO updateStatus(Integer valuationId, ValuationStatus status) {
+        PropertyValuation entity = propertyValuationRepository.findById(valuationId)
+                .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));
+        entity.setStatus(status);
+        propertyValuationRepository.save(entity);
+        return propertyValuationMapper.toDTO(entity);
+    }
+
+    @Override
+    public PropertyValuationDTO updateNotes(Integer valuationId, String notes) {
+        PropertyValuation entity = propertyValuationRepository.findById(valuationId)
+                .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));
+        entity.setNotes(notes);
+        propertyValuationRepository.save(entity);
+        return propertyValuationMapper.toDTO(entity);
+    }
 }
+

@@ -11,6 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface PropertyMapper {
 
+    @Mapping(source = "owner.id", target = "ownerId")
     @Mapping(source = "owner.surname", target = "ownerSurname")
     @Mapping(source = "sizeMq", target = "sizeMq")
     @Mapping(source = "hasBalcony", target = "terrace")
