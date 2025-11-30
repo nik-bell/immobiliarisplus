@@ -1,4 +1,4 @@
-INSERT INTO property (owner_id, status, type, size_mq, rooms, bathrooms, floor, heating_type, energy_class, description, terrace, elevator, box_auto, garden, basement, created_at, updated_at) VALUES
+INSERT INTO property (owner_id, status, type, size_mq, rooms, bathrooms, floors, heating_type, energy_class, description, terrace, elevator, box_auto, garden, basement, created_at, updated_at) VALUES
     (1, 'NEW', 'APARTMENT', 85, 3, 2, 1, 'AUTONOMOUS', 'B', 'Luminoso appartamento in centro.', TRUE, TRUE, TRUE, FALSE, FALSE, '2025-03-15 12:00:00', '2025-03-15 12:00:00'),
     (2, 'GOOD_CONDITION', 'HOUSE', 120, 4, 3, 0, 'CENTRAL', 'C', 'Villetta indipendente con giardino.', TRUE, FALSE, TRUE, TRUE, TRUE, '2025-03-15 12:05:00', '2025-03-15 12:05:00'),
     (3, 'TO_RENOVATE', 'HOUSE', 250, 6, 4, 2, 'CENTRAL', 'D', 'Villa da ristrutturare in zona tranquilla.', FALSE, TRUE, TRUE, TRUE, TRUE, '2025-03-15 12:10:00', '2025-03-15 12:10:00'),

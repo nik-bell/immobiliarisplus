@@ -873,7 +873,7 @@ Il database è strutturato con le seguenti tabelle principali:
    - Relazione: One-to-One con users
 
 4. **properties** - Immobili
-   - Campi: id, owner_id (FK), title, description, type, status, price, surface, rooms, bathrooms, floor, created_at
+   - Campi: id, owner_id (FK), title, description, type, status, price, surface, rooms, bathrooms, floors, created_at
    - Relazione: Many-to-One con owners
 
 5. **property_addresses** - Indirizzi immobili

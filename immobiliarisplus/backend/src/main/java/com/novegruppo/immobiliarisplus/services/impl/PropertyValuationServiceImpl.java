@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationRequestDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationResultDTO;
-import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyContactDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyInfoDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyDetailsDTO;
@@ -146,7 +145,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         property.setSizeMq(propertyInfo.surfaceM2());
         property.setRooms(propertyDetails.rooms());
         property.setBathrooms(propertyDetails.bathrooms());
-        property.setFloor(Floor.valueOf(propertyDetails.floor()));
+        property.setFloors(propertyDetails.floor());
         property.setHeatingType(HeatingType.AUTONOMOUS); // Default, non presente nel DTO frontend
         property.setHasBalcony(Boolean.TRUE.equals(propertyDetails.features().terrazzo()));
         property.setHasElevator(Boolean.TRUE.equals(propertyDetails.features().ascensore()));
