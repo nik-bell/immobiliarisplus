@@ -4,9 +4,9 @@ import Card from "../components/Card";
 import IconMoving from "../assets/icone/moving/moving_verde/moving_verde.svg";
 import IconSchedule from "../assets/icone/schedule_orologio/schedule_giallo/schedule_giallo.svg";
 import IconCheckContract from "../assets/icone/contrattocheck/contrattocheck_verde/contrattocheck_verde.svg";
-import IconHome from "../assets/icone/home/Home_nero/Home_nero.svg";
+import IconHome from "../assets/icone/Home/Home_blu/Home_blu.png";
 import IconStar from "../assets/icone/star/star_gialla/star_gialla.svg";
-import IconShield from "../assets/icone/shield/shield_nero/shield_nero.svg";
+import IconShield from "../assets/icone/shield/shield_blu/shield_blu.png";
 
 const featuresData = [
     { 
@@ -44,10 +44,10 @@ const featuresData = [
 //  Colore bordo superiore per ogni card
 const topBorderColors = [
     "border-t-4 border-[#2CC6A3]", // verde
-    "border-t-4 border-black",      // nero
+    "border-t-4 border-indigo-900",      // blu
     "border-t-4 border-[#F4C542]",  // giallo
     "border-t-4 border-[#2CC6A3]",  // verde
-    "border-t-4 border-black",      // nero
+    "border-t-4 border-indigo-900",      // blu
     "border-t-4 border-[#F4C542]"   // giallo
 ];
 
