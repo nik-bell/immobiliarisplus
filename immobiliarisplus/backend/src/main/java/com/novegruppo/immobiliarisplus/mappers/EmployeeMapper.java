@@ -2,7 +2,7 @@ package com.novegruppo.immobiliarisplus.mappers;
 
 
 import com.novegruppo.immobiliarisplus.entities.Employee;
-import com.novegruppo.immobiliarisplus.entities.EmployeeDTO;
+import com.novegruppo.immobiliarisplus.dtos.EmployeeDTO;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

@@ -24,20 +24,14 @@ const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = f
             </div>
 
             <div className="mt-auto">
-                {isButton ? (
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-full inline-block transition duration-150"
-                    >
-                        {value}
-                    </a>
-                ) : (
-                    <p className={`${valueBaseClasses} ${valueColor}`}>
-                        {value}
-                    </p>
-                )}
+                <a
+                    href={link}
+                    target={link.startsWith('http') ? "_blank" : "_self"}
+                    rel={link.startsWith('http') ? "noopener noreferrer" : ""}
+                    className={`${baseButton} ${buttoColor}`}
+                >
+                    {value}
+                </a>
             </div>
         </Card>
     );

@@ -11,7 +11,7 @@ public record PropertyCreateDTO(
         String description,
         EnergyClass energyClass,
         HeatingType heatingType,
-        Floor floor,
+        Integer floor,
         Integer bathrooms,
         Integer rooms,
         Integer sizeMq,

@@ -1,16 +1,17 @@
 import Hero from "../components/Hero";
-
-import HeroImage from "../assets/assistenza-immobiliaris.jpeg"
-
-
+import HeroImageJpg from "../assets/assistenza/assistenza-immobiliaris.jpeg";
+import HeroImageWebp from "../assets/assistenza/assistenza-immobiliaris.webp";
+import HeroImageAvif from "../assets/assistenza/assistenza-immobiliaris.avif";
 
 
 export default function HeroAssistenza() {
     return (
-        <div className="min-h-[60vh]">
+        <div className="min-h-[70vh]">
             <Hero
-                backgroundImage={HeroImage}
-                className="min-h-[60vh] lg:min-h-[60vh]"
+                backgroundImage={HeroImageJpg}
+                backgroundImageWebp={HeroImageWebp}
+                backgroundImageAvif={HeroImageAvif}
+                className="min-h-[70vh] lg:min-h-[70vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
                     Assistenza

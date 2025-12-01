@@ -25,7 +25,7 @@ public class Property {
     private PropertyType type;
 
     @Column(name="size_mq", nullable = false)
-    private int size;
+    private int sizeMq;
 
     @Column(name="rooms", nullable = false)
     private int rooms;
@@ -33,8 +33,8 @@ public class Property {
     @Column(name="bathrooms", nullable = false)
     private int bathrooms;
 
-    @Enumerated(EnumType.STRING)
-    private Floor floor;
+    @Column(name="floors", nullable = false)
+    private int floors;
 
     @Enumerated(EnumType.STRING)
     private HeatingType heatingType;
@@ -102,12 +102,12 @@ public class Property {
         this.type = type;
     }
 
-    public int getSize() {
-        return size;
+    public int getSizeMq() {
+        return sizeMq;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setSizeMq(int sizeMq) {
+        this.sizeMq = sizeMq;
     }
 
     public int getRooms() {
@@ -126,13 +126,11 @@ public class Property {
         this.bathrooms = bathrooms;
     }
 
-    public Floor getFloor() {
-        return floor;
+    public int getFloors() {
+        return floors;
     }
 
-    public void setFloor(Floor floor) {
-        this.floor = floor;
-    }
+    public void setFloors(int floors) { this.floors = floors;}
 
     public HeatingType getHeatingType() {
         return heatingType;

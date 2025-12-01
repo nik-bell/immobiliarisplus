@@ -1,9 +1,22 @@
-const BulletPoint = ({ number, title, description, colorClass, className = '' }) => {
+const BulletPoint = ({ number, title, description, colorClass, className = '', value = '' }) => {
+  let classDiv = '';
+  let h3Text = '';
+  let pText = '';
+  if (value == 'homepage') {
+    classDiv = 'items-center';
+    h3Text = 'text-center';
+    pText = 'text-center';
+  }
+  else {
+    classDiv = 'items-start';
+    h3Text = 'items-start';
+    pText = 'text-left';
+  }
   return (
     <div className={`
-    ${className}        
-    flex                  
-    items-start           
+    ${className} 
+    ${classDiv}       
+    flex           
     space-x-4             
     py-3                  
 `}>
@@ -13,11 +26,11 @@ const BulletPoint = ({ number, title, description, colorClass, className = '' })
       >
         {number}
       </div>
-      <div>
+      <div className={`${h3Text} flex flex-col`}>
         <h3 className="text-lg font-semibold text-gray-800">
           {title}
         </h3>
-        <p className="text-base text-gray-600">
+        <p className={`${pText} text-base text-gray-600`}>
           {description}
         </p>
       </div>

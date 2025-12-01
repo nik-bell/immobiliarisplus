@@ -40,6 +40,15 @@ const NostriValori = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8">
                 I nostri valori
             </h2>
+            <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mt-2 mb-10">
+                In un mercato complesso, fondiamo il nostro lavoro su
+                <strong className="font-semibold text-indigo-900"> trasparenza assoluta</strong> ed
+                <strong className="font-semibold text-indigo-900"> etica professionale</strong>.
+                Per noi, garantirti zero costi occulti e una gestione della
+                <strong className="font-semibold text-indigo-900"> compravendita immobiliare</strong> onesta
+                è la priorità. Costruiamo un rapporto di <strong className="font-semibold text-indigo-900">fiducia </strong>
+                solido, accompagnandoti in ogni fase con chiarezza e competenza.
+            </p>
             <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 {valoriData.map((valore, i) => (
                     <Card key={i} className={cardWrapperClasses}>

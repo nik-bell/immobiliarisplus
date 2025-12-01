@@ -65,10 +65,12 @@ const PercheSceglierci = () => {
     return (
         <>
             <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mt-8">
-                Perché scegliere ImmobiliarisPLUS
+                Perché scegliere ImmobiliarisPlus
             </h2>
-            <p className="text-gray-600 text-center max-w-2xl mx-auto mt-2">
-                Un approccio innovativo per vendere casa senza stress
+            <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mt-2 mb-10">
+                Scegliere Immobiliaris Plus significa scegliere un metodo di
+                <strong className="font-semibold text-teal-700"> vendita immobiliare</strong> garantito che supera l'approccio tradizionale...
+                <strong className="font-semibold text-teal-700"> prezzo finale ottimizzato</strong>.
             </p>
 
             <section className="py-12">
