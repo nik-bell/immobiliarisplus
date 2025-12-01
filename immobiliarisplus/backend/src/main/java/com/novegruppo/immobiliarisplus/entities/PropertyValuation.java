@@ -30,7 +30,7 @@ public class PropertyValuation {
     private Boolean exclusiveContract = false;
 
     @Enumerated(EnumType.STRING)
-    private ValuationStatus status;
+    private ValuationStatus status = ValuationStatus.NOT_ASSIGNED;
 
     @Column(name = "notes", length = 1000)
     private String notes;
