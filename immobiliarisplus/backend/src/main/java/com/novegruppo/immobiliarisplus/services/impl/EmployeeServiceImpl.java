@@ -51,6 +51,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new IllegalArgumentException("userId è obbligatorio");
         }
 
+        // Controlla se esiste già un employee associato a questo user_id
+        if (employeeRepository.existsByUserId(dto.userId())) {
+            throw new IllegalArgumentException("Esiste già un employee associato all'utente con id=" + dto.userId());
+        }
+
         User user = userRepository.findById(dto.userId())
                 .orElseThrow(() -> new ResourceNotFoundException("User non trovato con id=" + dto.userId()));
 
@@ -66,6 +71,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Employee non trovato con id=" + id));
 
         if (dto.userId() != null && (entity.getUser() == null || !dto.userId().equals(entity.getUser().getId()))) {
+            // Controlla se il nuovo user_id è già associato ad un altro employee
+            employeeRepository.findByUserId(dto.userId()).ifPresent(existingEmployee -> {
+                if (!existingEmployee.getId().equals(id)) {
+                    throw new IllegalArgumentException("Esiste già un employee associato all'utente con id=" + dto.userId());
+                }
+            });
+
             User user = userRepository.findById(dto.userId())
                     .orElseThrow(() -> new ResourceNotFoundException("User non trovato con id=" + dto.userId()));
             entity.setUser(user);

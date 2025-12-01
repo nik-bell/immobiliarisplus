@@ -1,5 +1,6 @@
 package com.novegruppo.immobiliarisplus.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.novegruppo.immobiliarisplus.enums.UserRole;
 
 import jakarta.persistence.*;
@@ -15,9 +16,11 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @JsonIgnore
     private Owner owner;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Employee employee;
 
 
