@@ -51,19 +51,19 @@ function NotFoundPage() {
         <Link
           to='/contattaci'
           className="px-6 py-3
-                  bg-teal-500 text-white
+                  bg-teal-700 text-white
                   font-semibold text-base
                   rounded-lg
                   shadow-md
-                  hover:bg-teal-400 hover:shadow-lg
+                  hover:bg-teal-500 hover:shadow-lg
                   transition duration-150 ease-in-out
-                  focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50"
+                  focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
         >
           Contattaci Subito
         </Link>
       </div>
 
-      <p className="text-sm text-gray-400 pt-8">Se hai cliccato un link rotto, segnalacelo!</p>
+      <p className="text-sm text-gray-400 py-8">Se hai cliccato un link rotto, segnalacelo!</p>
     </div>
   );
 }

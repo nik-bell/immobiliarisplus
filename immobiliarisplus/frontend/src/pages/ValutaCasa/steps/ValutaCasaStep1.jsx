@@ -111,8 +111,9 @@ export default function ValutaCasaStep1() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Tipologia immobile *</label>
+        <label htmlFor="property-type" className="block text-sm font-medium mb-1">Tipologia immobile *</label>
         <select
+          id="property-type"
           className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           value={p.propertyType}
           onChange={(e) =>
@@ -134,8 +135,9 @@ export default function ValutaCasaStep1() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Condizioni *</label>
+        <label htmlFor="property-condition" className="block text-sm font-medium mb-1">Condizioni *</label>
         <select
+          id="property-condition"
           className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           value={p.condition}
           onChange={(e) =>
