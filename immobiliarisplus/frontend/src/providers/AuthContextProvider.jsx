@@ -3,6 +3,7 @@ import { AuthContext } from "../store/AuthContext";
 import { clearAuthToken } from "../api/api";
 
 export const AuthContextProvider = ({ children }) => {
+  // Do not persist auth data to localStorage for security; keep in-memory only
   const [user, setUser] = useState(null);
 
   const login = (userData) => {

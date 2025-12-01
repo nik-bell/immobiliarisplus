@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import CasaContext from "../store/CasaContext";
-import dummyCaseData from "../data/dummyCaseData";
+import { getValuationsDashboard, getValuationDetail } from "../api/api";
+import { useAuth } from "../store/AuthContext";
+import { mapListItem, mapDetailItem, mapStatus, mapValuationStatusLabel, mapPropertyType, mapPropertyCondition } from "../utils/mappers";
 
 export default function CasaContextProvider({ children }) {
-  // dati iniziali (dummy)
-  const [allCases, setAllCases] = useState(dummyCaseData);
+  // dati iniziali (caricati dall'API)
+  const [allCases, setAllCases] = useState([]);
 
   // stato filtro (tutti, non_assegnati, in_corso, attesa_cliente, terminati)
   const [filter, setFilter] = useState("tutti");
@@ -39,6 +41,30 @@ export default function CasaContextProvider({ children }) {
     return allCases.filter((c) => c.status === filter);
   }, [allCases, filter]);
 
+  // --- fetch dashboard list on mount ---
+  const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      if (!isLoggedIn) return;
+      const list = await getValuationsDashboard();
+      if (!mounted) return;
+      if (!Array.isArray(list)) return; // keep empty
+
+      const mapped = list.map((it) => mapListItem(it));
+      setAllCases(mapped);
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [isLoggedIn]);
+
+  // use mapping helpers from `utils/mappers` (imported above)
+
+  // mapListItem and mapDetailItem moved to utils/mappers
+
   // applica sorting ai dati filtrati
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
@@ -67,11 +93,26 @@ export default function CasaContextProvider({ children }) {
     return copy;
   }, [filtered, sortKey, sortDir]);
 
-  // apri la modale e seleziona casa
-  const openCasaModal = (casa) => {
-    setSelectedCasa(casa);
+  // apri la modale e seleziona casa: se disponibile, carica i dettagli dall'API
+  const openCasaModal = useCallback(async (casa) => {
+    if (!casa || !casa.id) {
+      setSelectedCasa(casa);
+      setModalOpen(true);
+      return;
+    }
+
+    try {
+      const detail = await getValuationDetail(casa.id);
+      if (detail) {
+        setSelectedCasa(mapDetailItem(detail));
+      } else {
+        setSelectedCasa(casa);
+      }
+    } catch (e) {
+      setSelectedCasa(casa);
+    }
     setModalOpen(true);
-  };
+  }, []);
 
   // chiudi modale e deseleziona
   const closeCasaModal = () => {
@@ -79,21 +120,37 @@ export default function CasaContextProvider({ children }) {
     setModalOpen(false);
   };
 
+  // support open from global event (used by mobile cards)
+  useEffect(() => {
+    function onOpen(e) {
+      const id = e?.detail?.casaId;
+      if (id) openCasaModal({ id });
+    }
+    window.addEventListener("openCasaModal", onOpen);
+    return () => window.removeEventListener("openCasaModal", onOpen);
+  }, [openCasaModal]);
+
   // toggle sort: se clicchi stessa chiave inverte direzione
-  const toggleSort = (key) => {
+  const toggleSort = useCallback((key) => {
     if (sortKey === key) {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     } else {
       setSortKey(key);
       setSortDir("asc");
     }
-  };
+  }, [sortKey]);
 
   // esporta tutto nel context
   const value = {
     cases: sorted, // lista già filtrata e ordinata
     rawCases: allCases, // lista originale se serve
     setAllCases,
+    refreshCases: async () => {
+      if (!isLoggedIn) return;
+      const list = await getValuationsDashboard();
+      if (!Array.isArray(list)) return;
+      setAllCases(list.map((it) => mapListItem(it)));
+    },
     filter,
     setFilter,
     sortKey,

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../store/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { login as apiLogin, setAuthToken } from "../api/api";
+import { performLogin, getValuationsDashboard } from "../api/api";
+
+// helper for prefetching the AreaAgenti chunk
+const AreaAgentiImport = () => import("../pages/AreaAgenti");
 
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
@@ -20,9 +23,8 @@ export default function LoginModal({ isOpen, onClose }) {
       setLoading(true);
       setError(null);
       try {
-        const resp = await apiLogin({ email, password });
+        const resp = await performLogin({ email, password });
         if (resp && resp.token) {
-          setAuthToken(resp.token);
 
           // determine role coming from API (could be resp.role or resp.user.role)
           const apiRole = (resp.role || resp.user?.role || role || "USER").toString();
@@ -34,11 +36,15 @@ export default function LoginModal({ isOpen, onClose }) {
           };
           const mappedType = mapRole(apiRole);
 
-          const userData = resp.user
-            ? { ...resp.user, type: mappedType }
-            : { name: email, type: mappedType };
-
+          const userData = resp.user ? { ...resp.user, type: mappedType } : { name: email, type: mappedType };
           login(userData);
+          // prefetch AreaAgenti chunk and warm dashboard data to reduce perceived load
+          try {
+            AreaAgentiImport();
+            getValuationsDashboard();
+          } catch (e) {
+            // ignore prefetch errors
+          }
           console.log("Login avvenuto con successo:", { name: userData.name, type: userData.type });
           if (userData.type === "agente" || userData.type === "admin") {
             navigate("/area-agenti");
