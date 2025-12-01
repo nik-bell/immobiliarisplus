@@ -42,14 +42,13 @@ public class PropertyController {
 
     @GetMapping
     public List<PropertyDTO> list() {
-        List<PropertyDTO> all = propertyService.findAll();
         if (!SecurityUtil.isAuthenticated()) {
             return List.of();
         }
         Set<String> roles = SecurityUtil.getRoles();
         // ADMIN e AGENT vedono tutte le proprietà
         if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
-            return all;
+            return propertyService.findAll();
         }
         // OWNER vede solo le proprie proprietà
         if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
@@ -60,7 +59,7 @@ public class PropertyController {
                         .findFirst().orElse(null);
                 if (current != null && current.ownerId() != null) {
                     Integer ownerId = current.ownerId();
-                    return all.stream().filter(p -> ownerId.equals(p.ownerId())).toList();
+                    return propertyService.findAll().stream().filter(p -> ownerId.equals(p.ownerId())).toList();
                 }
             }
         }
