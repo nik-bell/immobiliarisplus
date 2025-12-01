@@ -35,7 +35,7 @@ const ComeFunzionaSection = () => {
                 Massimizza il <strong className="font-semibold text-teal-700">valore del tuo immobile</strong> prima di metterlo sul mercato.
                 Con il nostro servizio <strong className="font-semibold text-teal-700">Migliora Casa</strong>, trasformiamo la tua proprietà con interventi mirati
                 di <strong className="font-semibold text-teal-700">home staging</strong> e riqualificazione, per aumentare il
-                <strong className="font-semibold text-teal-700">prezzo di vendita</strong> e ridurre i tempi di trattativa.
+                <strong className="font-semibold text-teal-700"> prezzo di vendita</strong> e ridurre i tempi di trattativa.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">

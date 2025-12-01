@@ -41,7 +41,7 @@ const NostriValori = () => {
                 <strong className="font-semibold text-indigo-900"> etica professionale</strong>.
                 Per noi, garantirti zero costi occulti e una gestione della
                 <strong className="font-semibold text-indigo-900"> compravendita immobiliare</strong> onesta
-                è la priorità. Costruiamo un rapporto di <strong className="font-semibold text-indigo-900">fiducia</strong>
+                è la priorità. Costruiamo un rapporto di <strong className="font-semibold text-indigo-900">fiducia </strong>
                 solido, accompagnandoti in ogni fase con chiarezza e competenza.
             </p>
             <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
