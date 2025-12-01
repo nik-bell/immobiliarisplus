@@ -1,7 +1,7 @@
 import Card from "../components/Card";
 
 import IconShield2 from "../assets/icone/shield/shield_verde/shield_verde.png";
-import IconTarget from "../assets/icone/target/target_verde/target_verde.png";
+import IconTarget from "../assets/icone/target-icon/target_verde/target_verde.png";
 import IconMoving from "../assets/icone/moving/moving_verde/moving_verde.svg";
 import IconPerson from "../assets/icone/Home/Home_verde/Home_verde.png";
 
