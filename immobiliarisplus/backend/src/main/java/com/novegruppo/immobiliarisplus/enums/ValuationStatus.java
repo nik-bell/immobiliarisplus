@@ -5,5 +5,6 @@ public enum ValuationStatus {
     IN_PROGRESS,
     AWAITING_CLIENT_RESPONSE,
     CONFIRMED,
-    REJECTED
+    REJECTED,
+    NOT_ASSIGNED ;
 }

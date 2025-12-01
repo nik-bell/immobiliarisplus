@@ -121,7 +121,7 @@ public class PropertyValuationController {
             }
             out.put("assignedAgent", assignedAgentName);
             out.put("valuationFinal", v.estimatedPriceMax());
-            out.put("status", v.status() != null ? v.status() : ValuationStatus.NEW);
+            out.put("status", v.status() != null ? v.status() : ValuationStatus.NOT_ASSIGNED);
             return out;
         }).collect(Collectors.toList());
 
@@ -163,7 +163,7 @@ public class PropertyValuationController {
         out.put("contact", contact);
         out.put("valuationRange", (v.estimatedPriceMin() != null && v.estimatedPriceMax() != null) ? String.format("%.0f - %.0f €", v.estimatedPriceMin(), v.estimatedPriceMax()) : null);
         out.put("valuationFinal", v.estimatedPriceMax());
-        out.put("status", v.status() != null ? v.status() : ValuationStatus.NEW);
+        out.put("status", v.status() != null ? v.status() : ValuationStatus.NOT_ASSIGNED);
         out.put("notes", v.notes());
         String agentName = null;
         if (v.employeeId() != null) {
