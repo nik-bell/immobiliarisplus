@@ -23,13 +23,13 @@ const MainNavbar = () => {
 
           {/* Center - navigation links */}
           <div className="hidden md:flex items-center space-x-6">
-            <NavLink to="/" className="text-gray-600 hover:text-gray-900">
+            <NavLink to="/" className="text-gray-600 hover:text-gray-900 hover:underline">
               Home
             </NavLink>
-            <NavLink to="/vendi-casa" className="text-gray-600 hover:text-gray-900">
+            <NavLink to="/vendi-casa" className="text-gray-600 hover:text-gray-900 hover:underline">
               Vendi casa
             </NavLink>
-            <NavLink to="/migliora-casa" className="text-gray-600 hover:text-gray-900">
+            <NavLink to="/migliora-casa" className="text-gray-600 hover:text-gray-900 hover:underline">
               Migliora casa
             </NavLink>
             <NavLink to="/valuta-casa" onClick={() => setIsMenuOpen(false)}>
