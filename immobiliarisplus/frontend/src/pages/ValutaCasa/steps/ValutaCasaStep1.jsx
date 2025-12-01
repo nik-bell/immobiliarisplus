@@ -83,7 +83,7 @@ export default function ValutaCasaStep1() {
 
       <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">CAP</label>
+          <label className="block text-sm font-medium mb-1">CAP *</label>
           <CapAutocomplete
             value={p.zipCode}
             onChange={(val, city) => {
