@@ -1,23 +1,28 @@
 import Card from "../components/Card";
 
+import IconShield2 from "../assets/icone/shield/shield_nero/shield_nero.svg";
+import IconTarget from "../assets/icone/target/target_nero/target_nero.svg";
+import IconMoving from "../assets/icone/moving/moving_nero/moving_nero.svg";
+import IconPerson from "../assets/icone/person/person_nero/person_nero.svg";
+
 const valoriData = [
     {
-        icon: "🔍",
+        icon: IconShield2,
         titolo: "Trasparenza",
         testo: "Ogni fase del processo è tracciabile. Nessuna sorpresa, solo chiarezza e documentazione completa."
     },
     {
-        icon: "🎯",
+        icon: IconTarget,
         titolo: "Precisione",
         testo: "Valutazioni basate su dati reali di mercato con algoritmi AVM certificati e revisione manuale."
     },
     {
-        icon: "📈",
+        icon: IconMoving,
         titolo: "Risultati",
         testo: "Il nostro obiettivo è vendere al miglior prezzo nel minor tempo possibile. Dati alla mano."
     },
     {
-        icon: "🤝",
+        icon: IconPerson,
         titolo: "Assistenza",
         testo: "Un agente dedicato ti segue dall'inizio alla fine. Sempre disponibile, sempre professionale."
     }
@@ -47,12 +52,15 @@ const NostriValori = () => {
             <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 {valoriData.map((valore, i) => (
                     <Card key={i} className={cardWrapperClasses}>
-                        <div className={iconWrapperClasses}>{valore.icon}</div>
-                        <div className="flex-1">
-                            <h3 className={titleClasses}>{valore.titolo}</h3>
-                            <p className={textClasses}>{valore.testo}</p>
-                        </div>
-                    </Card>
+    <div className={iconWrapperClasses}>
+        <img src={valore.icon} alt={valore.titolo} className="w-7 h-7" />
+    </div>
+    <div className="flex-1">
+        <h3 className={titleClasses}>{valore.titolo}</h3>
+        <p className={textClasses}>{valore.testo}</p>
+    </div>
+</Card>
+
                 ))}
             </div>
         </section>
