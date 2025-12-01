@@ -1,11 +1,26 @@
 import Card from "../components/Card";
 
-import IconCall from "../assets/icone/call/call_nero/call_nero.svg";
-import IconEmail from "../assets/icone/mail/mail_nero/mail_nero.svg";
-import IconLocation from "../assets/icone/explore_nearby/explore_nearby_nero/explore_nearby_nero.svg";
+import IconCall from "../assets/icone/call/call_verde/call_verde.svg";
+import IconEmail from "../assets/icone/mail/mail_blu/mail_blu.png";
+import IconLocation from "../assets/icone/explore_nearby/explore_nearby_giallo/explore_nearby_giallo.png";
 
-const MetodoContatto = ({ icon, title, subtitle, value, valueColor, isButton = false, link }) => {
+const MetodoContatto = ({ icon, title, subtitle, value, link, color }) => {
+        let buttoColor=''
+    switch (color) {
+        case 'yellow':
+            buttoColor = "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500 text-gray-900";
+            break;
+        case 'green':
+            buttoColor = "bg-teal-500 hover:bg-teal-600 focus:ring-teal-500 text-white";
+            break;
+        case 'blue':
+            buttoColor = "bg-indigo-900 hover:bg-indigo-700 focus:ring-indigo-900 text-white";
+            break;
+        default:
+            buttoColor = "bg-gray-500 hover:bg-gray-600 focus:ring-gray-500";
+    }
     const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center";
+    const baseButton = "font-semibold py-2 px-6 rounded-full inline-block transition duration-150 mt-3"
     const valueBaseClasses = "mt-2 font-semibold";
 
     return (
@@ -44,15 +59,17 @@ const contactData = [
         subtitle: "Lun-Ven 9:00-18:00",
         value: "+39 02 1234 5678",
         valueColor: "text-teal-500",
-        isButton: false,
+        link: 'tel:+390212345678',
+        color: 'green'
     },
     {
         icon: IconEmail,
         title: "Email",
         subtitle: "Risposta in 24h",
-        value: "info@immobiliarisplus.it",
+        value: "Informazioni",
         valueColor: "text-gray-700",
-        isButton: false,
+        link: 'mailto:info@immobiliarisplus.com',
+        color: 'blue'
     },
     {
         icon: IconLocation,
@@ -60,8 +77,8 @@ const contactData = [
         subtitle: "Via Jacopo Durandi 10, Torino",
         value: "Mostra sulla mappa",
         valueColor: "text-yellow-400",
-        isButton: true,
-        link: "https://maps.app.goo.gl/YourMapLinkHere",
+        link: "https://www.google.com/maps/search/Via+Jacopo+Durandi+10,+Torino",
+        color: 'yellow'
     },
 ];
 
@@ -79,6 +96,7 @@ const ContattiAssistenza = () => {
                         valueColor={contact.valueColor}
                         isButton={contact.isButton}
                         link={contact.link}
+                        color={contact.color}
                     />
                 ))}
             </div>

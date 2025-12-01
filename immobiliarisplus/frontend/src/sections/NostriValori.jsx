@@ -1,9 +1,9 @@
 import Card from "../components/Card";
 
-import IconShield2 from "../assets/icone/shield/shield_nero/shield_nero.svg";
-import IconTarget from "../assets/icone/target/target_nero/target_nero.svg";
-import IconMoving from "../assets/icone/moving/moving_nero/moving_nero.svg";
-import IconPerson from "../assets/icone/person/person_nero/person_nero.svg";
+import IconShield2 from "../assets/icone/shield/shield_verde/shield_verde.png";
+import IconTarget from "../assets/icone/target/target_verde/target_verde.png";
+import IconMoving from "../assets/icone/moving/moving_verde/moving_verde.svg";
+import IconPerson from "../assets/icone/Home/Home_verde/Home_verde.png";
 
 const valoriData = [
     {
