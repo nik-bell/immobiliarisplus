@@ -11,7 +11,7 @@ const MetodoContatto = ({ icon, title, subtitle, value, link, color }) => {
             buttoColor = "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500 text-gray-900";
             break;
         case 'green':
-            buttoColor = "bg-teal-500 hover:bg-teal-600 focus:ring-teal-500 text-white";
+            buttoColor = "bg-teal-700 hover:bg-teal-600 focus:ring-teal-700 text-white";
             break;
         case 'blue':
             buttoColor = "bg-indigo-900 hover:bg-indigo-700 focus:ring-indigo-900 text-white";
@@ -34,8 +34,8 @@ const MetodoContatto = ({ icon, title, subtitle, value, link, color }) => {
                     className="w-12 h-12 mb-4 opacity-90"
                 />
 
-                <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-                <p className="text-sm text-gray-500 mb-4">{subtitle}</p>
+                <h2 className="h3 text-lg font-semibold text-gray-800">{title}</h2>
+                <p className="text-sm text-gray-700 mb-4">{subtitle}</p>
             </div>
 
             <div className="mt-auto">
@@ -58,7 +58,7 @@ const contactData = [
         title: "Telefono",
         subtitle: "Lun-Ven 9:00-18:00",
         value: "+39 02 1234 5678",
-        valueColor: "text-teal-500",
+        valueColor: "text-teal-700",
         link: 'tel:+390212345678',
         color: 'green'
     },

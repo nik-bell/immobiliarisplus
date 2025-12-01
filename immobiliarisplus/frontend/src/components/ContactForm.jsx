@@ -31,7 +31,7 @@ const ContactForm = forwardRef(({ onSubmit }, ref) => {
     };
 
     const gridClasses = "grid grid-cols-1 md:grid-cols-2 md:gap-4";
-    const buttonStyle = " px-6 py-3 bg-teal-500 text-white font-semibold text-base rounded-lg shadow-md hover:bg-teal-400 hover:shadow-lg transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50";
+    const buttonStyle = " px-6 py-3 bg-teal-700 text-white font-semibold text-base rounded-lg shadow-md hover:bg-teal-500 hover:shadow-lg transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50";
 
     return (
         <form onSubmit={handleSubmit} className="p-0">
