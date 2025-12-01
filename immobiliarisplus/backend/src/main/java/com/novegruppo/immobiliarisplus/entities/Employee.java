@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", uniqueConstraints = {
+    @UniqueConstraint(name = "uk_employee_user_id", columnNames = "user_id")
+})
 public class Employee {
 
     @Id
@@ -12,7 +14,7 @@ public class Employee {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
     private User user;
 
     @Column(nullable = false)
