@@ -32,7 +32,7 @@ export default function CtaMigliora() {
                             className="
                                 w-1/1 md:w-1/2
                                 px-6 py-3
-                                bg-white text-teal-700
+                                bg-white text-teal-800
                                 font-semibold text-base
                                 rounded-lg
                                 shadow-md

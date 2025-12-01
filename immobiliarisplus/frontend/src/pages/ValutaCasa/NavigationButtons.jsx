@@ -24,7 +24,7 @@ export default function NavigationButtons() {
       {state.step < 3 ? (
         <button
           onClick={nextStep}
-          className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-700"
+          className="px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-500"
         >
           Continua
         </button>
