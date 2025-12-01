@@ -1,77 +1,71 @@
 import Card from '../components/Card';
 
+import IconMoving from "../assets/icone/moving/moving_verde/moving_verde.svg";
+import IconSchedule from "../assets/icone/schedule_orologio/schedule_blu/schedule_blu.png";
+import IconPerson from '../assets/icone/Person/Person_verde/Person_verde.svg'
+import IconPrice from '../assets/icone/best_price/best_price_giallo/best-price-giallo.png'
+
+const featuresData = [
+    { 
+      icon: IconMoving,  
+      title: "Maggiore visibilità", 
+      description: "Investiamo risorse dedicate su marketing, foto professionali e promozione mirata del tuo immobile."
+     },
+    { 
+      icon: IconSchedule,  
+      title: "Vendita più rapida", 
+      description: "Strategia coordinata e follow-up costante riducono i tempi di vendita fino al 40%." 
+    },
+    { 
+        icon: IconPrice, 
+        title: "Prezzi migliori", 
+        description: "Valutazione accurata e negoziazione professionale garantiscono il miglior prezzo di mercato." 
+    },
+    {
+        icon: IconPerson, 
+        title: "Agente dedicato", 
+        description: "Un solo punto di riferimento che conosce a fondo il tuo immobile e le tue esigenze." 
+    },
+];
+
+const topBorderColors = [
+    "border-t-4 border-[#2CC6A3]",
+    "border-t-4 border-indigo-900",  
+    "border-t-4 border-[#F4C542]", 
+    "border-t-4 border-[#2CC6A3]", 
+];
+
 const PercheScegliereEsclusiva = () => {
+    const cardWrapperClasses =
+        "bg-white rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1";
+
+    const cardContentClasses =
+        "p-6 text-center flex flex-col items-center h-full";
+
+    const iconClasses = "w-10 h-10 mb-3";
+    const titleClasses = "text-lg font-semibold text-gray-900 mb-2";
+    const descriptionClasses = "text-gray-600 text-sm";
     return (
         <div className="p-8">
             <h2 className="text-3xl text-center mb-10 text-gray-800">
                 Perché scegliere l'esclusiva?
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                <Card className="bg-white rounded-lg shadow-md p-6 border-t-4 border-t-teal-500">
-                    <div className="flex items-start">
-                        <div className="p-3 rounded-lg bg-teal-50 text-teal-600 text-xl mr-4">
-                            📈
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">
-                                Maggiore visibilità
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                                Investiamo risorse dedicate su marketing, foto professionali e promozione mirata del tuo immobile.
-                            </p>
-                        </div>
-                    </div>
-                </Card>
-
-                <Card className="bg-white rounded-lg shadow-md p-6 border-t-4 border-t-indigo-900">
-                    <div className="flex items-start">
-                        <div className="p-3 rounded-lg bg-blue-50 text-blue-600 text-xl mr-4">
-                            ⏱️
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">
-                                Vendita più rapida
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                                Strategia coordinata e follow-up costante riducono i tempi di vendita fino al 40%.
-                            </p>
-                        </div>
-                    </div>
-                </Card>
-                
-                <Card className="bg-white rounded-lg shadow-md p-6 border-t-4 border-t-yellow-500">
-                    <div className="flex items-start">
-                        <div className="p-3 rounded-lg bg-yellow-50 text-yellow-600 text-xl mr-4">
-                            🧑‍💼
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">
-                                Agente dedicato
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                                Un solo punto di riferimento che conosce a fondo il tuo immobile e le tue esigenze.
-                            </p>
-                        </div>
-                    </div>
-                </Card>
-                
-                <Card className="bg-white rounded-lg shadow-md p-6 border-t-4 border-t-teal-500">
-                    <div className="flex items-start">
-                        <div className="p-3 rounded-lg bg-green-50 text-green-600 text-xl mr-4">
-                            🛡️
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-800 mb-1">
-                                Prezzi migliori
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                                Valutazione accurata e negoziazione professionale garantiscono il miglior prezzo di mercato.
-                            </p>
-                        </div>
-                    </div>
-                </Card>
-
-            </div>
+            <section className="pb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto px-4">
+                    {featuresData.map((feature, index) => (
+                        <Card
+                            key={index}
+                            className={`${cardWrapperClasses} ${topBorderColors[index]}`}
+                        >
+                            <div className={cardContentClasses}>
+                                <img src={feature.icon} alt="icon" className={iconClasses} />
+                                <h3 className={titleClasses}>{feature.title}</h3>
+                                <p className={descriptionClasses}>{feature.description}</p>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </section>
         </div>
     );
 };
