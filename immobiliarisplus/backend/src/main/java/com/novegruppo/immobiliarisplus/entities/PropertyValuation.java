@@ -1,6 +1,6 @@
 package com.novegruppo.immobiliarisplus.entities;
 
-import com.novegruppo.immobiliarisplus.enums.Priority;
+import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -30,8 +30,10 @@ public class PropertyValuation {
     private Boolean exclusiveContract = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "priority")
-    private Priority priority;
+    private ValuationStatus status;
+
+    @Column(name = "notes", length = 1000)
+    private String notes;
 
     @Column(name = "estimated_price_min")
     private Double estimatedPriceMin;
@@ -94,12 +96,21 @@ public class PropertyValuation {
         this.exclusiveContract = exclusiveContract;
     }
 
-    public Priority getPriority() {
-        return priority;
+
+    public ValuationStatus getStatus() {
+        return status;
     }
 
-    public void setPriority(Priority priority) {
-        this.priority = priority;
+    public void setStatus(ValuationStatus status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public Double getEstimatedPriceMin() {
