@@ -38,7 +38,7 @@ const FAQContratto = () => {
     return (
         <div className="my-8">
             <Card className={cardClasses}>
-                <h2 className="text-xl font-semibold text-teal-600 mb-4">
+                <h2 className="text-xl font-semibold text-teal-700 mb-4">
                     FAQ rapide
                 </h2>
 
