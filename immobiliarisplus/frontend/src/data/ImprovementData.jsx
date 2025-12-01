@@ -1,7 +1,12 @@
+import IconBolt from '../assets/iconeMigliora/electric_bolt/electric_bolt_verde/electric_bolt_verde.svg';
+import IconWaterDrop from '../assets/iconeMigliora/water_drop/water_drop_verde/water_drop_verde.svg';
+import IconPaintBrush from '../assets/iconeMigliora/format_paint/format_paint_verde/format_paint_verde.svg';
+import IconLightBulb from '../assets/iconeMigliora/lightbulb_circle/lightbulb_circle_verde/lightbulb_circle_verde.svg';
+
 const improvementData = [
     {
         id: 1,
-        icon: '⚡',
+        icon: <img src={IconBolt} alt="icon" className="w-7 h-7 object-contain" />,
         title: 'Miglioramento classe energetica',
         subtitle: 'Passaggio da classe E a classe B con cappotto termico e infissi',
         stats: {
@@ -14,7 +19,7 @@ const improvementData = [
     },
     {
         id: 2,
-        icon: '💧',
+        icon: <img src={IconWaterDrop} alt="icon" className="w-7 h-7 object-contain" />,
         title: 'Sostituzione infissi',
         subtitle: 'Installazione serramenti ad alta efficienza energetica',
         stats: {
@@ -27,7 +32,7 @@ const improvementData = [
     },
     {
         id: 3,
-        icon: '🖌️',
+        icon: <img src={IconPaintBrush} alt="icon" className="w-7 h-7 object-contain" />,
         title: 'Tinteggiatura completa',
         subtitle: 'Rinfrescare pareti e soffitti con colori neutri e moderni',
         stats: {
@@ -40,7 +45,7 @@ const improvementData = [
     },
     {
         id: 4,
-        icon: '💡',
+        icon: <img src={IconLightBulb} alt="icon" className="w-7 h-7 object-contain" />,
         title: 'Illuminazione LED',
         subtitle: 'Sostituzione completa con illuminazione a LED e domotica',
         stats: {
@@ -53,4 +58,4 @@ const improvementData = [
     }
 ];
 
-export default improvementData; 
+export default improvementData;
