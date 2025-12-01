@@ -3,7 +3,7 @@ CREATE TABLE property_valuation (
     property_id INT NOT NULL,
     employee_id INT,
     improve_property BOOLEAN DEFAULT FALSE,
-    exclusive_contract BOOLEAN DEFAULT FALSE,
+    exclusive_contract BOOLEAN DEFAULT TRUE,
     status ENUM('NEW', 'CONFIRMED', 'REJECTED', 'IN_PROGRESS', 'AWAITING_CLIENT_RESPONSE','NOT_ASSIGNED') NOT NULL DEFAULT 'NOT_ASSIGNED',
     notes VARCHAR(1000),
     estimated_price_min DECIMAL(12,2),
