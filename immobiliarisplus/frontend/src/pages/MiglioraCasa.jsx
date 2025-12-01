@@ -4,7 +4,6 @@ import CtaMigliora from "../sections/CtaMigliora";
 import StatCard from "../sections/StatCard";
 import ImprovementCard from "../sections/ImprovementCard";
 import improvementData from "../data/ImprovementData";
-import ComeFunziona from "../sections/ComeFunzionaSection";
 import { Link } from "react-router-dom";
 
 function MiglioraCasa() {
@@ -33,7 +32,7 @@ function MiglioraCasa() {
             to= '/contattaci'
             className="
                   px-6 py-3
-                  bg-teal-500 text-white
+                  bg-teal-700 text-white
                   font-semibold text-base
                   rounded-lg
                   shadow-md

@@ -6,7 +6,7 @@ const StatCard = () => {
     const labelClasses = "text-xl text-gray-600 mb-1";
     const valueClasses = "text-xl font-semibold";
     const investmentValueColor = "text-gray-900";
-    const increaseValueColor = "text-teal-600";
+    const increaseValueColor = "text-teal-800";
     const roiValueColor = "text-indigo-900";
 
     return (
