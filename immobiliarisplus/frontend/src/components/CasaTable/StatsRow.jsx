@@ -1,5 +1,6 @@
 import { useCasa } from "../../store/CasaContext";
 import { useState } from "react";
+import StatusChip from "./StatusChip";
 
 export default function StatsRow() {
   const { rawCases, filter, setFilter, refreshCases } = useCasa();
@@ -9,6 +10,7 @@ export default function StatsRow() {
   const counts = {
     tutti: rawCases.length,
     non_assegnati: rawCases.filter((c) => c.status === "non_assegnati").length,
+    nuovi: rawCases.filter((c) => c.status === "nuovi").length,
     in_corso: rawCases.filter((c) => c.status === "in_corso").length,
     attesa_cliente: rawCases.filter((c) => c.status === "attesa_cliente")
       .length,
@@ -18,6 +20,7 @@ export default function StatsRow() {
   const items = [
     { key: "tutti", label: `Tutti (${counts.tutti})` },
     { key: "non_assegnati", label: `Non assegnati (${counts.non_assegnati})` },
+    { key: "nuovi", label: `Nuovi (${counts.nuovi})` },
     { key: "in_corso", label: `In corso (${counts.in_corso})` },
     {
       key: "attesa_cliente",
@@ -48,17 +51,14 @@ export default function StatsRow() {
         <div className="flex-1 overflow-x-auto">
           <div className="flex gap-3 whitespace-nowrap">
             {items.map((it) => (
-              <button
+              <StatusChip
                 key={it.key}
+                statusKey={it.key === "tutti" ? undefined : it.key}
+                label={it.label.replace(/\s*\(.*\)$/,'')}
+                count={it.label.match(/\((\d+)\)$/)?.[1]}
+                active={filter === it.key}
                 onClick={() => setFilter(it.key)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full border text-sm transition ${
-                  filter === it.key
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-white text-gray-700 border-gray-200"
-                }`}
-              >
-                {it.label}
-              </button>
+              />
             ))}
           </div>
         </div>

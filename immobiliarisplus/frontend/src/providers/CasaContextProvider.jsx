@@ -22,6 +22,7 @@ export default function CasaContextProvider({ children }) {
   // mappa utilità per etichette piu leggibili (opzionale)
   const statusLabels = {
     non_assegnati: "non assegnati",
+    nuovi: "nuovi",
     in_corso: "in corso",
     attesa_cliente: "in attesa cliente",
     terminati: "terminati",

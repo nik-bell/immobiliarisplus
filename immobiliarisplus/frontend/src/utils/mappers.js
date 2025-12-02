@@ -32,19 +32,58 @@ export const mapPropertyCondition = (c) => {
   }
 };
 
+// helper: extract/format valuation range and final from different possible API shapes
+const fmtCurrency = (v) => {
+  if (v == null || v === "") return null;
+  const n = Number(v);
+  if (Number.isFinite(n)) return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n);
+  return String(v);
+};
+
+const extractRangeString = (obj) => {
+  if (!obj) return null;
+
+  // direct string
+  if (typeof obj === "string" && obj.trim() !== "") return obj;
+
+  // number
+  if (typeof obj === "number") return fmtCurrency(obj);
+
+  // array [min,max]
+  if (Array.isArray(obj) && obj.length >= 2) {
+    const a = fmtCurrency(obj[0]);
+    const b = fmtCurrency(obj[1]);
+    if (a && b) return `${a} - ${b}`;
+  }
+
+  // object with possible keys
+  const candidates = [];
+  if (obj.min != null || obj.max != null) {
+    const a = obj.min ?? obj.low ?? obj.from ?? obj[0];
+    const b = obj.max ?? obj.high ?? obj.to ?? obj[1];
+    if (a != null && b != null) return `${fmtCurrency(a)} - ${fmtCurrency(b)}`;
+  }
+
+  if (obj.range != null) return extractRangeString(obj.range);
+  if (obj.final != null) return fmtCurrency(obj.final);
+  if (obj.value != null) return fmtCurrency(obj.value);
+
+  return null;
+};
+
 export const mapStatus = (s) => {
   if (!s) return "in_corso";
   switch (String(s).toUpperCase()) {
     case "NEW":
+      return "nuovi";
+    case "NOT_ASSIGNED":
       return "non_assegnati";
-    case "ASSIGNED":
     case "IN_PROGRESS":
       return "in_corso";
-    case "WAITING_CUSTOMER":
-    case "AWAITING_CUSTOMER":
+    case "AWAITING_CLIENT_RESPONSE":
       return "attesa_cliente";
-    case "COMPLETED":
-    case "DONE":
+    case "CONFIRMED":
+    case "REJECTED":
       return "terminati";
     default:
       return "in_corso";
@@ -56,16 +95,16 @@ export const mapValuationStatusLabel = (s) => {
   switch (String(s).toUpperCase()) {
     case "NEW":
       return "Nuovo";
-    case "ASSIGNED":
-      return "Assegnato";
+    case "NOT_ASSIGNED":
+      return "Non assegnato";
+    case "CONFIRMED":
+      return "Confermato";
+    case "REJECTED":
+      return "Rifiutato";
     case "IN_PROGRESS":
       return "In corso";
-    case "WAITING_CUSTOMER":
-    case "AWAITING_CUSTOMER":
+    case "AWAITING_CLIENT_RESPONSE":
       return "In attesa cliente";
-    case "COMPLETED":
-    case "DONE":
-      return "Completato";
     default:
       return s;
   }
@@ -89,8 +128,31 @@ export const mapListItem = (it) => ({
   },
   contact: it.contact ?? {},
   assignedAgent: it.assignedAgent ?? null,
-  valuationRange: it.valuationRange ?? null,
-  valuationFinal: it.valuationFinal ?? null,
+  // support multiple possible shapes from different API responses
+  valuationRange:
+    // prefer explicit flat fields first
+    it.valuationRange ?? it.valuation_range ??
+    // then nested valuation object possibilities
+    (() => {
+      const r = it.valuation ?? it.valuation_data ?? it;
+      const direct = it.valuationRange ?? it.valuation_range ?? it.range ?? null;
+      if (direct) return typeof direct === "string" ? direct : extractRangeString(direct);
+      // check nested fields
+      const cand = it.valuation ?? it.valuation_data;
+      const fromNested = extractRangeString(cand?.range ?? cand?.valuationRange ?? cand ?? null);
+      return fromNested ?? null;
+    })(),
+  valuationFinal:
+    it.valuationFinal ?? it.valuation_final ??
+    (() => {
+      const cand = it.valuation ?? it.valuation_data ?? it;
+      return (
+        (cand?.final != null && fmtCurrency(cand.final)) ||
+        (cand?.valuationFinal != null && fmtCurrency(cand.valuationFinal)) ||
+        (cand?.value != null && fmtCurrency(cand.value)) ||
+        null
+      );
+    })(),
   status: mapStatus(it.status),
   statusLabel: mapValuationStatusLabel(it.status),
   documents: it.documents ?? [],
@@ -117,11 +179,42 @@ export const mapDetailItem = (it) => ({
     floor: it.details?.floor ?? null,
     features: it.details?.features ?? {},
   },
-  valuationFinal: it.valuationFinal ?? null,
-  valuationRange: it.valuationRange ?? null,
+  valuationFinal:
+    it.valuationFinal ?? it.valuation_final ?? it.valuation?.final ?? it.valuation?.valuationFinal ?? null,
+  valuationRange:
+    it.valuationRange ?? it.valuation_range ?? it.valuation?.range ?? it.valuation?.valuationRange ?? null,
   status: mapStatus(it.status),
   statusLabel: mapValuationStatusLabel(it.status),
 });
+
+// helper: map UI status key back to backend enum where possible
+export const mapUIStatusToEnum = (uiKey) => {
+  if (!uiKey) return null;
+  switch (uiKey) {
+    case "nuovi":
+      return "NEW";
+    case "non_assegnati":
+      return "NOT_ASSIGNED";
+    case "in_corso":
+      return "IN_PROGRESS";
+    case "attesa_cliente":
+      return "AWAITING_CLIENT_RESPONSE";
+    case "terminati":
+      return "CONFIRMED"; // default to CONFIRMED when mapping back from the grouped 'terminati'
+    default:
+      return null;
+  }
+};
+
+// helper: list of backend enums used by the app in preferred order
+export const ALL_STATUS_ENUMS = [
+  "NEW",
+  "NOT_ASSIGNED",
+  "IN_PROGRESS",
+  "AWAITING_CLIENT_RESPONSE",
+  "CONFIRMED",
+  "REJECTED",
+];
 
 // map frontend/free-text values to backend enums for sending payloads
 export const mapPropertyTypeToEnum = (pt) => {

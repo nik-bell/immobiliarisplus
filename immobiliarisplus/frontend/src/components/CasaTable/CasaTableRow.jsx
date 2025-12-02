@@ -1,5 +1,6 @@
 import { useCasa } from "../../store/CasaContext";
 import Badge from "./Badge";
+import StatusDropdown from "./StatusDropdown";
 import { useAuth } from "../../store/AuthContext";
 import AgentSelector from "./AgentSelector";
 
@@ -18,6 +19,35 @@ export default function CasaTableRow({ casa }) {
     openCasaModal(casa);
   };
 
+  const fmtCurrency = (v) => {
+    if (v == null || v === "") return null;
+    const n = Number(v);
+    if (Number.isFinite(n)) return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n);
+    return String(v);
+  };
+
+  const extractRange = (c) => {
+    if (!c) return null;
+    // prefer already-computed string
+    if (c.valuationRange) return c.valuationRange;
+    if (c.valuation_range) return c.valuation_range;
+    // nested valuation object
+    const v = c.valuation ?? c.valuation_data ?? null;
+    if (!v) return null;
+    if (typeof v === 'string' && v.trim() !== '') return v;
+    if (Array.isArray(v.range)) {
+      const a = fmtCurrency(v.range[0]);
+      const b = fmtCurrency(v.range[1]);
+      if (a && b) return `${a} - ${b}`;
+    }
+    if (v.range && typeof v.range === 'string') return v.range;
+    if (v.min != null && v.max != null) return `${fmtCurrency(v.min)} - ${fmtCurrency(v.max)}`;
+    if (v.from != null && v.to != null) return `${fmtCurrency(v.from)} - ${fmtCurrency(v.to)}`;
+    // fallback to final if present
+    if (v.final != null) return fmtCurrency(v.final);
+    return null;
+  };
+
   
 
   // helper removed: AgentSelector handles label formatting
@@ -33,12 +63,12 @@ export default function CasaTableRow({ casa }) {
       {/* Mq */}
       <td className="px-4 py-3">{casa.property?.sizeMq ?? ''} m²</td>
 
-      {/* Valutazione (stringa) */}
-      <td className="px-4 py-3">{casa.valuationRange}</td>
+      {/* Valutazione finale */}
+      <td className="px-4 py-3">{typeof casa.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(casa.valuationFinal) : (casa.valuationFinal ?? '-')}</td>
 
       {/* Stato con badge */}
       <td className="px-4 py-3">
-        <Badge status={casa.status} />
+        <StatusDropdown casa={casa} />
       </td>
 
       {/* Agente assegnato (visibile solo ad admin) */}
