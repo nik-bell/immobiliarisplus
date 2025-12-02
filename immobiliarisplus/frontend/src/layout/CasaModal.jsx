@@ -4,7 +4,8 @@ import { useAuth } from "../store/AuthContext";
 import FeatureIcon from "../components/FeatureIcon";
 import Badge from "../components/CasaTable/Badge";
 import StatusDropdown from "../components/CasaTable/StatusDropdown";
-import { mapValuationStatusLabel, mapListItem } from "../utils/mappers";
+import AgentSelector from "../components/CasaTable/AgentSelector";
+import { mapValuationStatusLabel, mapListItem, mapUIStatusToEnum } from "../utils/mappers";
 import { updateValuationDashboard } from "../api/api";
 
 export default function CasaModal() {
@@ -43,35 +44,37 @@ export default function CasaModal() {
   const saveSection = async (section) => {
     const updated = { ...draft };
 
-    // build a minimal patch body depending on the section edited
-    const payload = {};
-
-    if (section === "notes") {
-      payload.notes = updated.notes ?? null;
-    }
-
-    if (section === "info") {
-      // send property subset and valuation fields if present
-      payload.property = {
+    // build a comprehensive patch body with all modifiable fields
+    const payload = {
+      notes: updated.notes ?? null,
+      property: {
         sizeMq: updated.property?.sizeMq ?? updated.property?.surfaceM2 ?? null,
         propertyType: updated.property?.propertyType ?? null,
         condition: updated.property?.condition ?? null,
-      };
-      if (updated.valuationFinal !== undefined) payload.valuationFinal = updated.valuationFinal;
-      if (updated.valuationRange !== undefined) payload.valuationRange = updated.valuationRange;
-    }
-
-    if (section === "contact") {
-      payload.contact = {
+      },
+      contact: {
         name: updated.contact?.name ?? null,
         surname: updated.contact?.surname ?? null,
         email: updated.contact?.email ?? null,
         phone: updated.contact?.phone ?? null,
-      };
+      },
+    };
+
+    // include valuation fields if present
+    if (updated.valuationFinal !== undefined && updated.valuationFinal !== null) {
+      payload.valuationFinal = updated.valuationFinal;
+    }
+    if (updated.valuationRange !== undefined && updated.valuationRange !== null) {
+      payload.valuationRange = updated.valuationRange;
     }
 
-    // if status changed anywhere in draft include it
-    if (updated.status) payload.status = updated.status;
+    // include status if changed - convert UI status key to backend enum
+    if (updated.status) {
+      const enumStatus = mapUIStatusToEnum(updated.status);
+      if (enumStatus) {
+        payload.status = enumStatus;
+      }
+    }
 
     // Try to persist to backend; request requires auth token which is handled centrally
     let serverUpdated = null;
@@ -106,7 +109,7 @@ export default function CasaModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="bg-white w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6">
+        <div className="flex items-center justify-between px-8 py-4">
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-2xl font-semibold text-gray-800">Dettagli lead</h2>
@@ -123,14 +126,16 @@ export default function CasaModal() {
               <div className="flex items-center gap-2">
                 <StatusDropdown casa={c} />
               </div>
-
-              {userType === 'admin' && c.assignedAgent && (
-                <div className="w-full mt-2 text-sm text-gray-700">
-                  <div className="font-medium">Agente</div>
-                  <div>{typeof c.assignedAgent === 'string' ? c.assignedAgent : `${c.assignedAgent.name || ''} ${c.assignedAgent.surname || ''}`.trim()}</div>
-                </div>
-              )}
             </div>
+
+            {userType === 'admin' && (
+              <div className="mt-2 pt-2 border-t border-gray-100">
+                <div className="text-xs font-medium text-gray-500 mb-1.5">Agente assegnato</div>
+                <div className="bg-gray-50 rounded-md p-1.5">
+                  <AgentSelector casa={c} />
+                </div>
+              </div>
+            )}
           </div>
 
           <button
@@ -250,10 +255,24 @@ export default function CasaModal() {
                         <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property?.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
                         <label className="text-xs text-gray-500">Valutazione attuale</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.valuationRange ?? ''} onChange={(e) => updateDraftRoot('valuationRange', e.target.value)} />
+                        <label className="text-xs text-gray-500">Valutazione finale (€)</label>
+                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.valuationFinal ?? ''} onChange={(e) => updateDraftRoot('valuationFinal', e.target.value ? Number(e.target.value) : null)} />
                         <label className="text-xs text-gray-500">Tipologia</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property?.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)} />
+                        <select className="border rounded px-3 py-2 text-sm" value={draft.property?.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)}>
+                          <option value="">Seleziona...</option>
+                          <option value="APARTMENT">Appartamento</option>
+                          <option value="HOUSE">Casa</option>
+                          <option value="OFFICE">Ufficio</option>
+                          <option value="OTHER">Altro</option>
+                        </select>
                         <label className="text-xs text-gray-500">Stato</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property?.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)} />
+                        <select className="border rounded px-3 py-2 text-sm" value={draft.property?.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)}>
+                          <option value="">Seleziona...</option>
+                          <option value="NEW">Nuovo</option>
+                          <option value="RECENTLY_RENOVATED">Ristrutturato di recente</option>
+                          <option value="GOOD_CONDITION">Buono stato</option>
+                          <option value="TO_RENOVATE">Da ristrutturare</option>
+                        </select>
 
                         <div className="mt-3 flex gap-2">
                           <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
@@ -356,14 +375,6 @@ export default function CasaModal() {
 
         {/* Footer */}
         <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-end items-center gap-3">
-          {userType === "admin" && (
-            <button
-              className="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium shadow-sm hover:bg-emerald-700 transition text-sm"
-            >
-              Cambia agente assegnato
-            </button>
-          )}
-
           <button
             onClick={closeCasaModal}
             className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
