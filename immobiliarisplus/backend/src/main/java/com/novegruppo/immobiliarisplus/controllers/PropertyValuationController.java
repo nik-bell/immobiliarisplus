@@ -224,7 +224,7 @@ public class PropertyValuationController {
                 }
                 try {
                     ValuationStatus status = ValuationStatus.valueOf(statusStr.toUpperCase());
-                    current = service.updateStatus(id, status);
+                    service.updateStatus(id, status);
                 } catch (IllegalArgumentException ex) {
                     return ResponseEntity.badRequest().body(Map.of(
                             "error", "Valore 'status' non valido",
@@ -236,7 +236,7 @@ public class PropertyValuationController {
             if (updates.containsKey("notes")) {
                 Object raw = updates.get("notes");
                 String notes = raw != null ? String.valueOf(raw) : null;
-                current = service.updateNotes(id, notes);
+                service.updateNotes(id, notes);
             }
 
             if (updates.containsKey("valuationFinal")) {
@@ -245,7 +245,7 @@ public class PropertyValuationController {
                     return ResponseEntity.badRequest().body(Map.of("error", "Campo 'valuationFinal' nullo"));
                 }
                 try {
-                    Double finalPrice = null;
+                    Double finalPrice;
                     if (raw instanceof Number) {
                         finalPrice = ((Number) raw).doubleValue();
                     } else {
@@ -258,7 +258,7 @@ public class PropertyValuationController {
                     if (finalPrice <= 0) {
                         return ResponseEntity.badRequest().body(Map.of("error", "'valuationFinal' deve essere > 0"));
                     }
-                    current = service.updateFinalPrice(id, finalPrice);
+                    service.updateFinalPrice(id, finalPrice);
                 } catch (NumberFormatException nfe) {
                     return ResponseEntity.badRequest().body(Map.of("error", "Campo 'valuationFinal' non numerico"));
                 }
@@ -270,7 +270,59 @@ public class PropertyValuationController {
             ));
         }
 
-        return ResponseEntity.ok(current);
+        // Ricarica il DTO aggiornato per avere tutti i dati più recenti
+        PropertyValuationDTO updated = service.findById(id);
+
+        // Costruisci risposta in formato dashboard detail
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", updated.id());
+
+        Property property = updated.propertyId() != null ? propertyRepository.findById(updated.propertyId()).orElse(null) : null;
+        PropertyAddress address = updated.propertyId() != null ? propertyAddressRepository.findById(updated.propertyId()).orElse(null) : null;
+        Owner owner = property != null ? property.getOwner() : null;
+
+        Map<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("address", address != null ? address.getStreet() + ", " + address.getCity() : null);
+        propertyMap.put("propertyType", property != null ? property.getType() : null);
+        propertyMap.put("condition", property != null ? property.getStatus() : null);
+        propertyMap.put("sizeMq", property != null ? property.getSizeMq() : null);
+        response.put("property", propertyMap);
+
+        Map<String, Object> details = new HashMap<>();
+        if (property != null) {
+            details.put("rooms", property.getRooms());
+            details.put("bathrooms", property.getBathrooms());
+            details.put("floor", property.getFloors());
+        }
+        response.put("details", details);
+
+        Map<String, Object> contact = new HashMap<>();
+        if (owner != null) {
+            contact.put("name", owner.getName());
+            contact.put("surname", owner.getSurname());
+            contact.put("email", owner.getEmail());
+            contact.put("phone", owner.getPhone());
+        }
+        response.put("contact", contact);
+
+        response.put("valuationRange", (updated.estimatedPriceMin() != null && updated.estimatedPriceMax() != null)
+            ? String.format("%.0f - %.0f €", updated.estimatedPriceMin(), updated.estimatedPriceMax()) : null);
+        response.put("valuationFinal", updated.estimatedPriceMax());
+        response.put("status", updated.status() != null ? updated.status() : ValuationStatus.NOT_ASSIGNED);
+        response.put("notes", updated.notes());
+
+        String agentName = null;
+        if (updated.employeeId() != null) {
+            try {
+                EmployeeDTO e = employeeService.findById(updated.employeeId());
+                agentName = e.name() + " " + e.surname();
+            } catch (Exception ignored) {
+            }
+        }
+        response.put("assignedAgent", agentName);
+        response.put("documents", new ArrayList<>());
+
+        return ResponseEntity.ok(response);
     }
 
     // Assegna agente (solo ADMIN)
