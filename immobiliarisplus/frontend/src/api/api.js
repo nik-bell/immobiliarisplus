@@ -5,5 +5,5 @@ export { getValuationsDashboard, getValuationDetail, createValuation, assignEmpl
 
 export { getEmployees } from "./employees";
 
-export { request, setAuthToken, clearAuthToken, API_BASE_URL } from "./request";
+export { request, setAuthToken, clearAuthToken, getPersistedAuthToken, API_BASE_URL } from "./request";
 export { performLogin } from "./authService";
