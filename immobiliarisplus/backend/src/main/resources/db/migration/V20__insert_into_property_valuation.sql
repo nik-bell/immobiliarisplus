@@ -16,5 +16,5 @@ INSERT INTO property_valuation (property_id, employee_id, improve_property, excl
     (5, 11, FALSE, TRUE, 'CONFIRMED', 'Cliente conferma valutazione e procede con pubblicazione annuncio.', 220000.00, 250000.00, 2300.00, 92, 'Perizia immobiliare certificata', '2025-03-20 15:20:00'),
 
     -- Valutazione 6: Appartamento di Chiara Gallo (property 6), valutazione rifiutata
-    (6, NULL, FALSE, TRUE, 'REJECTED', 'Cliente non accetta la valutazione proposta. Ritiene il prezzo troppo basso.', 160000.00, 185000.00, 2200.00, 82, 'Analisi comparativa mercato locale', '2025-03-21 08:30:00');
+    (6, NULL, FALSE, TRUE, 'NOT_ASSIGNED', 'Cliente ritiene il prezzo troppo basso.', 160000.00, 185000.00, 2200.00, 82, 'Analisi comparativa mercato locale', '2025-03-21 08:30:00');
 
