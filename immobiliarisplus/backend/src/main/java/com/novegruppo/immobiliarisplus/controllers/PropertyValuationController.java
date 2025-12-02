@@ -186,9 +186,27 @@ public class PropertyValuationController {
         }
 
         PropertyValuationDTO current = service.findById(id);
-        // Permessi
+        // Permessi: ADMIN può sempre, AGENT solo se la valutazione è assegnata a lui
         if (!SecurityUtil.hasRole("ADMIN")) {
-            if (!(SecurityUtil.hasRole("AGENT") && current.employeeId() != null)) {
+            if (SecurityUtil.hasRole("AGENT")) {
+                String username = SecurityUtil.getUsername();
+                if (username == null) {
+                    return ResponseEntity.status(403).body(Map.of("error", "Non autorizzato"));
+                }
+                UserDTO user = userService.findAll().stream()
+                        .filter(u -> u.email() != null && u.email().equalsIgnoreCase(username))
+                        .findFirst().orElse(null);
+                if (user == null) {
+                    return ResponseEntity.status(403).body(Map.of("error", "Utente non trovato"));
+                }
+                Integer requesterEmployeeId = employeeService.findAll().stream()
+                        .filter(e -> e.userId() != null && e.userId().equals(user.id()))
+                        .map(EmployeeDTO::id)
+                        .findFirst().orElse(null);
+                if (requesterEmployeeId == null || current.employeeId() == null || !requesterEmployeeId.equals(current.employeeId())) {
+                    return ResponseEntity.status(403).body(Map.of("error", "Non autorizzato: la valutazione non è assegnata a te"));
+                }
+            } else {
                 return ResponseEntity.status(403).body(Map.of("error", "Non autorizzato"));
             }
         }
@@ -210,7 +228,7 @@ public class PropertyValuationController {
                 } catch (IllegalArgumentException ex) {
                     return ResponseEntity.badRequest().body(Map.of(
                             "error", "Valore 'status' non valido",
-                            "allowed", List.of("NEW","IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED","NOT_ASSIGNED")
+                            "allowed", List.of("IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED","NOT_ASSIGNED")
                     ));
                 }
             }
