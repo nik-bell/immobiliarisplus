@@ -9,7 +9,7 @@ const steps = [
 const BarraStep = ({ currentStep }) => {
 
     return (
-        <div className="mt-8 mt-[8rem]"> 
+        <div className="mt-2"> 
             <nav 
                 aria-label="Progress" 
                 className="max-w-4xl mx-auto flex items-center justify-center md:justify-between px-4 md:px-0" 
