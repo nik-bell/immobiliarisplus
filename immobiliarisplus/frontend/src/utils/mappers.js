@@ -36,15 +36,15 @@ export const mapStatus = (s) => {
   if (!s) return "in_corso";
   switch (String(s).toUpperCase()) {
     case "NEW":
+      return "nuovi";
+    case "NOT_ASSIGNED":
       return "non_assegnati";
-    case "ASSIGNED":
     case "IN_PROGRESS":
       return "in_corso";
-    case "WAITING_CUSTOMER":
-    case "AWAITING_CUSTOMER":
+    case "AWAITING_CLIENT_RESPONSE":
       return "attesa_cliente";
-    case "COMPLETED":
-    case "DONE":
+    case "CONFIRMED":
+    case "REJECTED":
       return "terminati";
     default:
       return "in_corso";
@@ -56,16 +56,16 @@ export const mapValuationStatusLabel = (s) => {
   switch (String(s).toUpperCase()) {
     case "NEW":
       return "Nuovo";
-    case "ASSIGNED":
-      return "Assegnato";
+    case "NOT_ASSIGNED":
+      return "Non assegnato";
+    case "CONFIRMED":
+      return "Confermato";
+    case "REJECTED":
+      return "Rifiutato";
     case "IN_PROGRESS":
       return "In corso";
-    case "WAITING_CUSTOMER":
-    case "AWAITING_CUSTOMER":
+    case "AWAITING_CLIENT_RESPONSE":
       return "In attesa cliente";
-    case "COMPLETED":
-    case "DONE":
-      return "Completato";
     default:
       return s;
   }
@@ -122,6 +122,35 @@ export const mapDetailItem = (it) => ({
   status: mapStatus(it.status),
   statusLabel: mapValuationStatusLabel(it.status),
 });
+
+// helper: map UI status key back to backend enum where possible
+export const mapUIStatusToEnum = (uiKey) => {
+  if (!uiKey) return null;
+  switch (uiKey) {
+    case "nuovi":
+      return "NEW";
+    case "non_assegnati":
+      return "NOT_ASSIGNED";
+    case "in_corso":
+      return "IN_PROGRESS";
+    case "attesa_cliente":
+      return "AWAITING_CLIENT_RESPONSE";
+    case "terminati":
+      return "CONFIRMED"; // default to CONFIRMED when mapping back from the grouped 'terminati'
+    default:
+      return null;
+  }
+};
+
+// helper: list of backend enums used by the app in preferred order
+export const ALL_STATUS_ENUMS = [
+  "NEW",
+  "NOT_ASSIGNED",
+  "IN_PROGRESS",
+  "AWAITING_CLIENT_RESPONSE",
+  "CONFIRMED",
+  "REJECTED",
+];
 
 // map frontend/free-text values to backend enums for sending payloads
 export const mapPropertyTypeToEnum = (pt) => {

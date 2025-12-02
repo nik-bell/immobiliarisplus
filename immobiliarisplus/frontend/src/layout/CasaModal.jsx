@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useCasa } from "../store/CasaContext";
 import { useAuth } from "../store/AuthContext";
 import FeatureIcon from "../components/FeatureIcon";
+import Badge from "../components/CasaTable/Badge";
+import StatusDropdown from "../components/CasaTable/StatusDropdown";
+import { mapValuationStatusLabel, mapListItem } from "../utils/mappers";
+import { updateValuationDashboard } from "../api/api";
 
 export default function CasaModal() {
   const { modalOpen, selectedCasa, closeCasaModal, setAllCases, openCasaModal } = useCasa();
@@ -36,11 +40,55 @@ export default function CasaModal() {
     setDraft((d) => ({ ...d, [key]: value }));
   };
 
-  const saveSection = (section) => {
+  const saveSection = async (section) => {
     const updated = { ...draft };
-    setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
-    // update selectedCasa in context so modal shows saved values
-    openCasaModal(updated);
+
+    // build a minimal patch body depending on the section edited
+    const payload = {};
+
+    if (section === "notes") {
+      payload.notes = updated.notes ?? null;
+    }
+
+    if (section === "info") {
+      // send property subset and valuation fields if present
+      payload.property = {
+        sizeMq: updated.property?.sizeMq ?? updated.property?.surfaceM2 ?? null,
+        propertyType: updated.property?.propertyType ?? null,
+        condition: updated.property?.condition ?? null,
+      };
+      if (updated.valuationFinal !== undefined) payload.valuationFinal = updated.valuationFinal;
+      if (updated.valuationRange !== undefined) payload.valuationRange = updated.valuationRange;
+    }
+
+    if (section === "contact") {
+      payload.contact = {
+        name: updated.contact?.name ?? null,
+        surname: updated.contact?.surname ?? null,
+        email: updated.contact?.email ?? null,
+        phone: updated.contact?.phone ?? null,
+      };
+    }
+
+    // if status changed anywhere in draft include it
+    if (updated.status) payload.status = updated.status;
+
+    // Try to persist to backend; request requires auth token which is handled centrally
+    let serverUpdated = null;
+    try {
+      serverUpdated = await updateValuationDashboard(updated.id, payload);
+    } catch (err) {
+      console.error("saveSection: updateValuationDashboard failed", err);
+      serverUpdated = null;
+    }
+
+    const final = serverUpdated ?? updated;
+
+    // ensure list stored in context uses the mapped list item shape (so status keys are consistent)
+    const listItem = serverUpdated ? mapListItem(serverUpdated) : final;
+    setAllCases((prev) => prev.map((x) => (x.id === listItem.id ? listItem : x)));
+    // update selectedCasa in context so modal shows saved values; provider will fetch fresh details when given an id
+    openCasaModal({ id: final.id });
     setEditing((e) => ({ ...e, [section]: false }));
   };
 
@@ -66,10 +114,23 @@ export default function CasaModal() {
                 <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded">Admin</span>
               )}
             </div>
-              <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
-              <span className="i-lucide-map-pin" />
-              <span className="truncate max-w-[36rem]">{c.property?.address ?? ''}</span>
-            </p>
+            <div className="flex items-center gap-3 mt-1 flex-wrap">
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <span className="i-lucide-map-pin" />
+                <span className="truncate max-w-[36rem]">{c.property?.address ?? ''}</span>
+              </p>
+
+              <div className="flex items-center gap-2">
+                <StatusDropdown casa={c} />
+              </div>
+
+              {userType === 'admin' && c.assignedAgent && (
+                <div className="w-full mt-2 text-sm text-gray-700">
+                  <div className="font-medium">Agente</div>
+                  <div>{typeof c.assignedAgent === 'string' ? c.assignedAgent : `${c.assignedAgent.name || ''} ${c.assignedAgent.surname || ''}`.trim()}</div>
+                </div>
+              )}
+            </div>
           </div>
 
           <button
@@ -187,7 +248,7 @@ export default function CasaModal() {
                       <div className="flex flex-col gap-2">
                         <label className="text-xs text-gray-500">Superficie (m²)</label>
                         <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property?.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
-                        <label className="text-xs text-gray-500">Valutazione AVM</label>
+                        <label className="text-xs text-gray-500">Valutazione attuale</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.valuationRange ?? ''} onChange={(e) => updateDraftRoot('valuationRange', e.target.value)} />
                         <label className="text-xs text-gray-500">Tipologia</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property?.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)} />
@@ -202,7 +263,8 @@ export default function CasaModal() {
                     ) : (
                       <>
                         <div><span className="font-medium">Superficie:</span> {draft.property?.sizeMq ?? ''} m²</div>
-                        <div><span className="font-medium">Valutazione AVM:</span> {draft.valuationRange ?? ''}</div>
+                        <div><span className="font-medium">Valutazione attuale:</span> {draft.valuationRange ?? ''}</div>
+                        <div><span className="font-medium">Valutazione finale:</span> {typeof draft.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(draft.valuationFinal) : (draft.valuationFinal ?? '-')}</div>
                         <div><span className="font-medium">Tipologia:</span> {draft.property?.propertyTypeLabel || draft.property?.propertyType || ''}</div>
                         <div><span className="font-medium">Stato:</span> {draft.property?.conditionLabel || draft.property?.condition || ''}</div>
                       </>
@@ -257,35 +319,7 @@ export default function CasaModal() {
                   </div>
                 </section>
 
-                <section className="bg-white p-5 rounded-xl shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-800">Altri dettagli</h3>
-                      <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, agent: !e.agent }))}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                        </svg>
-                        <span>Modifica</span>
-                      </button>
-                    </div>
-
-                    <div className="text-gray-700">
-                      {editing.agent ? (
-                        <div className="flex flex-col gap-2">
-                          <label className="text-xs text-gray-500">Assegnato ad</label>
-                          <input className="border rounded px-3 py-2 text-sm" value={draft.assignedAgent ?? ''} onChange={(e) => updateDraftRoot('assignedAgent', e.target.value)} />
-                          <label className="text-xs text-gray-500">Valutazione finale</label>
-                          <input className="border rounded px-3 py-2 text-sm" value={draft.valuationFinal ?? ''} onChange={(e) => updateDraftRoot('valuationFinal', e.target.value)} />
-
-                          <div className="mt-3 flex gap-2">
-                            <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('agent')}>Conferma</button>
-                            <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('agent')}>Annulla</button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>{draft.extraInfo || "Nessun dettaglio aggiuntivo."}</>
-                      )}
-                    </div>
-                </section>
+                {/* "Altri dettagli" section removed per richiesta: mantenere solo Note sulla destra */}
               </div>
 
               {/* Right column: note */}

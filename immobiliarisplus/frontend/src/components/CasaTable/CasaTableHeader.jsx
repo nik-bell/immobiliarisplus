@@ -10,7 +10,7 @@ export default function CasaTableHeader() {
   const allColumns = [
     { key: "property.address", label: "Indirizzo" },
     { key: "property.sizeMq", label: "Mq" },
-    { key: "valuationRange", label: "Valutazione attuale" },
+    { key: "valuationFinal", label: "Valutazione finale" },
     { key: "status", label: "Stato" },
     { key: "assignedAgent", label: "Agente" },
     { key: "actions", label: "" }, // colonna icons/azioni

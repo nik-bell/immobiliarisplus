@@ -32,10 +32,14 @@ export default function CasaTable() {
               <div className="flex-1">
                 <div className="text-sm font-medium text-gray-900">{casa.property?.address ?? ''}</div>
                 <div className="text-xs text-gray-500 mt-1">
-                  {casa.property?.sizeMq ?? ''} m² • {casa.valuationRange ?? ''}
+                  {casa.property?.sizeMq ?? ''} m²
                 </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  <span className="font-medium">Finale:</span> {typeof casa.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(casa.valuationFinal) : (casa.valuationFinal ?? '-')}
+                </div>
+                {/* status is shown as badge only */}
                 <div className="mt-2 flex items-center gap-2">
-                  <Badge status={casa.status} />
+                    <Badge status={casa.status} label={casa.statusLabel} />
                   {casa.assignedAgent && (
                     <div className="text-xs text-gray-600">Assegnato a {typeof casa.assignedAgent === 'string' ? casa.assignedAgent : `${casa.assignedAgent.name || ''} ${casa.assignedAgent.surname || ''}`.trim()}</div>
                   )}

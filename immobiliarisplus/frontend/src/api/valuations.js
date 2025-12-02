@@ -34,3 +34,14 @@ export async function getProperties() {
   console.error("getProperties ERROR:", res.error || res.status);
   return null;
 }
+
+export async function updateValuationDashboard(id, patchBody) {
+  if (!id) {
+    console.error("updateValuationDashboard called without id");
+    return null;
+  }
+  const res = await request(`/valuations/dashboard/${id}`, { method: "PATCH", body: patchBody });
+  if (res.ok) return res.data;
+  console.error("updateValuationDashboard ERROR:", res.error || res.status, "payload:", patchBody);
+  return null;
+}
