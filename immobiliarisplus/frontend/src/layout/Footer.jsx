@@ -5,7 +5,7 @@ import CookiePolicy from "../components/CookiePolicy";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 
 // IMPORTA QUI IL LOGO SVG
-import Logo from "../assets/Logo.svg";
+import LogoPNG from "../assets/Logo.png";
 
 function Footer() {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ function Footer() {
         {/* LOGO */}
         <div>
           <NavLink to="/" className="flex items-center">
-            <img src={Logo} alt="Logo" className="h-10 w-auto" />
+            <img src={LogoPNG} alt="Logo" className="h-10 w-auto" />
           </NavLink>
 
           <p className="mt-2 text-sm text-gray-400">

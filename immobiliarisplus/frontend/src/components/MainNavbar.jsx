@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import LogoSVG from '../assets/Logo.svg'
+import LogoPNG from '../assets/Logo.png'
 
 const MainNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +15,7 @@ const MainNavbar = () => {
           {/* Left - Logo */}
           <NavLink to="/" className="flex items-center group">
             <img
-              src={LogoSVG}
+              src={LogoPNG}
               alt="Logo"
               className="h-11 w-auto transition-transform duration-200 group-hover:scale-105"
             />
