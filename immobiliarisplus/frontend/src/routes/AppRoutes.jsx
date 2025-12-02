@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import { useAuth } from "../store/AuthContext";
+import { Navigate } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
@@ -11,7 +13,20 @@ const MiglioraCasa = lazy(() => import("../pages/MiglioraCasa"));
 const ContrattoEsclusiva = lazy(() => import("../pages/ContrattoEsclusiva"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 const Test = lazy(() => import("../pages/test"));
-const AreaAgenti = lazy(() => import("../pages/AreaAgenti"));
+const AreaAgentiImport = () => import("../pages/AreaAgenti");
+const AreaAgenti = lazy(AreaAgentiImport);
+
+function ProtectedAreaAgenti() {
+  const { isLoggedIn } = useAuth();
+  if (!isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+  return (
+    <Suspense fallback={<Loading />}>
+      <AreaAgenti />
+    </Suspense>
+  );
+}
 
 // 2. COMPONENTE DI CARICAMENTO E HELPER
 const Loading = () => (
@@ -74,7 +89,7 @@ const appRoutes = [
         children: [
           {
             index: true,
-            element: load(AreaAgenti),
+            element: <ProtectedAreaAgenti />,
             title: "Area Agenti",
             showInNav: true,
           },

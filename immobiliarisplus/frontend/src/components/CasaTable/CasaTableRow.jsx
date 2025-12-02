@@ -1,6 +1,7 @@
 import { useCasa } from "../../store/CasaContext";
 import Badge from "./Badge";
 import { useAuth } from "../../store/AuthContext";
+import AgentSelector from "./AgentSelector";
 
 export default function CasaTableRow({ casa }) {
   const { openCasaModal } = useCasa();
@@ -17,16 +18,20 @@ export default function CasaTableRow({ casa }) {
     openCasaModal(casa);
   };
 
+  
+
+  // helper removed: AgentSelector handles label formatting
+
   return (
     <tr
       onClick={handleRowClick}
       className="hover:bg-gray-50 cursor-pointer transition"
     >
       {/* Indirizzo */}
-      <td className="px-4 py-3">{casa.property.address}</td>
+      <td className="px-4 py-3">{casa.property?.address ?? ''}</td>
 
       {/* Mq */}
-      <td className="px-4 py-3">{casa.property.sizeMq} m²</td>
+      <td className="px-4 py-3">{casa.property?.sizeMq ?? ''} m²</td>
 
       {/* Valutazione (stringa) */}
       <td className="px-4 py-3">{casa.valuationRange}</td>
@@ -38,9 +43,10 @@ export default function CasaTableRow({ casa }) {
 
       {/* Agente assegnato (visibile solo ad admin) */}
       {userType === "admin" && (
-        <td className="px-4 py-3">{casa.assignedAgent || "-"}</td>
+        <td className="px-4 py-3 relative" onClick={(e) => e.stopPropagation()}>
+          <AgentSelector casa={casa} />
+        </td>
       )}
-
       {/* Azioni: icona info che apre modale */}
       <td className="px-4 py-3 text-right">
         <button

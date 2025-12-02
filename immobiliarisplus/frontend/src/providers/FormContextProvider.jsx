@@ -4,6 +4,8 @@ import validateStep1 from "../pages/ValutaCasa/validators/validateStep1";
 import validateStep2 from "../pages/ValutaCasa/validators/validateStep2";
 import validateStep3 from "../pages/ValutaCasa/validators/validateStep3";
 import { createValuation } from "../api/api";
+import { mapPropertyType, mapPropertyCondition } from "../utils/mappers";
+import { useCallback } from "react";
 
 const initialState = {
   step: 1,
@@ -101,7 +103,7 @@ export default function FormContextProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
   // ------ VALIDATORE A STEP ------
-  function validateCurrentStep() {
+  const validateCurrentStep = useCallback(() => {
     let result;
 
     if (state.step === 1) {
@@ -114,22 +116,20 @@ export default function FormContextProvider({ children }) {
 
     dispatch({ type: "SET_ERRORS", payload: result.errors });
     return result.valid;
-  }
+  }, [state.step, state.property, state.details, state.contact]);
 
-  function nextStep() {
+  const nextStep = useCallback(() => {
     if (validateCurrentStep()) {
       dispatch({ type: "NEXT_STEP" });
     }
-  }
+  }, [validateCurrentStep]);
 
-  function prevStep() {
-    dispatch({ type: "PREV_STEP" });
-  }
+  const prevStep = useCallback(() => dispatch({ type: "PREV_STEP" }), []);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  async function submitForm() {
+  const submitForm = useCallback(async () => {
     // Valida lo step 3
     if (!validateCurrentStep()) {
       return;
@@ -149,7 +149,7 @@ export default function FormContextProvider({ children }) {
     setError(null);
     try {
       // NORMALIZE: coerce numeric fields to numbers (backend often expects numbers, not strings)
-      const mapPropertyType = (pt) => {
+      const mapPropertyTypeLocal = (pt) => {
         if (!pt) return null;
         const v = String(pt).toLowerCase();
         if (v.includes("appart")) return "APARTMENT";
@@ -158,7 +158,7 @@ export default function FormContextProvider({ children }) {
         return "OTHER"; // fallback to OTHER
       };
 
-      const mapCondition = (c) => {
+      const mapConditionLocal = (c) => {
         if (!c) return null;
         const v = String(c).toLowerCase();
         if (v.includes("nuov")) return "NEW";
@@ -216,7 +216,7 @@ export default function FormContextProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [state.contact, state.details, state.property]);
 
   return (
     <FormContext.Provider

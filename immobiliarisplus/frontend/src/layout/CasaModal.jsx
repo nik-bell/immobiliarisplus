@@ -8,18 +8,14 @@ export default function CasaModal() {
 
   const { userType } = useAuth();
 
-  if (!modalOpen || !selectedCasa) return null;
-
-  const c = selectedCasa;
-
-  // draft per edit inline
-  const [draft, setDraft] = useState(c);
+  // draft per edit inline (init safe when selectedCasa is null)
+  const [draft, setDraft] = useState(() => selectedCasa ?? {});
 
   // editing flags per section
   const [editing, setEditing] = useState({ info: false, contact: false, agent: false, notes: false });
 
   useEffect(() => {
-    setDraft(selectedCasa);
+    setDraft(selectedCasa ?? {});
     setEditing({ info: false, contact: false, agent: false, notes: false });
   }, [selectedCasa]);
 
@@ -29,11 +25,11 @@ export default function CasaModal() {
   const [newDocName, setNewDocName] = useState("");
 
   const updateDraftProperty = (key, value) => {
-    setDraft((d) => ({ ...d, property: { ...d.property, [key]: value } }));
+    setDraft((d) => ({ ...d, property: { ...(d?.property || {}), [key]: value } }));
   };
 
   const updateDraftContact = (key, value) => {
-    setDraft((d) => ({ ...d, contact: { ...d.contact, [key]: value } }));
+    setDraft((d) => ({ ...d, contact: { ...(d?.contact || {}), [key]: value } }));
   };
 
   const updateDraftRoot = (key, value) => {
@@ -49,9 +45,14 @@ export default function CasaModal() {
   };
 
   const cancelSection = (section) => {
-    setDraft(selectedCasa);
+    setDraft(selectedCasa ?? {});
     setEditing((e) => ({ ...e, [section]: false }));
   };
+
+  // guard: don't render modal if closed
+  if (!modalOpen) return null;
+
+  const c = selectedCasa ?? draft ?? {};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -65,9 +66,9 @@ export default function CasaModal() {
                 <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded">Admin</span>
               )}
             </div>
-            <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
+              <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
               <span className="i-lucide-map-pin" />
-              <span className="truncate max-w-[36rem]">{c.property.address}</span>
+              <span className="truncate max-w-[36rem]">{c.property?.address ?? ''}</span>
             </p>
           </div>
 
@@ -185,13 +186,13 @@ export default function CasaModal() {
                     {editing.info ? (
                       <div className="flex flex-col gap-2">
                         <label className="text-xs text-gray-500">Superficie (m²)</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
+                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property?.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
                         <label className="text-xs text-gray-500">Valutazione AVM</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.valuationRange ?? ''} onChange={(e) => updateDraftRoot('valuationRange', e.target.value)} />
                         <label className="text-xs text-gray-500">Tipologia</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)} />
+                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property?.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)} />
                         <label className="text-xs text-gray-500">Stato</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)} />
+                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property?.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)} />
 
                         <div className="mt-3 flex gap-2">
                           <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
@@ -200,10 +201,10 @@ export default function CasaModal() {
                       </div>
                     ) : (
                       <>
-                        <div><span className="font-medium">Superficie:</span> {draft.property.sizeMq} m²</div>
-                        <div><span className="font-medium">Valutazione AVM:</span> {draft.valuationRange}</div>
-                        <div><span className="font-medium">Tipologia:</span> {draft.property.propertyType}</div>
-                        <div><span className="font-medium">Stato:</span> {draft.property.condition}</div>
+                        <div><span className="font-medium">Superficie:</span> {draft.property?.sizeMq ?? ''} m²</div>
+                        <div><span className="font-medium">Valutazione AVM:</span> {draft.valuationRange ?? ''}</div>
+                        <div><span className="font-medium">Tipologia:</span> {draft.property?.propertyTypeLabel || draft.property?.propertyType || ''}</div>
+                        <div><span className="font-medium">Stato:</span> {draft.property?.conditionLabel || draft.property?.condition || ''}</div>
                       </>
                     )}
                   </div>

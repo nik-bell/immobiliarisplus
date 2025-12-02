@@ -26,7 +26,11 @@ const TopNavbar = () => {
             ) : (
               <>
                 {userType === "agente" || userType === "admin" ? (
-                  <NavLink to="/area-agenti" className="hover:underline">
+                  <NavLink
+                    to="/area-agenti"
+                    className="hover:underline"
+                    onMouseEnter={() => import("../pages/AreaAgenti")}
+                  >
                     Area Agenti
                   </NavLink>
                 ) : (

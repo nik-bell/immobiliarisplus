@@ -21,9 +21,10 @@ INSERT INTO user (owner_id, email, password_hash, role, created_at) VALUES
     (20, 'francesca.costa@example.com', '$2a$10$dummyhash20', 'OWNER', '2025-02-28 14:10:00'),
     (21, 'gabriele.bruni@example.com', '$2a$10$dummyhash21', 'OWNER', '2025-03-03 15:25:00'),
     (22, 'chiara.martini@example.com', '$2a$10$dummyhash22', 'OWNER', '2025-03-05 08:45:00'),
-    (23, 'antonio.ferraro@example.com', '$2a$10$dummyhash23', 'OWNER', '2025-03-07 14:00:00'),
-    (24, 'laura.rinaldi@example.com', '$2a$10$dummyhash24', 'OWNER', '2025-03-10 15:15:00'),
-    (25, 'riccardo.morelli@example.com', '$2a$10$dummyhash25', 'OWNER', '2025-03-12 10:35:00'),
+    -- password
+    (23, 'antonio.ferraro@example.com', '$2a$12$1u8OxbiAeG70mBsGZL6YCO3IA1Q2Cm8QMtSUTVonAQaEUgPP843vK', 'OWNER', '2025-03-20 10:05:00'),
+    (24, 'laura.rinaldi@example.com', '$2a$12$sVqEIOT3AO6lbrWb3bb/HO4zfhRrvUAcKRb88nsOQ5F6BnuV8tnAK', 'OWNER', '2025-03-20 10:05:00'),
+    (25, 'riccardo.morelli@example.com', '$2a$12$alwpN3N.J6wLWqgZgi7vU.igmTbz6GdBXUbP2JWKV/DhXmy9m3rRG', 'OWNER', '2025-03-20 10:05:00'),
     (NULL, 'admin1@immobiliaris.com', '$2a$10$dummyhash26', 'ADMIN', '2025-03-15 09:00:00'),
     (NULL, 'admin2@immobiliaris.com', '$2a$10$dummyhash27', 'ADMIN', '2025-03-15 09:10:00'),
     (NULL, 'agent1@immobiliaris.com', '$2a$10$dummyhash28', 'AGENT', '2025-03-15 09:20:00'),
@@ -33,7 +34,13 @@ INSERT INTO user (owner_id, email, password_hash, role, created_at) VALUES
     -- Utenti 9gruppo
     -- Password: 'novegruppo' per admin
     (NULL, 'ad.min@immobiliarisplus.com', '$2a$12$5r7Mw0IXtSVxx9878BQbZe7TWkNnHWFgG9FJ2IIGGhbcGckPSJtvm', 'ADMIN', '2025-03-20 10:00:00'),
-    -- Password: '9password' per owner
-    (NULL, 'ow.ner@immobiliarisplus.com', '$2a$12$4cnLGg.yIlEd9wuwEdd1uOk4W5xdBYGLJqmweqItvtn4lVdMwSVsm', 'OWNER', '2025-03-20 10:05:00'),
+    (NULL, 'admin.frontend@immobiliarisplus.com', '$2a$12$lw4qsfwE/wx95tOAxPSCceVtr7QM0qkv8OwqDLJgF7/eg3VSmb3Ma', 'AGENT', '2025-04-01 12:00:00'),
+    (NULL, 'admin.backend@immobiliarisplus.com', '$2a$12$5vnk3wPdRjyDOYAi7BBTteEM0v4I/W0iH6V0BrK0V3ssu9M8fI/7.', 'AGENT', '2025-04-01 12:00:00'),
     -- Password: '9password' per agent
-    (NULL, 'agent.smith@immobiliarisplus.com', '$2a$12$J/7ypUUL2ffaskpJWSlkSuv174KBp3plah3jzV0DycWChch8S38mW', 'AGENT', '2025-03-20 10:10:00');
+    (NULL, 'agent.smith@immobiliarisplus.com', '$2a$12$J/7ypUUL2ffaskpJWSlkSuv174KBp3plah3jzV0DycWChch8S38mW', 'AGENT', '2025-03-20 10:10:00'),
+    (NULL, 'agent.p@immobiliarisplus.com', '$2a$12$JRQdUgWRDkGS0OaWpp17SO5/TICFdgX7FM2DWHdTuKTkXikhunby6', 'AGENT', '2025-04-01 12:00:00'),
+    (NULL, 'agent.bianchi@immobiliarisplus.com', '$2a$12$Fsp7n4u.u12V9u.QDyk9heDUilwro4NuFIvMSSBZ3Q0zdOj6DfdAa', 'AGENT', '2025-04-01 12:00:00');
+
+
+
+
