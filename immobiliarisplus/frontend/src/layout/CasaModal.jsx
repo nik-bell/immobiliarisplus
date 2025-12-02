@@ -114,7 +114,7 @@ export default function CasaModal() {
             <div className="flex items-center gap-3">
               <h2 className="text-2xl font-semibold text-gray-800">Dettagli lead</h2>
               {userType === "admin" && (
-                <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded">Admin</span>
+                <span className="text-xs bg-teal-700 text-white px-2 py-1 rounded">Admin</span>
               )}
             </div>
             <div className="flex items-center gap-3 mt-1 flex-wrap">
@@ -181,7 +181,7 @@ export default function CasaModal() {
                     </button>
                     <button
                       onClick={() => setShowAddDoc(true)}
-                      className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
+                      className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
                     >
                       Aggiungi documento
                     </button>
@@ -198,7 +198,7 @@ export default function CasaModal() {
                       <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
                         <div className="text-sm text-gray-800">{doc.name}</div>
                         <div className="flex items-center gap-2">
-                          <a href={doc.url || '#'} className="text-emerald-600 text-sm hover:underline">Apri</a>
+                          <a href={doc.url || '#'} className="text-teal-700 text-sm hover:underline">Apri</a>
                         </div>
                       </li>
                     ))}
@@ -211,7 +211,7 @@ export default function CasaModal() {
                     <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
                     <div className="mt-3 flex gap-2">
                       <button
-                        className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
+                        className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
                         onClick={() => {
                           if (!newDocName) return;
                           const newDoc = { id: Date.now().toString(), name: newDocName };
@@ -238,7 +238,7 @@ export default function CasaModal() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Informazioni immobile</h3>
                     <button
-                      className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700"
+                      className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700"
                       onClick={() => setEditing((e) => ({ ...e, info: !e.info }))}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
@@ -275,7 +275,7 @@ export default function CasaModal() {
                         </select>
 
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('info')}>Annulla</button>
                         </div>
                       </div>
@@ -295,7 +295,7 @@ export default function CasaModal() {
                 <section className="bg-white p-5 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Contatto proprietario</h3>
-                    <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, contact: !e.contact }))}>
+                    <button className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700" onClick={() => setEditing((e) => ({ ...e, contact: !e.contact }))}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                       </svg>
@@ -324,7 +324,7 @@ export default function CasaModal() {
                         </div>
 
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('contact')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('contact')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('contact')}>Annulla</button>
                         </div>
                       </div>
@@ -346,7 +346,7 @@ export default function CasaModal() {
                 <section className="bg-white p-5 rounded-xl shadow-sm sticky top-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Note</h3>
-                    <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, notes: !e.notes }))}>
+                    <button className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700" onClick={() => setEditing((e) => ({ ...e, notes: !e.notes }))}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                       </svg>
@@ -359,7 +359,7 @@ export default function CasaModal() {
                       <div className="flex flex-col gap-2">
                         <textarea className="border rounded px-3 py-2 text-sm min-h-[120px]" value={draft.notes ?? ''} onChange={(e) => updateDraftRoot('notes', e.target.value)} />
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('notes')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('notes')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('notes')}>Annulla</button>
                         </div>
                       </div>
