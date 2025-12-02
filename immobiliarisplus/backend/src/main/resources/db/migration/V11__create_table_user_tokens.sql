@@ -1,0 +1,11 @@
+CREATE TABLE user_tokens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    token VARCHAR(500) NOT NULL,
+    type ENUM('ACCESS', 'REFRESH') DEFAULT 'ACCESS',
+    expires_at DATETIME NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user_tokens_user FOREIGN KEY (user_id)
+        REFERENCES user(id) ON DELETE CASCADE
+);

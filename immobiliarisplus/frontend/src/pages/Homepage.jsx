@@ -1,5 +1,24 @@
-function Homepage() {
-  return <h2>Homepage caricata</h2>;
-}
+import HeroHomepage from "../sections/HeroHomepage";
+import PercheSceglierci from "../sections/PercheSceglierci";
+import ComeFunzionaHomepage from "../sections/ComeFunzionaHomepage";
+import NostriValori from "../sections/NostriValori";
+import ComeFunzionaSection from "../sections/ComeFunzionaSection";
+import ChiSiamo from "../sections/ChiSiamo";
 
-export default Homepage;
+
+const HomePage = () => {
+  return (
+    <>
+      <HeroHomepage />
+      <div className="container">
+        <PercheSceglierci />
+      </div>
+      <NostriValori />
+        <ComeFunzionaHomepage />
+        <ComeFunzionaSection />
+        <ChiSiamo />
+    </>
+  );
+};
+
+export default HomePage;

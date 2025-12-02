@@ -1,0 +1,9 @@
+// Aggregator: explicitly re-export selected functions to avoid duplicate/conflicting star exports
+export { login } from "./auth";
+
+export { getValuationsDashboard, getValuationDetail, createValuation, assignEmployeeToDashboard, getProperties } from "./valuations";
+
+export { getEmployees } from "./employees";
+
+export { request, setAuthToken, clearAuthToken, API_BASE_URL } from "./request";
+export { performLogin } from "./authService";

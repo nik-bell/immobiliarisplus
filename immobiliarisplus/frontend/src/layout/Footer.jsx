@@ -40,7 +40,7 @@ function Footer() {
 
         {/* SERVIZI */}
         <div>
-          <h5 className="font-semibold mb-2 text-white">Servizi</h5>
+          <h3 className="h5 font-semibold mb-2 text-white">Servizi</h3>
           <ul className="space-y-1 text-sm">
             <li><NavLink to="/valuta-casa" className="text-gray-400 hover:text-white">Valuta casa</NavLink></li>
             <li><NavLink to="/vendi-casa" className="text-gray-400 hover:text-white">Vendi casa</NavLink></li>
@@ -50,7 +50,7 @@ function Footer() {
 
         {/* CONTATTI */}
         <div>
-          <h5 className="font-semibold mb-2 text-white">Contatti</h5>
+          <h3 className="h5 font-semibold mb-2 text-white">Contatti</h3>
           <p className="text-sm text-gray-400">+39 02 1234 5678</p>
           <p className="text-sm text-gray-400">info@immobiliarisplus.it</p>
           <p className="text-sm text-gray-400 mt-2">Torino, Italia</p>
@@ -58,7 +58,7 @@ function Footer() {
 
         {/* NEWSLETTER */}
         <div>
-          <h5 className="font-semibold mb-2 text-white">Newsletter</h5>
+          <h3 className="h5 font-semibold mb-2 text-white">Newsletter</h3>
           <p className="text-sm mb-3 text-gray-400">
             Ricevi consigli e novità dal mercato immobiliare
           </p>
@@ -85,7 +85,7 @@ function Footer() {
 
             <button
               type="submit"
-              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded transition"
+              className="bg-teal-700 hover:bg-teal-700 text-white px-4 py-2 rounded transition"
             >
               Iscriviti
             </button>
