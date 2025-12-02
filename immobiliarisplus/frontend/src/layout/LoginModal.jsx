@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useAuth } from "../store/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { performLogin, getValuationsDashboard } from "../api/api";
+import LogoPng from '../assets/Logo.png';
 
 // helper for prefetching the AreaAgenti chunk
 const AreaAgentiImport = () => import("../pages/AreaAgenti");
+
+import BACKGROUND_IMAGE_URL from '../assets/img-login.png'
 
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
@@ -15,6 +18,7 @@ export default function LoginModal({ isOpen, onClose }) {
   const [role, setRole] = useState("utente");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -62,31 +66,73 @@ export default function LoginModal({ isOpen, onClose }) {
     })();
   };
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(prev => !prev);
+  };
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-80 shadow-lg">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800">Login</h2>
+    <div
+      className="fixed inset-0 flex items-center justify-end z-60 bg-cover bg-center"
+      style={{ backgroundImage: `url(${BACKGROUND_IMAGE_URL})` }}
+    >
+      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="relative h-full w-full flex flex-col sm:flex-row items-center justify-center p-6 sm:p-10 sm:gap-2">
+        <div className="w-full sm:w-1/2 md:1/3 flex flex-col justify-center items-center">
+          <img src={LogoPng} alt="Logo immobiliaris" className="lg:max-w-lg" />
+          <h2 className="text-4xl lg:text-5xl font-extrabold mb-1 text-white/90 text-center tracking-wider">
+            Bentornato
+          </h2>
+          <p className='mb-6 lg:mx-12 font-semibold lg:text-xl text-white/80 text-center tracking-wider'>Accedi alla tua area riservata utilizzando le credenziali Agente o Amministratore.</p>
+        </div>
+        <div className="bg-black/5 backdrop-blur-xl border border-white/20 rounded-2xl p-8 w-full shadow-2xl w-full sm:w-1/2 lg:w-96">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <label
+              htmlFor="email-input"
+              className="block text-sm font-medium text-white -mb-3"
+            >Email</label>
+            <input
+              type="email"
+              placeholder="Inserisci l'email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border border-white/30 bg-white/20 text-white placeholder-gray rounded-xl px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-white/50 transition duration-300"
+              required
+            />
+            <label
+              htmlFor="password-input"
+              className="block text-sm font-medium text-white -mb-3"
+            >Password</label>
+            <div className="relative">
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Inserisci la password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border border-white/30 bg-white/20 text-white placeholder-gray rounded-xl px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-white/50 transition duration-300"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/70 hover:text-white"
+                aria-label={isPasswordVisible ? "Nascondi password" : "Mostra password"}
+              >
+                {/* ICONA OCULAR BASATA sullo stato isPasswordVisible */}
+                {isPasswordVisible ? (
+                  // Occhio APERTO (Nascondi)
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                ) : (
+                  // Occhio CHIUSO (Mostra)
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                )}
+              </button>
+            </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
-            required
-          />
-
-          {/* <select
+            {/* <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
@@ -96,24 +142,25 @@ export default function LoginModal({ isOpen, onClose }) {
             <option value="agente">Agente</option>
           </select> */}
 
-          {error && <div className="text-sm text-red-600">{error}</div>}
+            {error && <div className="text-sm text-red-600">{error}</div>}
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white rounded-md py-2 w-full hover:bg-blue-700"
-            disabled={loading}
-          >
-            {loading ? "Caricamento..." : "Conferma"}
-          </button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-teal-700 text-white font-semibold text-base rounded-lg shadow-md hover:bg-teal-500 hover:shadow-lg transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Caricamento..." : "Accedi"}
+            </button>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-gray-600 text-sm hover:underline mt-1"
-          >
-            Annulla
-          </button>
-        </form>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-white/80 text-sm hover:text-white mt-1 transition duration-300"
+            >
+              Annulla
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
