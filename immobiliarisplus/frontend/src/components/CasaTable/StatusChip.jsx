@@ -29,8 +29,8 @@ export default function StatusChip({ statusKey, label, count, active, onClick })
   const classes = getClasses(label, statusKey);
 
   if (typeof onClick === "function") {
-    // interactive filter chip: preserve original filter styling (blue active) — do not color based on tag
-    const cls = active ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-200";
+    // interactive filter chip: preserve original filter styling (teal active) — do not color based on tag
+    const cls = active ? "bg-teal-700 text-white border-teal-700" : "bg-white text-gray-700 border-gray-200";
     return (
       <button
         onClick={onClick}

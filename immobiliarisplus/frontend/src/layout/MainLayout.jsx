@@ -6,13 +6,13 @@ import ScrollToTop from "../components/ScrollToTop";
 
 export default function MainLayout() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <ScrollToTop />
       <Header />
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
