@@ -1,14 +1,18 @@
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import allowedCaps from "../../../data/allowedCaps";
+import AddressInputValutaCasa from "../../../components/AddressInputValutaCasa";
 
 function CapAutocomplete({ value, onChange }) {
   const [query, setQuery] = useState(value || "");
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
+  
+  useEffect(() => {
+    setQuery(value || "");
+  }, [value]);
   const filtered = allowedCaps.filter((e) => {
     if (!query) return true;
     const q = String(query).toLowerCase();
@@ -27,9 +31,17 @@ function CapAutocomplete({ value, onChange }) {
         className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
         value={query}
         onChange={(e) => {
-          setQuery(e.target.value);
+          const val = e.target.value;
+          setQuery(val);
           setOpen(true);
-          if (onChange) onChange(e.target.value, null);
+          if (onChange) {
+            const match = allowedCaps.find((c) => c.cap === String(val).trim());
+            if (match) {
+              onChange(match.cap, match.city);
+            } else {
+              onChange(val, null);
+            }
+          }
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
@@ -58,6 +70,26 @@ function CapAutocomplete({ value, onChange }) {
 export default function ValutaCasaStep1() {
   const { state, dispatch } = useValutaCasaForm();
   const p = state.property;
+  const handleAddressChange = (newAddressData) => {
+    const payload = {
+      address: newAddressData.address,
+    };
+    if (newAddressData.zipCode) {
+      payload.zipCode = newAddressData.zipCode;
+    }
+    if (newAddressData.city) {
+      payload.city = newAddressData.city;
+    } else if (newAddressData.zipCode) {
+      const match = allowedCaps.find((c) => c.cap === String(newAddressData.zipCode).trim());
+      if (match) {
+        payload.city = match.city;
+      }
+    }
+    dispatch({
+      type: "UPDATE_PROPERTY",
+      payload: payload,
+    });
+  };
 
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
@@ -66,17 +98,10 @@ export default function ValutaCasaStep1() {
       <p className="pb-4">Iniziamo con le informazioni di base per una valutazione accurata</p>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Indirizzo *</label>
-        <input
-          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
-          value={p.address}
-          onChange={(e) =>
-            dispatch({
-              type: "UPDATE_PROPERTY",
-              payload: { address: e.target.value },
-            })
-          }
-          placeholder="Inizia a digitare..."
+        <AddressInputValutaCasa
+          address={p.address}
+          onChange={handleAddressChange}
+          error={state.errors.address}
         />
         {state.errors.address && <p className="text-sm text-red-600">{state.errors.address}</p>}
       </div>
@@ -124,7 +149,7 @@ export default function ValutaCasaStep1() {
           }
         >
           <option value="" disabled hidden>
-            Selezioniona tipologia
+            Seleziona tipologia
           </option>
           <option value="appartamento">Appartamento</option>
           <option value="casa">Casa indipendente</option>
@@ -148,7 +173,7 @@ export default function ValutaCasaStep1() {
           }
         >
           <option value="" disabled hidden>
-            Selezioniona le condizioni
+            Seleziona le condizioni
           </option>
           <option value="nuovo">Nuovo</option>
           <option value="ottimo">Ottimo</option>
