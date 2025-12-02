@@ -286,6 +286,11 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
             Employee employee = new Employee();
             employee.setId(employeeId);
             entity.setEmployee(employee);
+
+            // Se lo status è NOT_ASSIGNED, cambialo automaticamente a NEW
+            if (entity.getStatus() == ValuationStatus.NOT_ASSIGNED) {
+                entity.setStatus(ValuationStatus.NEW);
+            }
         } else {
             entity.setEmployee(null);
         }
