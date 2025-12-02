@@ -45,7 +45,6 @@ export default function LoginModal({ isOpen, onClose }) {
           } catch (e) {
             // ignore prefetch errors
           }
-          console.log("Login avvenuto con successo:", { name: userData.name, type: userData.type });
           if (userData.type === "agente" || userData.type === "admin") {
             navigate("/area-agenti");
           }
@@ -55,7 +54,6 @@ export default function LoginModal({ isOpen, onClose }) {
         }
       } catch (err) {
         setError("Errore durante il login");
-        console.error(err);
       } finally {
         setLoading(false);
       }

@@ -15,11 +15,10 @@ function Footer() {
     e.preventDefault();
 
     if (!consenso) {
-      alert("Per favore accetta l’informativa privacy.");
+      alert("Per favore accetta l'informativa privacy.");
       return;
     }
 
-    console.log("Email inviata:", email);
     alert("Iscrizione completata!");
   };
 

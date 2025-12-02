@@ -12,7 +12,6 @@ const VendiCasa = lazy(() => import("../pages/VendiCasa"));
 const MiglioraCasa = lazy(() => import("../pages/MiglioraCasa"));
 const ContrattoEsclusiva = lazy(() => import("../pages/ContrattoEsclusiva"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
-const Test = lazy(() => import("../pages/test"));
 const AreaAgentiImport = () => import("../pages/AreaAgenti");
 const AreaAgenti = lazy(AreaAgentiImport);
 
@@ -74,12 +73,6 @@ const appRoutes = [
         element: load(MiglioraCasa),
         showInNav: true,
         title: "Migliora Casa",
-      },
-      {
-        path: "test",
-        element: load(Test),
-        showInNav: false,
-        title: "Test API",
       },
 
       // 🔐 AREA AGENTI PROTETTA

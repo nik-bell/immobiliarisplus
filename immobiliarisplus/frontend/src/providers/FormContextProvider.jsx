@@ -142,9 +142,6 @@ export default function FormContextProvider({ children }) {
       contact: state.contact,
     };
 
-    // Console.log (utile in dev)
-    console.log("Dati del form (inviando a API):", formData);
-
     setLoading(true);
     setError(null);
     try {
@@ -173,9 +170,6 @@ export default function FormContextProvider({ children }) {
         },
       };
 
-      console.log("Invio payload normalizzato a createValuation:", payload);
-      console.log("sizeMq type (payload):", typeof payload.property.sizeMq, payload.property.sizeMq);
-
       // Chiamata al backend (POST /api/valuations/calculate)
       const resp = await createValuation(payload);
 
@@ -192,7 +186,6 @@ export default function FormContextProvider({ children }) {
       dispatch({ type: "SET_SUBMIT_MESSAGE", payload: fullMessage });
       dispatch({ type: "SET_SUBMITTED" });
     } catch (err) {
-      console.error("submitForm API error:", err);
       setError(err.message || "Errore durante l'invio della richiesta");
       dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Errore durante l'invio della richiesta." });
     } finally {

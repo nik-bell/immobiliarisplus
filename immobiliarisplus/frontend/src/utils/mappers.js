@@ -1,5 +1,9 @@
 // Utilities to map backend enums/DTOs to frontend-friendly shapes/labels
 
+// ============================================================================
+// PROPERTY TYPE MAPPING
+// ============================================================================
+
 export const mapPropertyType = (t) => {
   if (!t) return "";
   switch (String(t).toUpperCase()) {
@@ -15,6 +19,21 @@ export const mapPropertyType = (t) => {
       return t;
   }
 };
+
+export const mapPropertyTypeToEnum = (pt) => {
+  if (!pt) return null;
+  const valueMap = {
+    "appartamento": "APARTMENT",
+    "casa": "HOUSE",
+    "ufficio": "OFFICE",
+    "altro": "OTHER",
+  };
+  return valueMap[String(pt).toLowerCase()] || "OTHER";
+};
+
+// ============================================================================
+// PROPERTY CONDITION MAPPING
+// ============================================================================
 
 export const mapPropertyCondition = (c) => {
   if (!c) return "";
@@ -32,6 +51,22 @@ export const mapPropertyCondition = (c) => {
   }
 };
 
+export const mapPropertyConditionToEnum = (c) => {
+  if (!c) return null;
+  const valueMap = {
+    "nuovo": "NEW",
+    "ottimo": "RECENTLY_RENOVATED",
+    "buono": "GOOD_CONDITION",
+    "da ristrutturare": "TO_RENOVATE",
+  };
+  return valueMap[String(c).toLowerCase()] || "GOOD_CONDITION";
+};
+
+// ============================================================================
+// STATUS MAPPING (Centralized & Bidirectional)
+// ============================================================================
+
+// Backend enum -> Frontend UI key (for filtering/grouping)
 export const mapStatus = (s) => {
   if (!s) return "in_corso";
   switch (String(s).toUpperCase()) {
@@ -51,6 +86,7 @@ export const mapStatus = (s) => {
   }
 };
 
+// Backend enum -> Human readable label (for display)
 export const mapValuationStatusLabel = (s) => {
   if (!s) return "";
   switch (String(s).toUpperCase()) {
@@ -70,6 +106,39 @@ export const mapValuationStatusLabel = (s) => {
       return s;
   }
 };
+
+// Frontend UI key -> Backend enum (for API payloads)
+export const mapUIStatusToEnum = (uiKey) => {
+  if (!uiKey) return null;
+  switch (uiKey) {
+    case "nuovi":
+      return "NEW";
+    case "non_assegnati":
+      return "NOT_ASSIGNED";
+    case "in_corso":
+      return "IN_PROGRESS";
+    case "attesa_cliente":
+      return "AWAITING_CLIENT_RESPONSE";
+    case "terminati":
+      return "CONFIRMED"; // default to CONFIRMED when mapping back from grouped 'terminati'
+    default:
+      return null;
+  }
+};
+
+// Complete list of backend enums in preferred order
+export const ALL_STATUS_ENUMS = [
+  "NEW",
+  "NOT_ASSIGNED",
+  "IN_PROGRESS",
+  "AWAITING_CLIENT_RESPONSE",
+  "CONFIRMED",
+  "REJECTED",
+];
+
+// ============================================================================
+// DTO MAPPING
+// ============================================================================
 
 export const mapListItem = (it) => ({
   id: String(it.id),
@@ -122,52 +191,3 @@ export const mapDetailItem = (it) => ({
   status: mapStatus(it.status),
   statusLabel: mapValuationStatusLabel(it.status),
 });
-
-// helper: map UI status key back to backend enum where possible
-export const mapUIStatusToEnum = (uiKey) => {
-  if (!uiKey) return null;
-  switch (uiKey) {
-    case "nuovi":
-      return "NEW";
-    case "non_assegnati":
-      return "NOT_ASSIGNED";
-    case "in_corso":
-      return "IN_PROGRESS";
-    case "attesa_cliente":
-      return "AWAITING_CLIENT_RESPONSE";
-    case "terminati":
-      return "CONFIRMED"; // default to CONFIRMED when mapping back from the grouped 'terminati'
-    default:
-      return null;
-  }
-};
-
-// helper: list of backend enums used by the app in preferred order
-export const ALL_STATUS_ENUMS = [
-  "NEW",
-  "NOT_ASSIGNED",
-  "IN_PROGRESS",
-  "AWAITING_CLIENT_RESPONSE",
-  "CONFIRMED",
-  "REJECTED",
-];
-
-// map frontend/free-text values to backend enums for sending payloads
-export const mapPropertyTypeToEnum = (pt) => {
-  if (!pt) return null;
-  const v = String(pt).toLowerCase();
-  if (v.includes("apart")) return "APARTMENT";
-  if (v.includes("casa") || v.includes("house") || v.includes("ind")) return "HOUSE";
-  if (v.includes("uff") || v.includes("office")) return "OFFICE";
-  return "OTHER";
-};
-
-export const mapPropertyConditionToEnum = (c) => {
-  if (!c) return null;
-  const v = String(c).toLowerCase();
-  if (v.includes("nuov") || v.includes("new")) return "NEW";
-  if (v.includes("ristr") || v.includes("recent")) return "RECENTLY_RENOVATED";
-  if (v.includes("ottim") || v.includes("buon") || v.includes("good")) return "GOOD_CONDITION";
-  if (v.includes("da ristr") || v.includes("to reno") || v.includes("to_reno") || v.includes("to_re")) return "TO_RENOVATE";
-  return "GOOD_CONDITION";
-};

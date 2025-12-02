@@ -60,7 +60,7 @@ function AddressInputValutaCasa({ address, onChange, error }) {
 
             setSuggestions(filteredSuggestions);
         } catch (error) {
-            console.error("Errore nel recupero dei suggerimenti Mapbox:", error);
+            // Failed to fetch suggestions, ignore
         } finally {
             setIsLoading(false);
         }

@@ -81,7 +81,6 @@ export default function CasaModal() {
     try {
       serverUpdated = await updateValuationDashboard(updated.id, payload);
     } catch (err) {
-      console.error("saveSection: updateValuationDashboard failed", err);
       serverUpdated = null;
     }
 

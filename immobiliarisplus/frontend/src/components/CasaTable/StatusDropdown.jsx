@@ -64,7 +64,7 @@ export default function StatusDropdown({ casa }) {
         }
       }
     } catch (err) {
-      console.error("StatusDropdown: failed to update status", err);
+      // Update failed, ignore
     } finally {
       setLoading(false);
     }
