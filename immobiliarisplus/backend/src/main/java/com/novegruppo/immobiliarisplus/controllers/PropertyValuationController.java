@@ -228,7 +228,7 @@ public class PropertyValuationController {
                 } catch (IllegalArgumentException ex) {
                     return ResponseEntity.badRequest().body(Map.of(
                             "error", "Valore 'status' non valido",
-                            "allowed", List.of("IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED","NOT_ASSIGNED")
+                            "allowed", List.of("NEW","IN_PROGRESS","AWAITING_CLIENT_RESPONSE","CONFIRMED","REJECTED","NOT_ASSIGNED")
                     ));
                 }
             }
