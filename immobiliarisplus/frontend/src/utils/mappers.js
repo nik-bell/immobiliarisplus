@@ -122,3 +122,23 @@ export const mapDetailItem = (it) => ({
   status: mapStatus(it.status),
   statusLabel: mapValuationStatusLabel(it.status),
 });
+
+// map frontend/free-text values to backend enums for sending payloads
+export const mapPropertyTypeToEnum = (pt) => {
+  if (!pt) return null;
+  const v = String(pt).toLowerCase();
+  if (v.includes("apart")) return "APARTMENT";
+  if (v.includes("casa") || v.includes("house") || v.includes("ind")) return "HOUSE";
+  if (v.includes("uff") || v.includes("office")) return "OFFICE";
+  return "OTHER";
+};
+
+export const mapPropertyConditionToEnum = (c) => {
+  if (!c) return null;
+  const v = String(c).toLowerCase();
+  if (v.includes("nuov") || v.includes("new")) return "NEW";
+  if (v.includes("ristr") || v.includes("recent")) return "RECENTLY_RENOVATED";
+  if (v.includes("ottim") || v.includes("buon") || v.includes("good")) return "GOOD_CONDITION";
+  if (v.includes("da ristr") || v.includes("to reno") || v.includes("to_reno") || v.includes("to_re")) return "TO_RENOVATE";
+  return "GOOD_CONDITION";
+};
