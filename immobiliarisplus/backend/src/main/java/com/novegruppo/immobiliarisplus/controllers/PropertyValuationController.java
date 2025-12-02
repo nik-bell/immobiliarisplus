@@ -238,6 +238,31 @@ public class PropertyValuationController {
                 String notes = raw != null ? String.valueOf(raw) : null;
                 current = service.updateNotes(id, notes);
             }
+
+            if (updates.containsKey("valuationFinal")) {
+                Object raw = updates.get("valuationFinal");
+                if (raw == null) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'valuationFinal' nullo"));
+                }
+                try {
+                    Double finalPrice = null;
+                    if (raw instanceof Number) {
+                        finalPrice = ((Number) raw).doubleValue();
+                    } else {
+                        String s = String.valueOf(raw).replace(",", ".").trim();
+                        if (s.isEmpty()) {
+                            return ResponseEntity.badRequest().body(Map.of("error", "Campo 'valuationFinal' vuoto"));
+                        }
+                        finalPrice = Double.parseDouble(s);
+                    }
+                    if (finalPrice <= 0) {
+                        return ResponseEntity.badRequest().body(Map.of("error", "'valuationFinal' deve essere > 0"));
+                    }
+                    current = service.updateFinalPrice(id, finalPrice);
+                } catch (NumberFormatException nfe) {
+                    return ResponseEntity.badRequest().body(Map.of("error", "Campo 'valuationFinal' non numerico"));
+                }
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                     "error", "Errore durante l'aggiornamento",

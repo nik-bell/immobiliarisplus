@@ -310,5 +310,16 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         propertyValuationRepository.save(entity);
         return propertyValuationMapper.toDTO(entity);
     }
-}
 
+    @Override
+    public PropertyValuationDTO updateFinalPrice(Integer valuationId, Double finalPrice) {
+        if (finalPrice == null || finalPrice <= 0) {
+            throw new IllegalArgumentException("Final price must be a positive number");
+        }
+        PropertyValuation entity = propertyValuationRepository.findById(valuationId)
+                .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));
+        entity.setEstimatedPriceMax(finalPrice);
+        propertyValuationRepository.save(entity);
+        return propertyValuationMapper.toDTO(entity);
+    }
+}

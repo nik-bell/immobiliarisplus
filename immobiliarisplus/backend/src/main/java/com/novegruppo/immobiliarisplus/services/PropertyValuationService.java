@@ -12,4 +12,5 @@ public interface PropertyValuationService extends CrudService<PropertyValuationD
     PropertyValuationDTO assignEmployee(Integer valuationId, Integer employeeId);
     PropertyValuationDTO updateStatus(Integer valuationId, ValuationStatus status);
     PropertyValuationDTO updateNotes(Integer valuationId, String notes);
+    PropertyValuationDTO updateFinalPrice(Integer valuationId, Double finalPrice);
 }
