@@ -4,7 +4,7 @@ import validateStep1 from "../pages/ValutaCasa/validators/validateStep1";
 import validateStep2 from "../pages/ValutaCasa/validators/validateStep2";
 import validateStep3 from "../pages/ValutaCasa/validators/validateStep3";
 import { createValuation } from "../api/api";
-import { mapPropertyType, mapPropertyCondition } from "../utils/mappers";
+import { mapPropertyTypeToEnum, mapPropertyConditionToEnum } from "../utils/mappers";
 import { useCallback } from "react";
 
 const initialState = {
@@ -149,24 +149,6 @@ export default function FormContextProvider({ children }) {
     setError(null);
     try {
       // NORMALIZE: coerce numeric fields to numbers (backend often expects numbers, not strings)
-      const mapPropertyTypeLocal = (pt) => {
-        if (!pt) return null;
-        const v = String(pt).toLowerCase();
-        if (v.includes("appart")) return "APARTMENT";
-        if (v.includes("casa") || v.includes("ind")) return "HOUSE";
-        if (v.includes("uff") || v.includes("ufficio")) return "OFFICE";
-        return "OTHER"; // fallback to OTHER
-      };
-
-      const mapConditionLocal = (c) => {
-        if (!c) return null;
-        const v = String(c).toLowerCase();
-        if (v.includes("nuov")) return "NEW";
-        if (v.includes("ristr") || v.includes("recent")) return "RECENTLY_RENOVATED";
-        if (v.includes("ottim") || v.includes("buon")) return "GOOD_CONDITION";
-        if (v.includes("ristr" ) || v.includes("da_ristr")) return "TO_RENOVATE";
-        return "GOOD_CONDITION";
-      };
 
       const payload = {
         property: {
@@ -176,8 +158,8 @@ export default function FormContextProvider({ children }) {
           // compatibility: also include the legacy field name `surfaceM2` in numeric form
           surfaceM2: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
           // map to backend enums
-          propertyType: mapPropertyType(formData.property.propertyType),
-          condition: mapCondition(formData.property.condition),
+          propertyType: mapPropertyTypeToEnum(formData.property.propertyType),
+          condition: mapPropertyConditionToEnum(formData.property.condition),
         },
         details: {
           ...formData.details,

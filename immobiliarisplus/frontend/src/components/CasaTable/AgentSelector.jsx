@@ -96,7 +96,7 @@ export default function AgentSelector({ casa }) {
             <div
               key={emp.id}
               className="px-2 py-2 hover:bg-gray-50 rounded cursor-pointer text-sm flex items-center justify-between"
-              onClick={() => handleAssign(emp)}
+              onClick={(e) => { e.stopPropagation(); handleAssign(emp); }}
             >
               <div>
                 <div className="font-medium">{emp.name} {emp.surname}</div>
@@ -121,7 +121,7 @@ export default function AgentSelector({ casa }) {
     <div className="relative" ref={buttonRef}>
       <button
         className="w-full text-left flex items-center justify-between gap-2 px-2 py-1 rounded hover:bg-gray-100 cursor-pointer"
-        onClick={() => setOpen((s) => !s)}
+        onClick={(e) => { e.stopPropagation(); setOpen((s) => !s); }}
         title={casa.assignedAgent ? `Assegnato a ${getAssignedLabel(casa.assignedAgent)}` : "Assegna agente"}
       >
         <span className="text-sm text-gray-700">{getAssignedLabel(casa.assignedAgent) || "-"}</span>
