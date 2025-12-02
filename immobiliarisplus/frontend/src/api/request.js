@@ -1,22 +1,38 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8081/api";
 
+const TOKEN_KEY = "auth_token";
+
 // module-scoped auth token (set by caller)
 let authToken = null;
 
-// token is stored in-module only (not persisted) for improved security
-// authToken remains null until setAuthToken is called at runtime
+// Initialize token from sessionStorage if available
+if (typeof window !== "undefined" && window.sessionStorage) {
+  const stored = sessionStorage.getItem(TOKEN_KEY);
+  if (stored) authToken = stored;
+}
 
 export function setAuthToken(token) {
-  // Keep token in module memory only (do not persist to localStorage)
   authToken = token;
+  if (typeof window !== "undefined" && window.sessionStorage) {
+    if (token) {
+      sessionStorage.setItem(TOKEN_KEY, token);
+    } else {
+      sessionStorage.removeItem(TOKEN_KEY);
+    }
+  }
 }
 
 export function clearAuthToken() {
   authToken = null;
+  if (typeof window !== "undefined" && window.sessionStorage) {
+    sessionStorage.removeItem(TOKEN_KEY);
+  }
 }
 
 export function getPersistedAuthToken() {
-  // no persistence: always return null
+  if (typeof window !== "undefined" && window.sessionStorage) {
+    return sessionStorage.getItem(TOKEN_KEY);
+  }
   return null;
 }
 
