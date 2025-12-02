@@ -21,7 +21,7 @@ const MailInArrivo = () => {
                         <h2 className="text-left text-xl font-semibold text-gray-800">
                             Mail di riepilogo in arrivo
                         </h2>
-                        <p className='pt-2 text-sm font-light'>Entro le prossime ore riceverai una mail all'indirizzo fornito con:</p>
+                        <p className='pt-2 text-sm text-left font-light'>Entro le prossime ore riceverai una mail all'indirizzo fornito con:</p>
                     </div>
                 </div>
 
