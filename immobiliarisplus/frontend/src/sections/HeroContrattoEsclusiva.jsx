@@ -6,12 +6,12 @@ import HeroImageAvif from "../assets/contratto-esclusiva/contratto-esclusiva.avi
 
 export default function HeroContrattoEsclusiva() {
     return (
-        <div className="min-h-[90vh]">
+        <div className="min-h-[80vh]">
             <Hero
                 backgroundImage={HeroImageJpg}
                 backgroundImageWebp={HeroImageWebp}
                 backgroundImageAvif={HeroImageAvif}
-                className="min-h-[90vh] lg:min-h-[90vh]"
+                className="min-h-[80vh] lg:min-h-[80vh]"
             >
                 <h1 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">
                     Come funziona il contratto di vendita in esclusiva
