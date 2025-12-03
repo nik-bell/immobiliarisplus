@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasaSuccesso.jsx
+ * @description Success screen shown after a successful valuation request submission.
+ */
 import useValutaCasaForm from "../useValutaCasaForm";
 import CardContattiValutaCasa from "../../../sections/CardContattiValutaCasa";
 import CosaSuccedeValutazione from "../../../sections/CosaSuccedeValutazione";

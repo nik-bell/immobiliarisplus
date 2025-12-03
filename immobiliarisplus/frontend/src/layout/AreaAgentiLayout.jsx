@@ -1,9 +1,3 @@
-/**
- * @file AreaAgentiLayout.jsx
- * @description Layout component for the agents area that enforces authentication.
- *              Provides context for property management and renders nested routes with a modal.
- */
-
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import CasaContextProvider from "../providers/CasaContextProvider";
@@ -24,12 +18,20 @@ export default function AreaAgentiLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    /**
+     * Redirects to the homepage if the user is not authenticated.
+     * Ensures the agents area is only accessible after login.
+     */
     if (!isLoggedIn) {
       // if the user is not logged in, redirect to home
       navigate("/", { replace: true });
     }
   }, [isLoggedIn, navigate]);
 
+  /**
+   * Wraps the agents area with the Casa context and renders the modal portal.
+   * @returns {JSX.Element}
+   */
   return (
     <CasaContextProvider>
       <Outlet />

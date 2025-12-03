@@ -1,33 +1,26 @@
 /**
  * @file Badge.jsx
- * @description Small status badge used in the Casa table. Chooses a color class
- *              based on a status key or on the label text.
+ * @description Status badge component with color-coded styling.
+ * 
+ * Displays status labels with appropriate background colors based on
+ * status type. Used for static display (non-interactive).
+ * 
+ * @module components/CasaTable/Badge
  */
 
 /**
- * Allowed status keys (used to map to Tailwind color classes).
- * @typedef {('non_assegnati'|'in_corso'|'attesa_cliente'|'terminati'|string)} StatusKey
- */
-
-/**
- * Props for the Badge component.
- * @typedef {Object} BadgeProps
- * @property {StatusKey} [status] - Enum-like status key to determine default color.
- * @property {string} [label] - Optional display label; label text may override color choice.
- */
-
-/**
- * Badge component
- *
- * Renders a small pill badge with a color variant selected from status or label.
- *
- * @param {BadgeProps} props
- * @param {StatusKey} [props.status]
- * @param {string} [props.label]
- * @returns {JSX.Element} Rendered badge element.
+ * Static status badge with color-coded styling.
+ * 
+ * Determines badge colors based on status key or label text. Supports
+ * label-based color matching for flexibility with different status values.
+ * 
+ * @param {Object} props - Component props
+ * @param {string} [props.status] - Status key for color mapping (non_assegnati, in_corso, etc.)
+ * @param {string} [props.label] - Display label text (also used for color matching)
+ * @returns {JSX.Element} Styled badge element
  */
 export default function Badge({ status, label }) {
-  // color mapping (you can add variants)
+  // Color mapping (can be extended with more variants)
   const colors = {
     non_assegnati: "bg-red-100 text-red-700",
     in_corso: "bg-yellow-100 text-yellow-800",
@@ -35,7 +28,7 @@ export default function Badge({ status, label }) {
     terminati: "bg-green-100 text-green-700",
   };
 
-  // generic fallback
+  // fallback generico
   // prefer label-based color choices to allow per-enum coloring
   const normalize = (v) => (v || "").toString().toLowerCase();
   const lbl = normalize(label);

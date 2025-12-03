@@ -1,9 +1,3 @@
-/**
- * @file MainNavbar.jsx
- * @description Main navigation bar component with responsive design.
- *              Displays logo, navigation links, and a mobile menu drawer.
- */
-
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import LogoPNG from '../assets/Logo.png'
@@ -19,10 +13,6 @@ import LogoPNG from '../assets/Logo.png'
  */
 const MainNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  /**
-   * Toggle mobile menu open/closed state.
-   */
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

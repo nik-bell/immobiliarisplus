@@ -1,48 +1,14 @@
 /**
  * @file CasaTable.jsx
- * @description Table / list view for "case" (properties) used in the dashboard.
- *
- * Renders a responsive table for desktop and stacked cards for mobile.
- * Uses CasaContext to read the list of cases and AuthContext to conditionally
- * render admin-only controls (AgentSelector).
+ * @description Responsive valuation table component.
+ * 
+ * Main table component that displays valuations in different layouts:
+ * - Desktop/tablet: Traditional table with sortable columns
+ * - Mobile: Stacked card layout for better mobile UX
+ * 
+ * @module components/CasaTable/CasaTable
  */
 
-/**
- * Employee shape used in casa objects.
- * @typedef {Object} Employee
- * @property {string|number} id - Employee identifier.
- * @property {string} [name] - First name.
- * @property {string} [surname] - Last name.
- * @property {string} [email] - Email.
- */
-
-/**
- * Casa (case/property) shape.
- * @typedef {Object} Casa
- * @property {string|number} id - Casa identifier.
- * @property {Object} [property] - Property details.
- * @property {string} [property.address] - Property address.
- * @property {number} [property.sizeMq] - Size in square meters.
- * @property {number|string|null} [valuationFinal] - Final valuation or placeholder.
- * @property {string} [status] - Internal status key.
- * @property {string} [statusLabel] - Human readable status label.
- * @property {Employee|string|null} [assignedAgent] - Assigned agent (object, label or null).
- */
-
-/**
- * Props for CasaTable component (none at the moment).
- * @typedef {Object} CasaTableProps
- */
-
-/**
- * CasaTable
- *
- * Responsive list/table of casas. Desktop shows a table; mobile shows stacked cards.
- * Admin users see the AgentSelector control inline on mobile cards.
- *
- * @param {CasaTableProps} props
- * @returns {JSX.Element} Rendered casa table component.
- */
 import CasaTableHeader from "./CasaTableHeader";
 import CasaTableRow from "./CasaTableRow";
 import Badge from "./Badge";
@@ -50,8 +16,16 @@ import { useCasa } from "../../store/CasaContext";
 import AgentSelector from "./AgentSelector";
 import { useAuth } from "../../store/AuthContext";
 
+/**
+ * Responsive valuation table with adaptive layout.
+ * 
+ * Renders valuations in a table format on desktop/tablet and card layout
+ * on mobile. Data is pre-filtered and sorted by CasaContextProvider.
+ * 
+ * @returns {JSX.Element} Responsive table/card layout
+ */
 export default function CasaTable() {
-  // get cases from context
+  // cases is already filtered and sorted by provider
   const { cases } = useCasa();
   const { userType } = useAuth();
 
@@ -97,7 +71,9 @@ export default function CasaTable() {
                 {/** useAuth provides userType **/}
                 {/** note: AgentSelector will fetch employees and call assign API **/}
                 {/** show selector if admin */}
+                {/** useAuth hook below */}
                 
+                {/** render AgentSelector if admin */}
                 {userType === 'admin' && <div className="mb-2"><AgentSelector casa={casa} /></div>}
                 <button
                   onClick={() => {

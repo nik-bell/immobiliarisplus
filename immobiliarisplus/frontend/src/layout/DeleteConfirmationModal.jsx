@@ -1,24 +1,8 @@
-/**
- * @file DeleteConfirmationModal.jsx
- * @description Modal component for confirming deletion of property valuation records.
- *              Displays warning message and property address before destructive action.
- */
-
-/**
- * DeleteConfirmationModal
- *
- * A confirmation modal that prompts the user before deleting a valuation record.
- * Displays the property address and an irreversibility warning.
- *
- * @component
- * @param {Object} props - Component props
- * @param {boolean} props.isOpen - Controls modal visibility
- * @param {Function} props.onCancel - Callback when user clicks "Annulla" button
- * @param {Function} props.onConfirm - Callback when user clicks "Elimina" button
- * @param {string} [props.leadAddress] - Property address to display in confirmation (optional)
- * @returns {JSX.Element|null} Modal overlay with confirmation dialog, or null if not open
- */
 export default function DeleteConfirmationModal({ isOpen, onCancel, onConfirm, leadAddress }) {
+  /**
+   * Do not render anything when the modal is closed.
+   * @returns {null|JSX.Element}
+   */
   if (!isOpen) return null;
 
   return (

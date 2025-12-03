@@ -1,3 +1,13 @@
+/**
+ * @file FormContextProvider.jsx
+ * @description Multi-step valuation form context provider.
+ *
+ * Centralizes form state, step validation, navigation, and submission logic
+ * for the valuation flow. Exposes helpers via `FormContext`.
+ *
+ * @module providers/FormContextProvider
+ */
+
 import { useReducer, useState } from "react";
 import FormContext from "../store/FormContext";
 import validateStep1 from "../pages/ValutaCasa/validators/validateStep1";
@@ -44,17 +54,10 @@ const initialState = {
     privacyAccepted: false,
   },
   errors: {},
-  submitMessage: "",
-  isSubmitted: false,
+  submitMessage: "", 
+  isSubmitted: false, // Flag to know if the form has been submitted
 };
 
-/**
- * Reducer responsible for managing multi-step form state.
- *
- * @param {Object} state - Current form state.
- * @param {Object} action - Reducer action {type, payload}.
- * @returns {Object} Updated state.
- */
 function formReducer(state, action) {
   switch (action.type) {
     case "NEXT_STEP":
@@ -104,30 +107,10 @@ function formReducer(state, action) {
   }
 }
 
-/**
- * Provides global state and handlers for the 3-step "Valuta Casa" form.
- * Handles:
- * - Step navigation
- * - Field updates
- * - Validation per step
- * - Submission with backend normalization
- * - Success/error handling
- *
- * Wrap components using `<FormContextProvider>...</FormContextProvider>`
- *
- * @component
- * @param {Object} props
- * @param {React.ReactNode} props.children - Components that will access form context.
- * @returns {JSX.Element} Provider wrapping the form.
- */
 export default function FormContextProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
-  /**
-   * Validates the current step of the form.
-   *
-   * @returns {boolean} `true` if valid, `false` otherwise.
-   */
+  // ------ VALIDATOR BY STEP ------
   const validateCurrentStep = useCallback(() => {
     let result;
 
@@ -143,35 +126,24 @@ export default function FormContextProvider({ children }) {
     return result.valid;
   }, [state.step, state.property, state.details, state.contact]);
 
-  /**
-   * Advances to the next form step if current step is valid.
-   */
   const nextStep = useCallback(() => {
     if (validateCurrentStep()) {
       dispatch({ type: "NEXT_STEP" });
     }
   }, [validateCurrentStep]);
 
-  /**
-   * Goes back to previous step.
-   */
   const prevStep = useCallback(() => dispatch({ type: "PREV_STEP" }), []);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  /**
-   * Submits the entire form to the backend after final validation.
-   * Converts numeric fields, maps enums, and sends data to API.
-   *
-   * On success → sets submit message + marks form as submitted.
-   * On failure → handles error and sets message.
-   */
   const submitForm = useCallback(async () => {
+    // Validate step 3
     if (!validateCurrentStep()) {
       return;
     }
 
+    // Create JSON object with all data
     const formData = {
       property: state.property,
       details: state.details,
@@ -213,9 +185,11 @@ export default function FormContextProvider({ children }) {
       const resp = await createValuation(payload);
 
       if (!resp) {
+        // createValuation returns null on error
         throw new Error("Nessuna risposta valida dal server");
       }
 
+      // Prepare success message. If API returns a range/price, show it.
       const baseMessage = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
       const range = resp.valuationRange || resp.recommendedPrice || resp.range || null;
       const fullMessage = range
@@ -226,10 +200,7 @@ export default function FormContextProvider({ children }) {
       dispatch({ type: "SET_SUBMITTED" });
     } catch (err) {
       setError(err.message || "Errore durante l'invio della richiesta");
-      dispatch({
-        type: "SET_SUBMIT_MESSAGE",
-        payload: "Errore durante l'invio della richiesta.",
-      });
+      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Errore durante l'invio della richiesta." });
     } finally {
       setLoading(false);
     }

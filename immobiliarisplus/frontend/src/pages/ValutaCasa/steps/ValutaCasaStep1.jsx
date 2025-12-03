@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasaStep1.jsx
+ * @description Step 1: Essential property information and address capture with CAP autocomplete and map preview.
+ */
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
@@ -16,6 +20,11 @@ import MapboxMap from "../../../components/MapboxMap";
  * @returns {JSX.Element}
  */
 function CapAutocomplete({ value, onChange }) {
+  /**
+   * Lightweight autocomplete for selecting a CAP with city hint.
+   * @param {{value?: string|number, onChange?: (cap: string, city: string|null) => void}} props
+   * @returns {JSX.Element}
+   */
   const [query, setQuery] = useState(value || "");
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -97,6 +106,11 @@ function CapAutocomplete({ value, onChange }) {
  * @returns {JSX.Element}
  */
 export default function ValutaCasaStep1() {
+  /**
+   * Renders the first step collecting address, CAP, type, condition, size.
+   * Also shows a Mapbox preview when coordinates are available.
+   * @returns {JSX.Element}
+   */
   const { state, dispatch } = useValutaCasaForm();
   const p = state.property;
   const [mapCoordinates, setMapCoordinates] = useState(null);
@@ -111,10 +125,12 @@ export default function ValutaCasaStep1() {
    * @param {number[]} [newAddressData.coordinates] - [lng, lat]
    */
   const handleAddressChange = (newAddressData) => {
-    const payload = { address: newAddressData.address };
-
-    if (newAddressData.zipCode) payload.zipCode = newAddressData.zipCode;
-
+    const payload = {
+      address: newAddressData.address,
+    };
+    if (newAddressData.zipCode) {
+      payload.zipCode = newAddressData.zipCode;
+    }
     if (newAddressData.city) {
       payload.city = newAddressData.city;
     } else if (newAddressData.zipCode) {

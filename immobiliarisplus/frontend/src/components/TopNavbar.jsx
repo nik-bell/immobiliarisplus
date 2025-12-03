@@ -1,9 +1,3 @@
-/**
- * @file TopNavbar.jsx
- * @description Top navigation bar component displaying authentication links and user menu.
- *              Shows login button for guests or user area and logout for authenticated users.
- */
-
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 import { useState } from "react";
@@ -24,6 +18,14 @@ const TopNavbar = () => {
   const { isLoggedIn, userType, user, logout } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
+  /**
+   * Renders a lightweight top bar showing:
+   * - Assistance link for all users
+   * - Login button when unauthenticated
+   * - Area links and role badge when authenticated (agent/admin)
+   * Also preloads the agent area route on hover for faster navigation.
+   * @returns {JSX.Element}
+   */
   return (
     <>
       <div className="w-full bg-gray-900 text-gray-100 text-sm">
