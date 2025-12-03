@@ -1,6 +1,23 @@
 import BulletPoint from "../components/BulletPoint";
 
+/**
+ * ComeVendere Component
+ *
+ * Sezione informativa che mostra i motivi principali per cui vendere
+ * casa con ImmobiliarisPLUS. Visualizza una lista di bullet point,
+ * ciascuno rappresentante uno step o un vantaggio del servizio.
+ *
+ * Utilizza il componente BulletPoint per rendere ogni item uniforme e stilizzato.
+ *
+ * @returns {JSX.Element} Blocco informativo con elenco di punti chiave sulla vendita.
+ */
 const ComeVendere = () => {
+    /**
+     * Array dei bullet point da mostrare.  
+     * Ogni elemento contiene numero, titolo, descrizione e colore.
+     *
+     * @type {Array<{number: number, title: string, description: string, color: string}>}
+     */
     const dettagliBulletPoint = [
         {
             number: 1,
@@ -23,27 +40,29 @@ const ComeVendere = () => {
         {
             number: 4,
             title: 'Assistenza dedicata',
-            description: 'Un agente personale ti segue dall\'inizio alla firma del rogito',
+            description: "Un agente personale ti segue dall'inizio alla firma del rogito",
             color: 'bg-yellow-400',
         },
     ];
+
     return (
-            <div className="p-6 bg-gray-50 rounded-lg shadow-lg mt-8 mb-4">
-                <h2 className="text-2xl font-normal text-gray-900 mb-6">
-                    Perché vendere con ImmobiliarisPLUS
-                </h2>
-                <div className="space-y-4">
-                    {dettagliBulletPoint.map((dettaglioBulletPoint) => (
-                        <BulletPoint
-                            key={dettaglioBulletPoint.number}
-                            number={dettaglioBulletPoint.number}
-                            title={dettaglioBulletPoint.title}
-                            description={dettaglioBulletPoint.description}
-                            colorClass={dettaglioBulletPoint.color}
-                        />
-                    ))}
-                </div>
+        <div className="p-6 bg-gray-50 rounded-lg shadow-lg mt-8 mb-4">
+            <h2 className="text-2xl font-normal text-gray-900 mb-6">
+                Perché vendere con ImmobiliarisPLUS
+            </h2>
+
+            <div className="space-y-4">
+                {dettagliBulletPoint.map((dettaglioBulletPoint) => (
+                    <BulletPoint
+                        key={dettaglioBulletPoint.number}
+                        number={dettaglioBulletPoint.number}
+                        title={dettaglioBulletPoint.title}
+                        description={dettaglioBulletPoint.description}
+                        colorClass={dettaglioBulletPoint.color}
+                    />
+                ))}
             </div>
+        </div>
     );
 };
 

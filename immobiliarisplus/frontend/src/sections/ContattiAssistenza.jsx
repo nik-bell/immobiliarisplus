@@ -4,45 +4,65 @@ import IconCall from "../assets/icone/call/call_verde/call_verde.svg";
 import IconEmail from "../assets/icone/mail/mail_blu/mail_blu.png";
 import IconLocation from "../assets/icone/explore_nearby/explore_nearby_giallo/explore_nearby_giallo.png";
 
+/**
+ * MetodoContatto Component
+ *
+ * Singola card che rappresenta un metodo di contatto (telefono, email, posizione).
+ * Ogni card mostra un'icona, un titolo, un sottotitolo e un pulsante.
+ *
+ * Il colore del pulsante viene calcolato dinamicamente in base al tipo (yellow, green, blue).
+ *
+ * @param {Object} props - Proprietà del componente.
+ * @param {string} props.icon - Percorso dell’immagine da mostrare.
+ * @param {string} props.title - Titolo principale della card (es. Telefono, Email, etc.).
+ * @param {string} props.subtitle - Testo descrittivo secondario.
+ * @param {string} props.value - Testo dentro il pulsante (es. "Chiama", "Scrivi", "Mostra sulla mappa").
+ * @param {string} props.link - URL o protocollo (tel:, mailto:, https:) usato dal pulsante.
+ * @param {"yellow"|"green"|"blue"|string} props.color - Colore principale del pulsante.
+ * @returns {JSX.Element} Card completa del metodo di contatto.
+ */
 const MetodoContatto = ({ icon, title, subtitle, value, link, color }) => {
-        let buttoColor=''
+    let buttoColor = "";
+
     switch (color) {
-        case 'yellow':
+        case "yellow":
             buttoColor = "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500 text-gray-900";
             break;
-        case 'green':
+        case "green":
             buttoColor = "bg-teal-700 hover:bg-teal-600 focus:ring-teal-700 text-white";
             break;
-        case 'blue':
+        case "blue":
             buttoColor = "bg-indigo-900 hover:bg-indigo-700 focus:ring-indigo-900 text-white";
             break;
         default:
             buttoColor = "bg-gray-500 hover:bg-gray-600 focus:ring-gray-500";
     }
-    const cardClasses = "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center";
-    const baseButton = "font-semibold py-2 px-6 rounded-full inline-block transition duration-150 mt-3"
-    const valueBaseClasses = "mt-2 font-semibold";
+
+    const cardClasses =
+        "p-6 rounded-lg shadow-md h-full text-center flex flex-col justify-between items-center";
+    const baseButton =
+        "font-semibold py-2 px-6 rounded-full inline-block transition duration-150 mt-3";
 
     return (
         <Card className={cardClasses}>
             <div className="flex flex-col items-center">
-
-                
-                <img 
-                    src={icon} 
-                    alt={title} 
+                <img
+                    src={icon}
+                    alt={title}
                     className="w-12 h-12 mb-4 opacity-90"
                 />
 
-                <h2 className="h3 text-lg font-semibold text-gray-800">{title}</h2>
+                <h2 className="h3 text-lg font-semibold text-gray-800">
+                    {title}
+                </h2>
                 <p className="text-sm text-gray-700 mb-4">{subtitle}</p>
             </div>
 
             <div className="mt-auto">
                 <a
                     href={link}
-                    target={link.startsWith('http') ? "_blank" : "_self"}
-                    rel={link.startsWith('http') ? "noopener noreferrer" : ""}
+                    target={link.startsWith("http") ? "_blank" : "_self"}
+                    rel={link.startsWith("http") ? "noopener noreferrer" : ""}
                     className={`${baseButton} ${buttoColor}`}
                 >
                     {value}
@@ -52,6 +72,19 @@ const MetodoContatto = ({ icon, title, subtitle, value, link, color }) => {
     );
 };
 
+/**
+ * Lista dei metodi di contatto mostrati nella sezione.
+ *
+ * @type {Array<{
+ *   icon: string,
+ *   title: string,
+ *   subtitle: string,
+ *   value: string,
+ *   valueColor: string,
+ *   link: string,
+ *   color: string
+ * }>}
+ */
 const contactData = [
     {
         icon: IconCall,
@@ -59,8 +92,8 @@ const contactData = [
         subtitle: "Lun-Ven 9:00-18:00",
         value: "+39 02 1234 5678",
         valueColor: "text-teal-700",
-        link: 'tel:+390212345678',
-        color: 'green'
+        link: "tel:+390212345678",
+        color: "green",
     },
     {
         icon: IconEmail,
@@ -68,8 +101,8 @@ const contactData = [
         subtitle: "Risposta in 24h",
         value: "Informazioni",
         valueColor: "text-gray-700",
-        link: 'mailto:info@immobiliarisplus.com',
-        color: 'blue'
+        link: "mailto:info@immobiliarisplus.com",
+        color: "blue",
     },
     {
         icon: IconLocation,
@@ -78,11 +111,18 @@ const contactData = [
         value: "Mostra sulla mappa",
         valueColor: "text-yellow-400",
         link: "https://www.google.com/maps/search/Via+Jacopo+Durandi+10,+Torino",
-        color: 'yellow'
+        color: "yellow",
     },
 ];
 
-// Main ContattiAssistenza component
+/**
+ * ContattiAssistenza Component
+ *
+ * Sezione che mostra tre modalità di contatto tramite card:
+ * telefono, email e indirizzo fisico.
+ *
+ * @returns {JSX.Element} Sezione con griglia responsive dei metodi di contatto.
+ */
 const ContattiAssistenza = () => {
     return (
         <section className="py-10">
@@ -95,7 +135,6 @@ const ContattiAssistenza = () => {
                         subtitle={contact.subtitle}
                         value={contact.value}
                         valueColor={contact.valueColor}
-                        isButton={contact.isButton}
                         link={contact.link}
                         color={contact.color}
                     />

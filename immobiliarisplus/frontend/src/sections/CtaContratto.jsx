@@ -1,10 +1,24 @@
 import Card from "../components/Card";
 import Button from "../components/Button";
 
+/**
+ * CtaContratto Component
+ *
+ * Sezione call-to-action per la pagina "Contratto in esclusiva".
+ * Mostra un box evidenziato che invita l’utente a:
+ *  - Richiedere un preventivo gratuito
+ *  - Scoprire maggiori informazioni
+ *
+ * Contiene due pulsanti che in futuro possono essere collegati
+ * a navigazioni o logiche più complesse.
+ *
+ * @returns {JSX.Element} Sezione CTA con due pulsanti di azione.
+ */
 export default function CtaContratto() {
     const handleScopriDiPiu = () => {
-
+        // Placeholder per futura azione o redirect
     };
+
     return (
         <div className="mb-8">
             <div className="pt-6">

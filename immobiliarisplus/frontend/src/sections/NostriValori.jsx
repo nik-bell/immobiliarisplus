@@ -28,10 +28,23 @@ const valoriData = [
     }
 ];
 
+/**
+ * NostriValori Component
+ *
+ * Sezione che mostra i valori fondamentali dell'azienda.
+ * Ogni valore è rappresentato da una card con icona, titolo e descrizione.
+ *
+ * Utilizzato nella homepage per rafforzare l'identità aziendale
+ * e comunicare i principi di trasparenza, precisione e supporto.
+ *
+ * @component
+ * @returns {JSX.Element} Una sezione con la lista dei valori aziendali.
+ */
 const NostriValori = () => {
-    // Added transform hover:-translate-y-1 for the lift-on-hover effect
-    const cardWrapperClasses = "bg-white rounded-xl shadow-sm border-t-4 border-teal-500 flex items-start gap-4 min-h-[160px] p-6 transition shadow-sm transform hover:shadow-md hover:-translate-y-1";
-    const iconWrapperClasses = "bg-teal-50 w-12 h-12 rounded-lg flex items-center justify-center text-teal-600 flex-shrink-0 text-2xl";
+    const cardWrapperClasses =
+        "bg-white rounded-xl shadow-sm border-t-4 border-teal-500 flex items-start gap-4 min-h-[160px] p-6 transition shadow-sm transform hover:shadow-md hover:-translate-y-1";
+    const iconWrapperClasses =
+        "bg-teal-50 w-12 h-12 rounded-lg flex items-center justify-center text-teal-600 flex-shrink-0 text-2xl";
     const titleClasses = "text-lg font-semibold text-gray-800";
     const textClasses = "text-gray-600 text-sm mt-1";
 
@@ -52,15 +65,14 @@ const NostriValori = () => {
             <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 {valoriData.map((valore, i) => (
                     <Card key={i} className={cardWrapperClasses}>
-    <div className={iconWrapperClasses}>
-        <img src={valore.icon} alt={valore.titolo} className="w-7 h-7" />
-    </div>
-    <div className="flex-1">
-        <h3 className={titleClasses}>{valore.titolo}</h3>
-        <p className={textClasses}>{valore.testo}</p>
-    </div>
-</Card>
-
+                        <div className={iconWrapperClasses}>
+                            <img src={valore.icon} alt={valore.titolo} className="w-7 h-7" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className={titleClasses}>{valore.titolo}</h3>
+                            <p className={textClasses}>{valore.testo}</p>
+                        </div>
+                    </Card>
                 ))}
             </div>
         </section>

@@ -35,6 +35,23 @@ const topBorderColors = [
     "border-t-4 border-[#2CC6A3]", 
 ];
 
+/**
+ * PercheScegliereEsclusiva Component
+ *
+ * Sezione informativa che illustra i principali vantaggi
+ * del **contratto di vendita in esclusiva**.
+ *
+ * Presenta una serie di card, ognuna con:
+ * - icona illustrativa
+ * - titolo del beneficio
+ * - breve descrizione
+ *
+ * Utilizzato nella pagina dedicata all'esclusiva per comunicare
+ * al cliente i vantaggi concreti di questa modalità contrattuale.
+ *
+ * @component
+ * @returns {JSX.Element} Una sezione con i motivi principali per scegliere l’esclusiva immobiliare.
+ */
 const PercheScegliereEsclusiva = () => {
     const cardWrapperClasses =
         "bg-white rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1";

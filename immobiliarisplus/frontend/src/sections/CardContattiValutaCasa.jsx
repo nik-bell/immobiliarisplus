@@ -2,6 +2,17 @@ import Card from '../components/Card'
 import IconCall from "../assets/icone/call/call_nero/call_nero.svg";
 import IconEmail from "../assets/icone/mail/mail_nero/mail_nero.svg";
 
+/**
+ * CardContattiValutaCasa Component
+ *
+ * Rende due card informative con i contatti utili dopo l’invio della valutazione:
+ * - Numero di telefono per assistenza immediata.
+ * - Indirizzo email per supporto via messaggio.
+ *
+ * Utilizzato nella pagina di successo della valutazione immobili.
+ *
+ * @returns {JSX.Element} Layout con le card dei contatti.
+ */
 export default function CardContattiValutaCasa() {
     return (
         <div className="flex flex-wrap justify-center gap-6 p-4">
@@ -23,8 +34,8 @@ export default function CardContattiValutaCasa() {
                     Lun-Ven 9:00-18:00
                 </p>
             </Card>
-            <Card className="flex-1 min-w-[280px] p-6 rounded-xl shadow-md border border-gray-100 text-center bg-white hover:shadow-lg transition duration-200">
 
+            <Card className="flex-1 min-w-[280px] p-6 rounded-xl shadow-md border border-gray-100 text-center bg-white hover:shadow-lg transition duration-200">
                 <div className="w-8 h-8 mx-auto mb-3 text-indigo-700">
                     <img
                         src={IconEmail}

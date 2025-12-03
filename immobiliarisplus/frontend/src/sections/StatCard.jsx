@@ -1,5 +1,18 @@
 import Card from "../components/Card";
 
+/**
+ * StatCard Component
+ *
+ * Mostra una panoramica dei principali indicatori economici relativi
+ * al servizio "Migliora Casa": investimento totale, aumento del valore
+ * stimato e ROI medio.
+ *
+ * Utilizzato nella pagina dedicata ai miglioramenti immobiliari per
+ * comunicare in modo immediato l’impatto economico degli interventi.
+ *
+ * @component
+ * @returns {JSX.Element} Una card con tre statistiche principali visualizzate in griglia.
+ */
 const StatCard = () => {
     const cardClasses = "border border-teal-500 bg-white p-6 rounded-lg shadow-md";
     const gridClasses = "grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-4 text-center";

@@ -1,6 +1,19 @@
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
 
+/**
+ * CtaMigliora Component
+ *
+ * Sezione call-to-action della pagina "Migliora Casa".
+ * Mostra due card affiancate:
+ *  1. Consulenza gratuita con un esperto
+ *  2. Richiesta di preventivo personalizzato
+ *
+ * Ogni card contiene un titolo, una descrizione e un pulsante
+ * che rimanda alla pagina "Contattaci".
+ *
+ * @returns {JSX.Element} Una sezione composta da due CTA visuali.
+ */
 export default function CtaMigliora() {
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">

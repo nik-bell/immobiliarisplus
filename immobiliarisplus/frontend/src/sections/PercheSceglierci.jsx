@@ -51,7 +51,23 @@ const topBorderColors = [
     "border-t-4 border-[#F4C542]"   
 ];
 
-
+/**
+ * PercheSceglierci Component
+ *
+ * Sezione informativa che mostra i principali motivi
+ * per cui un utente dovrebbe scegliere Immobiliaris Plus.
+ *
+ * La sezione presenta una griglia di card, ognuna contenente:
+ * - un'icona illustrativa
+ * - un titolo riassuntivo
+ * - una breve descrizione del beneficio
+ *
+ * Viene tipicamente utilizzata nella homepage come blocco
+ * di credibilità e valore aggiunto.
+ *
+ * @component
+ * @returns {JSX.Element} Una sezione con le feature e i vantaggi distintivi dell’azienda.
+ */
 const PercheSceglierci = () => {
     const cardWrapperClasses =
         "bg-white rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1";

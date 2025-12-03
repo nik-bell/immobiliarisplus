@@ -3,7 +3,14 @@ import HeroImageJpg from "../assets/contratto-esclusiva/contratto-esclusiva.jpeg
 import HeroImageWebp from "../assets/contratto-esclusiva/contratto-esclusiva.webp";
 import HeroImageAvif from "../assets/contratto-esclusiva/contratto-esclusiva.avif";
 
-
+/**
+ * HeroContrattoEsclusiva Component
+ *
+ * Sezione hero dedicata alla pagina sul contratto di vendita in esclusiva.
+ * Mostra un'immagine a tutta larghezza con headline e sottotitolo.
+ *
+ * @returns {JSX.Element} Il componente hero con immagini ottimizzate e testo descrittivo.
+ */
 export default function HeroContrattoEsclusiva() {
     return (
         <div className="min-h-[80vh]">
@@ -20,6 +27,6 @@ export default function HeroContrattoEsclusiva() {
                     Tutto quello che devi sapere per vendere casa con trasparenza e sicurezza
                 </p>
             </Hero>
-        </div >
-    )
+        </div>
+    );
 }

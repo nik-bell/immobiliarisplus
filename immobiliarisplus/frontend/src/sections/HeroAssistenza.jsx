@@ -3,7 +3,14 @@ import HeroImageJpg from "../assets/assistenza/assistenza-immobiliaris.jpeg";
 import HeroImageWebp from "../assets/assistenza/assistenza-immobiliaris.webp";
 import HeroImageAvif from "../assets/assistenza/assistenza-immobiliaris.avif";
 
-
+/**
+ * HeroAssistenza Component
+ *
+ * Sezione hero dedicata alla pagina Assistenza.  
+ * Mostra un'immagine full-width con testo centrato e responsive.
+ *
+ * @returns {JSX.Element} Il blocco hero con immagine e testo.
+ */
 export default function HeroAssistenza() {
     return (
         <div className="min-h-[70vh]">
@@ -20,6 +27,6 @@ export default function HeroAssistenza() {
                     Siamo qui per aiutarti
                 </p>
             </Hero>
-        </div >
-    )
+        </div>
+    );
 }
