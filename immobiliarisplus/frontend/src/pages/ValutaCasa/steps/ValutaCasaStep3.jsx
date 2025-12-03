@@ -15,6 +15,7 @@ export default function ValutaCasaStep3() {
   ${isChecked ? 'font-normal' : 'font-semibold'}
 `;
 
+  // Handle privacy checkbox change
   const handleChange = (e) => {
     const checked = e.target.checked;
 

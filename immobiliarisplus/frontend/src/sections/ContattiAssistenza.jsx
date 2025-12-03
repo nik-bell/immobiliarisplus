@@ -82,6 +82,7 @@ const contactData = [
     },
 ];
 
+// Main ContattiAssistenza component
 const ContattiAssistenza = () => {
     return (
         <section className="py-10">

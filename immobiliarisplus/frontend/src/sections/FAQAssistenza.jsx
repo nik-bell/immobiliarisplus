@@ -20,9 +20,13 @@ const faqData = [
     },
 ];
 
+    // Tracks which FAQ item is currently expanded
+
 const FAQAssistenza = () => {
     const [activeId, setActiveId] = useState(null);
 
+    
+    // Tracks which FAQ item is currently expanded
     const toggleFAQ = (id) => {
         setActiveId(activeId === id ? null : id);
     };

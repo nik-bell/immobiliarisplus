@@ -6,20 +6,24 @@ import allowedCaps from "../../../data/allowedCaps";
 import AddressInputValutaCasa from "../../../components/AddressInputValutaCasa";
 import MapboxMap from "../../../components/MapboxMap";
 
+// Autocomplete input for CAP selection
 function CapAutocomplete({ value, onChange }) {
   const [query, setQuery] = useState(value || "");
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
+// Sync local query when parent updates the value
   useEffect(() => {
     setQuery(value || "");
   }, [value]);
+  
   const filtered = allowedCaps.filter((e) => {
     if (!query) return true;
     const q = String(query).toLowerCase();
     return e.cap.startsWith(q) || e.city.toLowerCase().includes(q);
   }).slice(0, 8);
 
+  // Handle selection from autocomplete list
   const handleSelect = (entry) => {
     setQuery(entry.cap);
     setOpen(false);

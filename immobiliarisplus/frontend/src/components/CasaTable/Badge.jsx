@@ -1,5 +1,33 @@
+/**
+ * @file Badge.jsx
+ * @description Small status badge used in the Casa table. Chooses a color class
+ *              based on a status key or on the label text.
+ */
+
+/**
+ * Allowed status keys (used to map to Tailwind color classes).
+ * @typedef {('non_assegnati'|'in_corso'|'attesa_cliente'|'terminati'|string)} StatusKey
+ */
+
+/**
+ * Props for the Badge component.
+ * @typedef {Object} BadgeProps
+ * @property {StatusKey} [status] - Enum-like status key to determine default color.
+ * @property {string} [label] - Optional display label; label text may override color choice.
+ */
+
+/**
+ * Badge component
+ *
+ * Renders a small pill badge with a color variant selected from status or label.
+ *
+ * @param {BadgeProps} props
+ * @param {StatusKey} [props.status]
+ * @param {string} [props.label]
+ * @returns {JSX.Element} Rendered badge element.
+ */
 export default function Badge({ status, label }) {
-  // mapping colori (puoi aggiungere varianti)
+  // color mapping (you can add variants)
   const colors = {
     non_assegnati: "bg-red-100 text-red-700",
     in_corso: "bg-yellow-100 text-yellow-800",
@@ -7,7 +35,7 @@ export default function Badge({ status, label }) {
     terminati: "bg-green-100 text-green-700",
   };
 
-  // fallback generico
+  // generic fallback
   // prefer label-based color choices to allow per-enum coloring
   const normalize = (v) => (v || "").toString().toLowerCase();
   const lbl = normalize(label);

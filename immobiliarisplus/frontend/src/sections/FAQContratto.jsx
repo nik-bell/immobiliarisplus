@@ -25,7 +25,7 @@ const faqsData = [
     },
 ];
 
-
+// Tracks which FAQ item is currently expanded
 const FAQContratto = () => {
     const [activeId, setActiveId] = useState(null);
 

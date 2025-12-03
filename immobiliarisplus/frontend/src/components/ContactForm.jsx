@@ -1,8 +1,41 @@
+/**
+ * @file ContactForm.jsx
+ * @description Contact form component with name, email, phone, and message fields.
+ *              Supports imperative reset via ref and form submission callback.
+ */
+
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import InputField from './InputField';
 import TextAreaField from './TextAreaField';
 import Button from "./Button.jsx";
 
+/**
+ * Contact form data shape.
+ * @typedef {Object} ContactFormData
+ * @property {string} nome - First name.
+ * @property {string} cognome - Last name.
+ * @property {string} email - Email address.
+ * @property {string} telefono - Phone number.
+ * @property {string} messaggio - Message body.
+ */
+
+/**
+ * Props for ContactForm component.
+ * @typedef {Object} ContactFormProps
+ * @property {Function} onSubmit - Callback fired on form submission with form data.
+ */
+
+/**
+ * ContactForm (forwardRef)
+ *
+ * A contact form component with fields for name, last name, email, phone, and message.
+ * Supports imperative form reset via ref. Fires onSubmit callback with form data on submission.
+ *
+ * @param {ContactFormProps} props
+ * @param {Function} props.onSubmit - Callback invoked on form submit with ContactFormData object.
+ * @param {React.Ref} ref - Ref exposing resetForm method to clear all fields.
+ * @returns {JSX.Element} Contact form element.
+ */
 const ContactForm = forwardRef(({ onSubmit }, ref) => {
     const INITIAL_STATE = {
         nome: '',
@@ -13,6 +46,10 @@ const ContactForm = forwardRef(({ onSubmit }, ref) => {
     };
 
     const [formData, setFormData] = useState(INITIAL_STATE);
+    
+    /**
+     * Reset form fields to initial state.
+     */
     const resetForm = () => {
         setFormData(INITIAL_STATE);
     };
@@ -21,10 +58,20 @@ const ContactForm = forwardRef(({ onSubmit }, ref) => {
         resetForm
     }));
 
+    /**
+     * Handle form field changes.
+     *
+     * @param {Event} e - Input change event.
+     */
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    /**
+     * Handle form submission.
+     *
+     * @param {Event} e - Form submit event.
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);

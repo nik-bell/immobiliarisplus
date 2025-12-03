@@ -1,12 +1,28 @@
+/**
+ * @file StatsRow.jsx
+ * @description Displays status filter chips with case counts and a refresh button.
+ *              Allows users to filter cases by status (tutti, non_assegnati, nuovi, etc.).
+ */
+
 import { useCasa } from "../../store/CasaContext";
+import { useAuth } from "../../store/AuthContext";
 import { useState } from "react";
 import StatusChip from "./StatusChip";
 
+/**
+ * StatsRow
+ *
+ * Renders a row of status filter chips with counts from rawCases and a refresh button.
+ * Reads filter state from CasaContext to highlight the active filter.
+ *
+ * @returns {JSX.Element} Stats row component with filters and refresh button.
+ */
 export default function StatsRow() {
   const { rawCases, filter, setFilter, refreshCases } = useCasa();
+  const { userType } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  // conta per stato (usiamo rawCases per i numeri globali)
+  // Count by state (we use rawCases for global numbers)
   const counts = {
     tutti: rawCases.length,
     non_assegnati: rawCases.filter((c) => c.status === "non_assegnati").length,
@@ -17,7 +33,7 @@ export default function StatsRow() {
     terminati: rawCases.filter((c) => c.status === "terminati").length,
   };
 
-  const items = [
+  const allItems = [
     { key: "tutti", label: `Tutti (${counts.tutti})` },
     { key: "non_assegnati", label: `Non assegnati (${counts.non_assegnati})` },
     { key: "nuovi", label: `Nuovi (${counts.nuovi})` },
@@ -28,6 +44,11 @@ export default function StatsRow() {
     },
     { key: "terminati", label: `Terminati (${counts.terminati})` },
   ];
+
+  // Filtra "non_assegnati" per gli agenti
+  const items = userType === "agente" 
+    ? allItems.filter(item => item.key !== "non_assegnati")
+    : allItems;
 
   return (
     <div className="mb-6">
@@ -67,6 +88,16 @@ export default function StatsRow() {
   );
 }
 
+/**
+ * RefreshButton
+ *
+ * Button that triggers a refresh of cases. Shows a spinning icon while loading.
+ *
+ * @param {Object} props
+ * @param {Function} props.onRefresh - Async callback invoked when button is clicked.
+ * @param {boolean} props.loading - Whether the refresh is in progress.
+ * @returns {JSX.Element} Refresh button element.
+ */
 function RefreshButton({ onRefresh, loading }) {
   return (
     <button

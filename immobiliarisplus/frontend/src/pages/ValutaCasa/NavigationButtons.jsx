@@ -3,7 +3,7 @@ import useValutaCasaForm from "./useValutaCasaForm";
 export default function NavigationButtons() {
   const { state, nextStep, prevStep, submitForm, loading } = useValutaCasaForm();
 
-  // Se il form è stato inviato, non mostrare i bottoni di navigazione
+  // Do not render buttons if form is already submitted
   if (state.isSubmitted) {
     return null;
   }

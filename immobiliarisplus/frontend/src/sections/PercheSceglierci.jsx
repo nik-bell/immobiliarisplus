@@ -41,15 +41,16 @@ const featuresData = [
     },
 ];
 
-//  Colore bordo superiore per ogni card
+//  Top border color for each card
 const topBorderColors = [
-    "border-t-4 border-[#2CC6A3]", // verde
-    "border-t-4 border-indigo-900",      // blu
-    "border-t-4 border-[#F4C542]",  // giallo
-    "border-t-4 border-[#2CC6A3]",  // verde
-    "border-t-4 border-indigo-900",      // blu
-    "border-t-4 border-[#F4C542]"   // giallo
+    "border-t-4 border-[#2CC6A3]", 
+    "border-t-4 border-indigo-900",      
+    "border-t-4 border-[#F4C542]",  
+    "border-t-4 border-[#2CC6A3]",  
+    "border-t-4 border-indigo-900",      
+    "border-t-4 border-[#F4C542]"   
 ];
+
 
 const PercheSceglierci = () => {
     const cardWrapperClasses =
