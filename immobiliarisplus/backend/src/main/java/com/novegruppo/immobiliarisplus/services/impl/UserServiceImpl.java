@@ -59,18 +59,18 @@ public class UserServiceImpl implements UserService {
             Owner owner = ownerRepository.findById(dto.ownerId())
                     .orElseThrow(() -> new ResourceNotFoundException("Owner non trovato con id=" + dto.ownerId()));
             entity.setOwner(owner);
-            // email deriva da owner
+            // email took from owner
             entity.setEmail(owner.getEmail());
         } else {
-            // se non c'è owner, usa l'email dal DTO
+            // if no owner, use email from DTO
             entity.setEmail(dto.email());
         }
 
         User saved = userRepository.save(entity);
 
-        // Creazione automatica Employee in base al ruolo
+        // Auto creation of Employee for ADMIN and AGENT roles
         if (saved.getRole() == UserRole.ADMIN || saved.getRole() == UserRole.AGENT) {
-            // Evita duplicati se già esiste un employee legato a questo user
+            // Avoid duplicates if an employee linked to this user already exists
             boolean alreadyExists = employeeRepository.existsByUserId(saved.getId());
             if (!alreadyExists) {
                 String email = saved.getEmail();
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 employee.setUser(saved);
                 employee.setName(nameParts[0]);
                 employee.setSurname(nameParts[1]);
-                employee.setPhone("N/A");
+                employee.setPhone("N/A"); // Placeholder phone, can be updated later
                 employeeRepository.save(employee);
             }
         }
@@ -96,10 +96,10 @@ public class UserServiceImpl implements UserService {
             Owner owner = ownerRepository.findById(dto.ownerId())
                     .orElseThrow(() -> new ResourceNotFoundException("Owner non trovato con id=" + dto.ownerId()));
             entity.setOwner(owner);
-            // riallinea email da owner
+            // refresh email from owner
             entity.setEmail(owner.getEmail());
         } else if (dto.ownerId() == null && dto.email() != null) {
-            // se non c'è owner, consenti update dell'email dal DTO
+            // if no owner, allow email update from DTO
             entity.setEmail(dto.email());
         }
 
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    // Estrae nome e cognome da email formato nome.cognome@immobiliarisplus.com
+    // Extract name and surname from email (format: name.surname@immobiliarisplus.com)
     private String[] parseNameSurnameFromEmail(String email) {
         if (email == null) {
             return new String[]{"NOME", "COGNOME"};
@@ -133,10 +133,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // Normalize name piece by capitalizing first letter and handling special characters
     private String normalizeNamePiece(String raw) {
         if (raw == null || raw.isBlank()) return "User";
         String cleaned = raw.trim().toLowerCase().replace("_", " ").replace("-", " ");
-        // Capitalizza ogni parola
+
         StringBuilder sb = new StringBuilder();
         for (String part : cleaned.split(" ")) {
             if (part.isBlank()) continue;

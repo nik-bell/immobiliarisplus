@@ -27,6 +27,8 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
 @Service
 public class PropertyValuationServiceImpl implements PropertyValuationService {
 
+    // Valuation coefficients based on property attributes
+
     private static final Map<String, BigDecimal> CONDITION_COEFF = Map.of(
             "NEW", new BigDecimal("1.20"),
             "BRAND_NEW", new BigDecimal("1.30"),
@@ -108,6 +110,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         propertyValuationRepository.deleteById(integer);
     }
 
+    // Core method to calculate and save property valuation
     @Override
     public PropertyValuationResultDTO calculateAndSave(PropertyValuationRequestDTO request) {
         // Extract nested objects for easier access
@@ -115,9 +118,9 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         PropertyDetailsDTO propertyDetails = request.details();
         PropertyContactDTO propertyContact = request.contact();
 
-        //OwnerDTO ownerData = request.ownerDTO();
 
-        // 1. Validazione
+
+        // 1. Validation input
         if (propertyInfo.surfaceM2() == null || propertyInfo.surfaceM2() <= 0) {
             throw new IllegalArgumentException("Superficie non valida");
         }
@@ -125,7 +128,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
             throw new IllegalArgumentException("Email owner obbligatoria");
         }
 
-        // 2. Crea/Recupera Owner
+        // 2. Create/retrieve Owner
         Owner owner = ownerRepository.findByEmail(propertyContact.email())
                 .orElseGet(() -> {
                     Owner newOwner = new Owner();
@@ -138,7 +141,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
                     return ownerRepository.save(newOwner);
                 });
 
-        // 3. Crea Property
+        // 3. Create and save Property
         Property property = new Property();
         property.setOwner(owner);
         property.setStatus(com.novegruppo.immobiliarisplus.enums.PropertyStatus.valueOf(propertyInfo.condition()));
@@ -158,7 +161,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         property.setCreatedAt(LocalDateTime.now());
         property = propertyRepository.save(property);
 
-        // 4. Crea PropertyAddress
+        // 4. Create and save PropertyAddress
         PropertyAddress address = new PropertyAddress();
         address.setProperty(property);
         address.setStreet(propertyInfo.address());
@@ -167,7 +170,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         address.setProvince(deriveProvinceFromCity(propertyInfo.city())); // Campo obbligatorio
         propertyAddressRepository.save(address);
 
-        // 5. Calcola valutazione
+        // 5. Calculate valuation by coefficients and base price by CAP
         BigDecimal basePerMq = resolveBasePrice(propertyInfo.zipCode());
         if (basePerMq == null || basePerMq.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalStateException("Nessun prezzo €/mq configurato per CAP/Città: " + propertyInfo.zipCode());
@@ -201,7 +204,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
                 basePerMq, conditionCoeff, typeCoeff, heatingCoeff, extraCoeff
         );
 
-        // 6. Salva PropertyValuation 
+        // 6. Save Property valuation
         PropertyValuation valuation = new PropertyValuation();
         valuation.setProperty(property);
         valuation.setEmployee(null);
@@ -213,7 +216,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         valuation.setCreatedAt(LocalDateTime.now());
         propertyValuationRepository.save(valuation);
 
-        // 7. Invia email (best effort - non blocca se fallisce)
+        // 7. Send email (best effort - catch exceptions to avoid blocking)
         try {
             String subject = "Riepilogo valutazione immobile";
             String html = String.format("""
@@ -240,11 +243,11 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
 
             autoMailService.sendValuationSummary(owner.getEmail(), subject, html, null);
         } catch (Exception e) {
-            // Log dell'errore ma non blocca la valutazione
+            // error during email sending - log and continue
             System.err.println("Errore invio email: " + e.getMessage());
         }
 
-        // 8. Ritorna risultato
+        // 8. Return result DTO
         return new PropertyValuationResultDTO(
                 estimatedValue,
                 minValue,
@@ -254,6 +257,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         );
     }
 
+    // Helper method to get base price per square meter by zip code
     private BigDecimal resolveBasePrice(String zipCode) {
         if (zipCode != null && !zipCode.isBlank()) {
             return pricePerMqRepository.findByZipCode(zipCode)
@@ -263,11 +267,13 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         return BigDecimal.ZERO;
     }
 
+    // Helper method to derive province code from city name
     private String deriveProvinceFromCity(String city) {
         if (city == null || city.isBlank()) {
             return "N/A";
         }
 
+        // Simple mapping for demonstration; in real scenarios, use a proper lookup
         return switch (city.toLowerCase()) {
             case "asti" -> "AT";
             case "alessandria" -> "AL";
@@ -278,6 +284,8 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         };
     }
 
+
+    // Assign an employee to a valuation
     @Override
     public PropertyValuationDTO assignEmployee(Integer valuationId, Integer employeeId) {
         PropertyValuation entity = propertyValuationRepository.findById(valuationId)
@@ -287,17 +295,18 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
             employee.setId(employeeId);
             entity.setEmployee(employee);
 
-            // Se lo status è NOT_ASSIGNED, cambialo automaticamente a NEW
+            // If status is NOT_ASSIGNED, change it automatically to NEW
             if (entity.getStatus() == ValuationStatus.NOT_ASSIGNED) {
                 entity.setStatus(ValuationStatus.NEW);
             }
         } else {
-            entity.setEmployee(null);
+            entity.setEmployee(null); // if already assigned, unassign employee
         }
         propertyValuationRepository.save(entity);
         return propertyValuationMapper.toDTO(entity);
     }
 
+    // Update the status of a valuation
     @Override
     public PropertyValuationDTO updateStatus(Integer valuationId, ValuationStatus status) {
         PropertyValuation entity = propertyValuationRepository.findById(valuationId)
@@ -307,6 +316,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         return propertyValuationMapper.toDTO(entity);
     }
 
+    // Update the notes of a valuation
     @Override
     public PropertyValuationDTO updateNotes(Integer valuationId, String notes) {
         PropertyValuation entity = propertyValuationRepository.findById(valuationId)
@@ -316,10 +326,11 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         return propertyValuationMapper.toDTO(entity);
     }
 
+    // Update the final price of a valuation
     @Override
     public PropertyValuationDTO updateFinalPrice(Integer valuationId, Double finalPrice) {
         if (finalPrice == null || finalPrice <= 0) {
-            throw new IllegalArgumentException("Final price must be a positive number");
+            throw new IllegalArgumentException("Final price deve essere positivo");
         }
         PropertyValuation entity = propertyValuationRepository.findById(valuationId)
                 .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));

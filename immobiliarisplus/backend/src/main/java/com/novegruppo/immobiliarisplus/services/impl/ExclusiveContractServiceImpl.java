@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// For future use
+
 @Service
 @Transactional
 public class ExclusiveContractServiceImpl implements ExclusiveContractService {
