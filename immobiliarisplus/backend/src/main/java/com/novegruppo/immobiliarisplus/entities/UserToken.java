@@ -2,8 +2,16 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.TokenType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+/* Password tokens for users (e.g., for password resets, email verification, etc.) is only partially implemented,
+   but will be fully functional in future releases. */
+
+@Setter
+@Getter
 @Entity
 @Table(name = "user_tokens")
 public class UserToken {
@@ -32,61 +40,6 @@ public class UserToken {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public TokenType getType() {
-        return type;
-    }
-
-    public void setType(TokenType type) {
-        this.type = type;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public Boolean getUsed() {
-        return used;
-    }
-
-    public void setUsed(Boolean used) {
-        this.used = used;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-
+    // Lombok will generate getters and setters
 }

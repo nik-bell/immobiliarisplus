@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+// Entity representing the average price per square meter for properties in a specific zip code and city.
+
 @Entity
 @Table(name = "avg_price_mq")
 @Data

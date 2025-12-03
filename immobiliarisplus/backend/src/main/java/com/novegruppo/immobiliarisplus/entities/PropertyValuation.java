@@ -2,10 +2,14 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "property_valuation")
 public class PropertyValuation {
@@ -57,119 +61,7 @@ public class PropertyValuation {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    // Lombok will generate getters and setters
 
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public Boolean getImproveProperty() {
-        return improveProperty;
-    }
-
-    public void setImproveProperty(Boolean improveProperty) {
-        this.improveProperty = improveProperty;
-    }
-
-    public Boolean getExclusiveContract() {
-        return exclusiveContract;
-    }
-
-    public void setExclusiveContract(Boolean exclusiveContract) {
-        this.exclusiveContract = exclusiveContract;
-    }
-
-
-    public ValuationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ValuationStatus status) {
-        this.status = status;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public Double getEstimatedPriceMin() {
-        return estimatedPriceMin;
-    }
-
-    public void setEstimatedPriceMin(Double estimatedPriceMin) {
-        this.estimatedPriceMin = estimatedPriceMin;
-    }
-
-    public Double getEstimatedPriceMax() {
-        return estimatedPriceMax;
-    }
-
-    public void setEstimatedPriceMax(Double estimatedPriceMax) {
-        this.estimatedPriceMax = estimatedPriceMax;
-    }
-
-    public Double getValuationFinal() {
-        return valuationFinal;
-    }
-
-    public void setValuationFinal(Double valuationFinal) {
-        this.valuationFinal = valuationFinal;
-    }
-
-    public Double getPricePerMq() {
-        return pricePerMq;
-    }
-
-    public void setPricePerMq(Double pricePerMq) {
-        this.pricePerMq = pricePerMq;
-    }
-
-    public Integer getConfidenceScore() {
-        return confidenceScore;
-    }
-
-    public void setConfidenceScore(Integer confidenceScore) {
-        this.confidenceScore = confidenceScore;
-    }
-
-    public String getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
 

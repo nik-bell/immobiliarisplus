@@ -2,10 +2,14 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.*;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "property")
 public class Property {
@@ -68,147 +72,6 @@ public class Property {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // Getters and Setters
+    // Lombok will generate getters and setters
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public PropertyStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PropertyStatus status) {
-        this.status = status;
-    }
-
-    public PropertyType getType() {
-        return type;
-    }
-
-    public void setType(PropertyType type) {
-        this.type = type;
-    }
-
-    public int getSizeMq() {
-        return sizeMq;
-    }
-
-    public void setSizeMq(int sizeMq) {
-        this.sizeMq = sizeMq;
-    }
-
-    public int getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(int rooms) {
-        this.rooms = rooms;
-    }
-
-    public int getBathrooms() {
-        return bathrooms;
-    }
-
-    public void setBathrooms(int bathrooms) {
-        this.bathrooms = bathrooms;
-    }
-
-    public int getFloors() {
-        return floors;
-    }
-
-    public void setFloors(int floors) { this.floors = floors;}
-
-    public HeatingType getHeatingType() {
-        return heatingType;
-    }
-
-    public void setHeatingType(HeatingType heatingType) {
-        this.heatingType = heatingType;
-    }
-
-    public EnergyClass getEnergyClass() {
-        return energyClass;
-    }
-
-    public void setEnergyClass(EnergyClass energyClass) {
-        this.energyClass = energyClass;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isHasBalcony() {
-        return hasBalcony;
-    }
-
-    public void setHasBalcony(boolean hasBalcony) {
-        this.hasBalcony = hasBalcony;
-    }
-
-    public boolean isHasGarden() {
-        return hasGarden;
-    }
-
-    public void setHasGarden(boolean hasGarden) {
-        this.hasGarden = hasGarden;
-    }
-
-    public boolean isHasGarage() {
-        return hasGarage;
-    }
-
-    public void setHasGarage(boolean hasGarage) {
-        this.hasGarage = hasGarage;
-    }
-
-    public boolean isHasElevator() {
-        return hasElevator;
-    }
-
-    public void setHasElevator(boolean hasElevator) {
-        this.hasElevator = hasElevator;
-    }
-
-    public boolean isHasBasement() {
-        return hasBasement;
-    }
-
-    public void setHasBasement(boolean hasBasement) {
-        this.hasBasement = hasBasement;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
