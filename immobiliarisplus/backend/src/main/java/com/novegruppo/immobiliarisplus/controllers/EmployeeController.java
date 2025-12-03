@@ -25,14 +25,15 @@ public class EmployeeController {
         this.valuationService = valuationService;
     }
 
+    // added detailed error handling and logging for testing purposes
     @GetMapping
     public ResponseEntity<?> list() {
         try {
             List<EmployeeDTO> employees = employeeService.findAll();
-            System.out.println("✓ Employees fetched successfully: " + employees.size());
+            System.out.println(" Employees fetched successfully: " + employees.size());
             return ResponseEntity.ok(employees);
         } catch (Exception e) {
-            System.err.println("✗ Error in GET /api/employees:");
+            System.err.println("Error in GET /api/employees:");
             e.printStackTrace();
             return ResponseEntity.status(500).body(java.util.Map.of(
                 "error", e.getMessage() != null ? e.getMessage() : "Unknown error",
@@ -52,13 +53,13 @@ public class EmployeeController {
             EmployeeDTO created = employeeService.create(dto);
             return ResponseEntity.ok(created);
         } catch (IllegalArgumentException e) {
-            System.err.println("✗ Validation error in POST /api/employees: " + e.getMessage());
+            System.err.println(" Validation error in POST /api/employees: " + e.getMessage());
             return ResponseEntity.badRequest().body(java.util.Map.of(
                 "error", e.getMessage(),
                 "type", "ValidationError"
             ));
         } catch (Exception e) {
-            System.err.println("✗ Error in POST /api/employees:");
+            System.err.println(" Error in POST /api/employees:");
             e.printStackTrace();
             return ResponseEntity.status(500).body(java.util.Map.of(
                 "error", e.getMessage() != null ? e.getMessage() : "Errore durante la creazione dell'employee",
@@ -73,13 +74,13 @@ public class EmployeeController {
             EmployeeDTO updated = employeeService.update(id, dto);
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
-            System.err.println("✗ Validation error in PUT /api/employees/" + id + ": " + e.getMessage());
+            System.err.println("Validation error in PUT /api/employees/" + id + ": " + e.getMessage());
             return ResponseEntity.badRequest().body(java.util.Map.of(
                 "error", e.getMessage(),
                 "type", "ValidationError"
             ));
         } catch (Exception e) {
-            System.err.println("✗ Error in PUT /api/employees/" + id + ":");
+            System.err.println("Error in PUT /api/employees/" + id + ":");
             e.printStackTrace();
             return ResponseEntity.status(500).body(java.util.Map.of(
                 "error", e.getMessage() != null ? e.getMessage() : "Errore durante l'aggiornamento dell'employee",
@@ -94,7 +95,7 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
-    //Restituisce tutte le valutazioni assegnate ad un agente.
+    //List all valuations assigned to a specific employee.
     @GetMapping("/{id}/valuations")
     public List<PropertyValuationDTO> listValuationsByEmployee(@PathVariable Integer id) {
         return valuationService
@@ -104,7 +105,7 @@ public class EmployeeController {
                 .toList();
     }
 
-     //Assegna una valutazione ad un agente. 
+     //Assign an employee to a valuation.
     @PutMapping("/valuation/{valuationId}/assign/{employeeId}")
     public PropertyValuationDTO assignValuation(
             @PathVariable Integer valuationId,
@@ -113,7 +114,7 @@ public class EmployeeController {
         return valuationService.assignEmployee(valuationId, employeeId);
     }
 
-     //Aggiorna lo status della valutazione.
+     //update the status of a valuation.
     @PutMapping("/valuation/{valuationId}/status")
     public PropertyValuationDTO updateStatus(
             @PathVariable Integer valuationId,

@@ -30,6 +30,7 @@ public class PropertyAddressController {
         this.userService = userService;
     }
 
+    // Check if the current user can access the property with the given ID
     private boolean canAccessProperty(Integer propertyId) {
         if (!SecurityUtil.isAuthenticated()) {
             return false;

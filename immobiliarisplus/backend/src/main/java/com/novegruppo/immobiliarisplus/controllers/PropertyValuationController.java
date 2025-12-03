@@ -60,20 +60,21 @@ public class PropertyValuationController {
         return ResponseEntity.noContent().build();
     }
 
+    // Endpoint for calculating and saving a new property, owner and address of valuation
     @PostMapping("/calculate")
     public ResponseEntity<PropertyValuationResultDTO> calculate(@RequestBody PropertyValuationRequestDTO request) {
         PropertyValuationResultDTO result = service.calculateAndSave(request);
         return ResponseEntity.ok(result);
     }
 
-    // Endpoint dashboard: LISTA minimale conforme al frontend (sostituisce la precedente versione completa)
+    // Endpoint dashboard: minimal list of valuations with filtering based on role
     @GetMapping("/dashboard")
     public ResponseEntity<List<Map<String, Object>>> listForDashboard() {
         List<PropertyValuationDTO> all = service.findAll();
         List<PropertyValuationDTO> filtered;
-        if (SecurityUtil.hasRole("ADMIN")) {
+        if (SecurityUtil.hasRole("ADMIN")) { // ADMIN see all valuations
             filtered = all;
-        } else if (SecurityUtil.hasRole("AGENT")) {
+        } else if (SecurityUtil.hasRole("AGENT")) { // AGENT see only their valuations
             String username = SecurityUtil.getUsername();
             if (username == null) {
                 filtered = List.of();
@@ -121,14 +122,14 @@ public class PropertyValuationController {
             }
             out.put("assignedAgent", assignedAgentName);
             out.put("valuationFinal", v.valuationFinal());
-            out.put("status", v.status() != null ? v.status() : ValuationStatus.NOT_ASSIGNED);
+            out.put("status", v.status() != null ? v.status() : ValuationStatus.NOT_ASSIGNED); // Default status if null
             return out;
         }).collect(Collectors.toList());
 
         return ResponseEntity.ok(payload);
     }
 
-    // Dettaglio completo valutazione by id
+    // Complete detail of a valuation for dashboard
     @GetMapping("/dashboard/{id}")
     public ResponseEntity<Map<String, Object>> getDashboardDetail(@PathVariable Integer id) {
         PropertyValuationDTO v = service.findById(id);
@@ -178,7 +179,7 @@ public class PropertyValuationController {
         return ResponseEntity.ok(out);
     }
 
-    // Update valutazione (ADMIN + AGENT se assegnata) - aggiorna uno o più campi
+    // valuation update endpoint for dashboard: can update status, notes, valuationFinal
     @PatchMapping(value = "/dashboard/{id}", consumes = "application/json")
     public ResponseEntity<?> updateValuation(@PathVariable Integer id, @RequestBody(required = false) Map<String, Object> updates) {
         if (updates == null || updates.isEmpty()) {
@@ -186,7 +187,8 @@ public class PropertyValuationController {
         }
 
         PropertyValuationDTO current = service.findById(id);
-        // Permessi: ADMIN può sempre, AGENT solo se la valutazione è assegnata a lui
+        // ADMIN can update any valuation
+        // AGENT can update only their assigned valuations
         if (!SecurityUtil.hasRole("ADMIN")) {
             if (SecurityUtil.hasRole("AGENT")) {
                 String username = SecurityUtil.getUsername();
@@ -212,7 +214,7 @@ public class PropertyValuationController {
         }
 
         try {
-            // Aggiorna i campi forniti
+            // update status
             if (updates.containsKey("status")) {
                 Object raw = updates.get("status");
                 if (raw == null) {
@@ -233,12 +235,14 @@ public class PropertyValuationController {
                 }
             }
 
+            // update notes
             if (updates.containsKey("notes")) {
                 Object raw = updates.get("notes");
                 String notes = raw != null ? String.valueOf(raw) : null;
                 service.updateNotes(id, notes);
             }
 
+            // update valuationFinal
             if (updates.containsKey("valuationFinal")) {
                 Object raw = updates.get("valuationFinal");
                 if (raw == null) {
@@ -270,10 +274,10 @@ public class PropertyValuationController {
             ));
         }
 
-        // Ricarica il DTO aggiornato per avere tutti i dati più recenti
+        // Retrieve updated valuation
         PropertyValuationDTO updated = service.findById(id);
 
-        // Costruisci risposta in formato dashboard detail
+        // Build response with full details to see changes
         Map<String, Object> response = new HashMap<>();
         response.put("id", updated.id());
 
@@ -325,14 +329,14 @@ public class PropertyValuationController {
         return ResponseEntity.ok(response);
     }
 
-    // Assegna agente (solo ADMIN)
+    // Assign agent (only ADMIN)
     @PutMapping("/dashboard/{id}/assign/{employeeId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PropertyValuationDTO> assignAgent(@PathVariable Integer id, @PathVariable Integer employeeId) {
         return ResponseEntity.ok(service.assignEmployee(id, employeeId));
     }
 
-    // Delete valutazione (solo ADMIN)
+    // Delete valuation (only ADMIN)
     @DeleteMapping("/dashboard/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteDashboard(@PathVariable Integer id) {

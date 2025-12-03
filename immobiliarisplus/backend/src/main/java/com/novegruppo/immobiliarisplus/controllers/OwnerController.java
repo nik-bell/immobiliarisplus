@@ -31,7 +31,7 @@ public class OwnerController {
         this.userService = userService;
     }
 
-    // Lista completa proprietari 
+    // complete list of owners with role-based access control
     @GetMapping
     public List<OwnerDTO> list() {
         List<OwnerDTO> all = ownerService.findAll();
@@ -82,7 +82,7 @@ public class OwnerController {
         return null;
     }
 
-    // Registrazione proprietario
+    // owner creation
     @PostMapping
     public ResponseEntity<OwnerDTO> create(@RequestBody OwnerDTO dto) {
         // Solo ADMIN e AGENT possono creare owners manualmente
@@ -100,7 +100,7 @@ public class OwnerController {
         return ResponseEntity.created(location).body(created);
     }
 
-    // Modifica proprietario
+    // update owner
     @PutMapping("/{id}")
     public OwnerDTO update(@PathVariable Integer id, @RequestBody OwnerDTO dto) {
         if (!SecurityUtil.isAuthenticated()) {
@@ -111,7 +111,7 @@ public class OwnerController {
         if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
             return ownerService.update(id, dto);
         }
-        // OWNER può modificare solo se stesso
+        // OWNER can modify only their own owner record
         if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
             String email = SecurityUtil.getUsername();
             if (email != null) {
@@ -126,7 +126,7 @@ public class OwnerController {
         return null;
     }
 
-    // Eliminazione proprietario
+    // delete owner
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         // Solo ADMIN può eliminare
@@ -137,7 +137,7 @@ public class OwnerController {
         return ResponseEntity.noContent().build();
     }
 
-    // Proprietà possedute dal proprietario
+    // owner's properties with role-based access control
     @GetMapping("/{id}/properties")
     public List<PropertyDTO> listPropertiesByOwner(@PathVariable Integer id) {
         if (!SecurityUtil.isAuthenticated()) {
@@ -151,7 +151,7 @@ public class OwnerController {
                     .filter(p -> p.ownerId().equals(id))
                     .toList();
         }
-        // OWNER vede solo le proprie proprietà
+
         if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
             String email = SecurityUtil.getUsername();
             if (email != null) {

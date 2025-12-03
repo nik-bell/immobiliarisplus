@@ -14,6 +14,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+// role based notifications access. not implemented yet. requires complete rework of notification system.
+
 @RestController
 @RequestMapping("/api/notifications")
 public class NotificationController {
@@ -33,11 +35,11 @@ public class NotificationController {
             return List.of();
         }
         Set<String> roles = SecurityUtil.getRoles();
-        // ADMIN vede tutte le notifiche
+
         if (roles.contains("ROLE_" + UserRole.ADMIN.name())) {
             return all;
         }
-        // AGENT e OWNER vedono solo le proprie notifiche (per recipientId)
+
         String email = SecurityUtil.getUsername();
         if (email != null) {
             UserDTO current = userService.findAll().stream()
@@ -74,7 +76,7 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<NotificationDTO> create(@RequestBody NotificationDTO dto) {
-        // Solo ADMIN e AGENT possono creare notifiche
+
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name()) && !SecurityUtil.hasRole(UserRole.AGENT.name())) {
             return ResponseEntity.status(403).build();
         }
@@ -113,7 +115,7 @@ public class NotificationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        // Solo ADMIN può eliminare notifiche
+
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name())) {
             return ResponseEntity.status(403).build();
         }

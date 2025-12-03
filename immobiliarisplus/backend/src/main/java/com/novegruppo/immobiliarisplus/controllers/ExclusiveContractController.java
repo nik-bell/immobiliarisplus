@@ -38,11 +38,11 @@ public class ExclusiveContractController {
             return List.of();
         }
         Set<String> roles = SecurityUtil.getRoles();
-        // ADMIN e AGENT vedono tutti i contratti
+        // ADMIN e AGENT see all contracts, must be changed in only ADMIN
         if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
             return all;
         }
-        // OWNER vede solo contratti delle proprie proprietà
+        // OWNER see only their contracts
         if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
             String email = SecurityUtil.getUsername();
             if (email != null) {
@@ -98,7 +98,7 @@ public class ExclusiveContractController {
 
     @PostMapping
     public ResponseEntity<ExclusiveContractDTO> create(@RequestBody ExclusiveContractDTO dto) {
-        // Solo ADMIN e AGENT possono creare contratti
+        // only ADMIN and AGENT can create contracts
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name()) && !SecurityUtil.hasRole(UserRole.AGENT.name())) {
             return ResponseEntity.status(403).build();
         }
@@ -109,7 +109,7 @@ public class ExclusiveContractController {
 
     @PutMapping("/{id}")
     public ExclusiveContractDTO update(@PathVariable Integer id, @RequestBody ExclusiveContractDTO dto) {
-        // Solo ADMIN e AGENT possono modificare contratti
+        // only  ADMIN and AGENT can update contracts
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name()) && !SecurityUtil.hasRole(UserRole.AGENT.name())) {
             return null;
         }
@@ -118,7 +118,7 @@ public class ExclusiveContractController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        // Solo ADMIN può eliminare contratti
+        // only ADMIN can delete contracts
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name())) {
             return ResponseEntity.status(403).build();
         }
