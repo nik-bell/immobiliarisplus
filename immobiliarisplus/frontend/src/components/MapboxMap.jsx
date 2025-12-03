@@ -41,9 +41,7 @@ function MapboxMap({ address, coordinates }) {
       // Add new marker
       marker.current = new mapboxgl.Marker({ color: "#0d9488" })
         .setLngLat([lng, lat])
-        .setPopup(new mapboxgl.Popup().setHTML(`<div class="text-sm font-medium">${address || "Indirizzo selezionato"}</div>`))
-        .addTo(map.current)
-        .togglePopup();
+        .addTo(map.current);
     }
 
     return () => {
