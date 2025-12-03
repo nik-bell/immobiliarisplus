@@ -1,5 +1,6 @@
 package com.novegruppo.immobiliarisplus.dtos;
 
+
 public record PropertyUpdateDTO(
         Integer ownerId,
         String status,

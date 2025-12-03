@@ -4,6 +4,8 @@ import com.novegruppo.immobiliarisplus.enums.NotificationRoleTarget;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
+// for future use
+
 public record NotificationDTO(
         Integer id,
 

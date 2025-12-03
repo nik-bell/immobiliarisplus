@@ -17,6 +17,7 @@ public record EmployeeDTO(
         @Size(max = 100, message = "Il cognome è troppo lungo.")
         String surname,
 
+        // Phone is optional for Employee for auto creation from User, will be validated if provided manually by admin
         @Size(max = 20, message = "Il numero di telefono è troppo lungo.")
         String phone,
 

@@ -23,6 +23,7 @@ public record OwnerDTO(
         @Email(message = "L'email non è valida.")
         String email,
 
+        @NotBlank(message = "Il numero di telefono non può essere vuoto.")
         @Size(max = 20, message = "Il numero di telefono è troppo lungo.")
         String phone,
 

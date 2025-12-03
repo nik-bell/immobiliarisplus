@@ -2,13 +2,8 @@ package com.novegruppo.immobiliarisplus.dtos;
 
 import jakarta.validation.constraints.*;
 
-/**
- * 
- * Contiene solo i dati essenziali per trasferire informazioni sui documenti delle proprietà:
- *  - id: identificativo del documento
- *  - propertyId: ID della proprietà associata
- *  - fileName: nome o percorso del file del documento
- */
+// for future use
+
 public record PropertyDocsDTO(
 
         @NotNull(message = "L'ID del documento non può essere nullo.")

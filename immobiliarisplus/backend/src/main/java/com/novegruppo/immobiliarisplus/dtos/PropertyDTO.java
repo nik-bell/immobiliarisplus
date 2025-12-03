@@ -11,7 +11,7 @@ public record PropertyDTO(
 
         Integer ownerId,
 
-        // Cognome del proprietario esposto in lettura
+        // Surname of the owner for display purposes
         String ownerSurname,
 
         PropertyStatus status,

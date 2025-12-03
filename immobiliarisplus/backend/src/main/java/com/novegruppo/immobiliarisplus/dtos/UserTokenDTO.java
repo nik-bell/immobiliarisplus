@@ -4,6 +4,8 @@ import com.novegruppo.immobiliarisplus.enums.TokenType;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
+// for future use
+
 public record UserTokenDTO(
         Integer id,
 
