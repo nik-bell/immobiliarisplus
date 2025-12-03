@@ -5,8 +5,9 @@ import FeatureIcon from "../components/FeatureIcon";
 import Badge from "../components/CasaTable/Badge";
 import StatusDropdown from "../components/CasaTable/StatusDropdown";
 import AgentSelector from "../components/CasaTable/AgentSelector";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { mapValuationStatusLabel, mapListItem, mapUIStatusToEnum } from "../utils/mappers";
-import { updateValuationDashboard } from "../api/api";
+import { updateValuationDashboard, deleteValuation } from "../api/api";
 
 export default function CasaModal() {
   const { modalOpen, selectedCasa, closeCasaModal, setAllCases, openCasaModal } = useCasa();
@@ -28,6 +29,8 @@ export default function CasaModal() {
   const [view, setView] = useState("details");
   const [showAddDoc, setShowAddDoc] = useState(false);
   const [newDocName, setNewDocName] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   const updateDraftProperty = (key, value) => {
     setDraft((d) => ({ ...d, property: { ...(d?.property || {}), [key]: value } }));
@@ -81,7 +84,6 @@ export default function CasaModal() {
     try {
       serverUpdated = await updateValuationDashboard(updated.id, payload);
     } catch (err) {
-      console.error("saveSection: updateValuationDashboard failed", err);
       serverUpdated = null;
     }
 
@@ -100,6 +102,39 @@ export default function CasaModal() {
     setEditing((e) => ({ ...e, [section]: false }));
   };
 
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedCasa?.id) return;
+    
+    const success = await deleteValuation(selectedCasa.id);
+    
+    if (success) {
+      // Remove from local state
+      setAllCases((prev) => prev.filter((x) => x.id !== selectedCasa.id));
+      
+      // Show success message
+      setDeleteSuccess(true);
+      setShowDeleteConfirm(false);
+      
+      // Hide success message and close modal after 2 seconds
+      setTimeout(() => {
+        setDeleteSuccess(false);
+        closeCasaModal();
+      }, 2000);
+    } else {
+      // Handle error - just close confirmation modal
+      setShowDeleteConfirm(false);
+      alert('Errore durante l\'eliminazione del record');
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+  };
+
   // guard: don't render modal if closed
   if (!modalOpen) return null;
 
@@ -107,6 +142,14 @@ export default function CasaModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      {deleteSuccess && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-[70] bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <span className="font-medium">Record eliminato con successo</span>
+        </div>
+      )}
       <div className="bg-white w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-4">
@@ -374,7 +417,16 @@ export default function CasaModal() {
           </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-end items-center gap-3">
+        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-between items-center gap-3">
+          {userType === "admin" && (
+            <button
+              onClick={handleDeleteClick}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+            >
+              Elimina
+            </button>
+          )}
+          <div className="flex-1"></div>
           <button
             onClick={closeCasaModal}
             className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
@@ -383,6 +435,13 @@ export default function CasaModal() {
           </button>
         </div>
       </div>
+      {/* Modal di conferma eliminazione */}
+      <DeleteConfirmationModal
+        isOpen={showDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        leadAddress={selectedCasa?.property?.address}
+      />
     </div>
   );
 }

@@ -58,9 +58,10 @@ export async function request(path, { method = "GET", body, headers = {}, expect
       let errBody = null;
       try {
         errBody = await response.text();
-      } catch (__) {}
+      } catch (parseError) {
+        // Failed to parse error body, continue with null
+      }
       const err = { status, statusText: response.statusText, body: errBody };
-      console.error("request ERROR:", url, err);
       return { ok: false, status, error: err };
     }
 
@@ -68,7 +69,6 @@ export async function request(path, { method = "GET", body, headers = {}, expect
     const data = await response.json();
     return { ok: true, status, data };
   } catch (error) {
-    console.error("request EXCEPTION:", url, error);
     return { ok: false, status: 0, error };
   }
 }

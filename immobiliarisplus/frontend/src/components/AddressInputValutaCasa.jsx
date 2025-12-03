@@ -158,8 +158,11 @@ function AddressInputValutaCasa({ address, onChange, error }) {
                 <div className="text-xs text-gray-500 mt-1">
 
                     <div className="flex items-start justify-start">
-                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-teal-700 mr-2"></div>
-                    Cercando l'indirizzo... Prova a inserire anche la città
+                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-teal-700 mr-2"></div>
+                        Cercando l'indirizzo... Prova a inserire anche la città
+                    </div>
+                    <div className="mt-2 p-3 bg-blue-50 border border-indigo-900 rounded text-sm text-black">
+                        <strong>Nota:</strong> I suggerimenti degli indirizzi appariranno solo per Torino, Alessandria, Cuneo e Asti.
                     </div>
                 </div>
             )}

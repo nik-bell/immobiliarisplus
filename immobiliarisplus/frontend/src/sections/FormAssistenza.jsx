@@ -29,7 +29,6 @@ const FormAssistenza = () => {
     const [submitData, setSubmitData] = useState({ nome: '', cognome: '' });
 
     const handleFormSubmit = (data) => {
-        console.log('Dati inviati dal form: ', data);
         setSubmitData({ nome: data.nome, cognome: data.cognome });
         setShowSuccessModal(true);
         if (formRef.current && formRef.current.resetForm) {

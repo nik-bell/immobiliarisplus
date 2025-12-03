@@ -6,7 +6,6 @@ export async function login(credentials) {
     // expected server payload: { token, user }
     return res.data;
   }
-  console.error("login failed", res.error || res.status);
   return null;
 }
 
