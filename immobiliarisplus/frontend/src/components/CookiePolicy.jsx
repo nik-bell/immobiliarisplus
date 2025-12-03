@@ -1,5 +1,19 @@
+/**
+ * @file CookiePolicy.jsx
+ * @description Cookie policy component that loads and displays Iubenda cookie policy embed.
+ *              Dynamically loads the Iubenda script on component mount.
+ */
+
 import { useEffect } from "react";
 
+/**
+ * CookiePolicy
+ *
+ * Component that loads the Iubenda cookie policy script and renders a linked embed.
+ * The script is loaded on mount and handles browser compatibility for event listeners.
+ *
+ * @returns {JSX.Element} Anchor element linking to Iubenda cookie policy.
+ */
 function CookiePolicy() {
   useEffect(() => {
     const loadIubendaScript = () => {

@@ -1,3 +1,49 @@
+/**
+ * @file CasaTableRow.jsx
+ * @description Table row renderer for a single "casa" (property/case). Renders
+ *              table cells for address, size, valuation, status, assigned agent
+ *              and action controls. Handles row click to open modal and admin
+ *              delete flow.
+ */
+
+/**
+ * Employee shape used in casa objects.
+ * @typedef {Object} Employee
+ * @property {string|number} id - Employee identifier.
+ * @property {string} [name] - First name.
+ * @property {string} [surname] - Last name.
+ * @property {string} [email] - Email.
+ */
+
+/**
+ * Casa (case/property) shape.
+ * @typedef {Object} Casa
+ * @property {string|number} id - Casa identifier.
+ * @property {Object} [property] - Property details.
+ * @property {string} [property.address] - Property address.
+ * @property {number} [property.sizeMq] - Size in square meters.
+ * @property {number|string|null} [valuationFinal] - Final valuation or placeholder.
+ * @property {string} [status] - Internal status key.
+ * @property {string} [statusLabel] - Human readable status label.
+ * @property {Employee|string|null} [assignedAgent] - Assigned agent (object, label or null).
+ */
+
+/**
+ * Props for CasaTableRow.
+ * @typedef {Object} CasaTableRowProps
+ * @property {Casa} casa - Casa object to render in the row.
+ */
+
+/**
+ * CasaTableRow
+ *
+ * Renders a single row for the CasaTable. Shows AgentSelector and delete controls
+ * only to admin users. Emits modal open events and handles deletion using API.
+ *
+ * @param {CasaTableRowProps} props
+ * @param {Casa} props.casa - Casa to render.
+ * @returns {JSX.Element}
+ */
 import { useState } from "react";
 import { useCasa } from "../../store/CasaContext";
 import Badge from "./Badge";
@@ -12,18 +58,18 @@ export default function CasaTableRow({ casa }) {
   const { userType } = useAuth();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  // handler click riga: apre modale
+  // Row click handler: opens modal
   const handleRowClick = () => {
     openCasaModal(casa);
   };
 
-  // handler icona info: ferma la propagation e apre modale
+  // Info icon click handler: stops propagation and opens modal
   const handleInfoClick = (e) => {
-    e.stopPropagation(); // evita che il click sul bottone attivi tutto il tr due volte
+    e.stopPropagation(); // prevents the click on the button from triggering the entire tr twice
     openCasaModal(casa);
   };
 
-  // handler delete button
+  // Delete button click handler
   const handleDeleteClick = (e) => {
     e.stopPropagation();
     setShowDeleteConfirm(true);
@@ -88,27 +134,27 @@ export default function CasaTableRow({ casa }) {
       onClick={handleRowClick}
       className="hover:bg-gray-50 cursor-pointer transition"
     >
-      {/* Indirizzo */}
+      {/* Address */}
       <td className="px-4 py-3">{casa.property?.address ?? ''}</td>
 
       {/* Mq */}
       <td className="px-4 py-3">{casa.property?.sizeMq ?? ''} m²</td>
 
-      {/* Valutazione finale */}
+      {/* Final valuation */}
       <td className="px-4 py-3">{typeof casa.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(casa.valuationFinal) : (casa.valuationFinal ?? '-')}</td>
 
-      {/* Stato con badge */}
+      {/* Status with badge */}
       <td className="px-4 py-3">
         <StatusDropdown casa={casa} />
       </td>
 
-      {/* Agente assegnato (visibile solo ad admin) */}
+      {/* Assigned agent (visible only to admin) */}
       {userType === "admin" && (
         <td className="px-4 py-3 relative" onClick={(e) => e.stopPropagation()}>
           <AgentSelector casa={casa} />
         </td>
       )}
-      {/* Azioni: icona info che apre modale */}
+      {/* Actions: info icon that opens modal */}
       <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-2">
           <button
@@ -116,7 +162,7 @@ export default function CasaTableRow({ casa }) {
             aria-label={`Info ${casa.id}`}
             className="p-1 rounded hover:bg-gray-100"
           >
-            {/* semplice icona info SVG */}
+            {/* simple info icon SVG */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-gray-600"
@@ -157,7 +203,7 @@ export default function CasaTableRow({ casa }) {
         </div>
       </td>
     </tr>
-    {/* Modal di conferma eliminazione */}
+    {/* Delete confirmation modal */}
     <DeleteConfirmationModal
       isOpen={showDeleteConfirm}
       onCancel={handleDeleteCancel}

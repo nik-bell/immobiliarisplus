@@ -1,6 +1,7 @@
 import ContactForm from "../components/ContactForm";
 import { useState, useRef } from "react";
 
+// Modal component to show success message
 const SuccessModal = ({ nome, cognome, onClose }) => {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -22,6 +23,7 @@ const SuccessModal = ({ nome, cognome, onClose }) => {
     );
 };
 
+// Main FormAssistenza component
 const FormAssistenza = () => {
     const formRef = useRef(null);
 

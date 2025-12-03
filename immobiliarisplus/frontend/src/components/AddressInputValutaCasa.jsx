@@ -1,7 +1,21 @@
+/**
+ * @file AddressInputValutaCasa.jsx
+ * @description Address input component with Mapbox autocomplete integration.
+ *              Filters suggestions by allowed postal codes and extracts city/coordinates data.
+ */
+
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import capData from '../data/allowedCaps'
 
 const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGFnbGllIiwiYSI6ImNtaW9sd25xMjAyZTczZnM5a3k4bjFxYTgifQ.TDL9kEFOXdbQDr91_YB2UA";
+
+/**
+ * Debounce utility function.
+ *
+ * @param {Function} func - Function to debounce.
+ * @param {number} delay - Delay in milliseconds.
+ * @returns {Function} Debounced function.
+ */
 const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
@@ -14,6 +28,39 @@ const debounce = (func, delay) => {
     };
 };
 
+/**
+ * Mapbox suggestion object shape.
+ * @typedef {Object} MapboxSuggestion
+ * @property {string} id - Unique suggestion identifier.
+ * @property {string} text - Suggestion text (street name).
+ * @property {string} place_name - Full place name with context.
+ * @property {string} [address] - Civic number if available.
+ * @property {Array} [context] - Array of context objects (postcode, place, etc.).
+ * @property {Object} [geometry] - Geometry object with coordinates.
+ * @property {Array} [geometry.coordinates] - [longitude, latitude] coordinates.
+ */
+
+/**
+ * Props for AddressInputValutaCasa component.
+ * @typedef {Object} AddressInputValutaCasaProps
+ * @property {string} [address] - Initial address value.
+ * @property {Function} onChange - Callback fired when address selection changes.
+ *                                 Receives object with address, zipCode, city, coordinates.
+ * @property {string} [error] - Error message to display.
+ */
+
+/**
+ * AddressInputValutaCasa
+ *
+ * Address input component with Mapbox autocomplete. Fetches suggestions filtered by allowed
+ * postal codes. On selection, extracts and returns address, postal code, city, and coordinates.
+ *
+ * @param {AddressInputValutaCasaProps} props
+ * @param {string} [props.address] - Initial address value.
+ * @param {Function} props.onChange - Callback on address selection.
+ * @param {string} [props.error] - Error message to display.
+ * @returns {JSX.Element} Address input component with autocomplete dropdown.
+ */
 function AddressInputValutaCasa({ address, onChange, error }) {
     const ALLOWED_CAPS = useMemo(() => {
         return new Set(capData.map(item => item.cap));
@@ -23,6 +70,12 @@ function AddressInputValutaCasa({ address, onChange, error }) {
     const [isLoading, setIsLoading] = useState(false);
     const [awaitingSuggestion, setAwaitingSuggestion] = useState(false);
 
+    /**
+     * Extract postal code from Mapbox suggestion context.
+     *
+     * @param {MapboxSuggestion} suggestion - Mapbox suggestion object.
+     * @returns {string|null} Postal code or null if not found.
+     */
     const extractCapFromContext = (suggestion) => {
         if (!suggestion.context || !Array.isArray(suggestion.context)) {
             return null;
@@ -34,6 +87,12 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         return postcodeContext ? postcodeContext.text : null;
     };
 
+    /**
+     * Fetch address suggestions from Mapbox API.
+     *
+     * @param {string} text - Search text input.
+     * @returns {Promise<void>}
+     */
     const fetchSuggestions = async (text) => {
         if (text.length < 3) {
             setSuggestions([]);
@@ -73,8 +132,14 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         }
     };
 
+    // Debounced version of fetchSuggestions to limit API calls
     const debouncedFetch = useCallback(debounce(fetchSuggestions, 500), []);
 
+    /**
+     * Handle input value changes.
+     *
+     * @param {Event} e - Input change event.
+     */
     const handleInputChange = (e) => {
         const newText = e.target.value;
         setInputValue(newText);
@@ -87,6 +152,11 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         debouncedFetch(newText);
     };
 
+    /**
+     * Handle selection of a suggestion from the dropdown.
+     *
+     * @param {MapboxSuggestion} suggestion - Selected Mapbox suggestion.
+     */
     const handleSelectSuggestion = (suggestion) => {
         const cap = extractCapFromContext(suggestion);
         let city = null;
@@ -108,12 +178,14 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         setSuggestions([]);
     };
 
+    // Sync inputValue with address prop changes
     useEffect(() => {
         setInputValue(address || "");
     }, [address]);
 
     const containerRef = useRef(null);
 
+    // Close suggestions on outside click
     useEffect(() => {
         const handleOutside = (e) => {
             if (containerRef.current && !containerRef.current.contains(e.target)) {

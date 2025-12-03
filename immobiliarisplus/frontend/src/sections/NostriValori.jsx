@@ -29,7 +29,7 @@ const valoriData = [
 ];
 
 const NostriValori = () => {
-    // Aggiunto `transform hover:-translate-y-1` per l'effetto sollevamento
+    // Added transform hover:-translate-y-1 for the lift-on-hover effect
     const cardWrapperClasses = "bg-white rounded-xl shadow-sm border-t-4 border-teal-500 flex items-start gap-4 min-h-[160px] p-6 transition shadow-sm transform hover:shadow-md hover:-translate-y-1";
     const iconWrapperClasses = "bg-teal-50 w-12 h-12 rounded-lg flex items-center justify-center text-teal-600 flex-shrink-0 text-2xl";
     const titleClasses = "text-lg font-semibold text-gray-800";

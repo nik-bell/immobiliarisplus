@@ -1,3 +1,48 @@
+/**
+ * @file CasaTable.jsx
+ * @description Table / list view for "case" (properties) used in the dashboard.
+ *
+ * Renders a responsive table for desktop and stacked cards for mobile.
+ * Uses CasaContext to read the list of cases and AuthContext to conditionally
+ * render admin-only controls (AgentSelector).
+ */
+
+/**
+ * Employee shape used in casa objects.
+ * @typedef {Object} Employee
+ * @property {string|number} id - Employee identifier.
+ * @property {string} [name] - First name.
+ * @property {string} [surname] - Last name.
+ * @property {string} [email] - Email.
+ */
+
+/**
+ * Casa (case/property) shape.
+ * @typedef {Object} Casa
+ * @property {string|number} id - Casa identifier.
+ * @property {Object} [property] - Property details.
+ * @property {string} [property.address] - Property address.
+ * @property {number} [property.sizeMq] - Size in square meters.
+ * @property {number|string|null} [valuationFinal] - Final valuation or placeholder.
+ * @property {string} [status] - Internal status key.
+ * @property {string} [statusLabel] - Human readable status label.
+ * @property {Employee|string|null} [assignedAgent] - Assigned agent (object, label or null).
+ */
+
+/**
+ * Props for CasaTable component (none at the moment).
+ * @typedef {Object} CasaTableProps
+ */
+
+/**
+ * CasaTable
+ *
+ * Responsive list/table of casas. Desktop shows a table; mobile shows stacked cards.
+ * Admin users see the AgentSelector control inline on mobile cards.
+ *
+ * @param {CasaTableProps} props
+ * @returns {JSX.Element} Rendered casa table component.
+ */
 import CasaTableHeader from "./CasaTableHeader";
 import CasaTableRow from "./CasaTableRow";
 import Badge from "./Badge";
@@ -6,7 +51,7 @@ import AgentSelector from "./AgentSelector";
 import { useAuth } from "../../store/AuthContext";
 
 export default function CasaTable() {
-  // cases è già filtrato e ordinato dal provider
+  // get cases from context
   const { cases } = useCasa();
   const { userType } = useAuth();
 
@@ -52,9 +97,7 @@ export default function CasaTable() {
                 {/** useAuth provides userType **/}
                 {/** note: AgentSelector will fetch employees and call assign API **/}
                 {/** show selector if admin */}
-                {/** useAuth hook below */}
                 
-                {/** render AgentSelector if admin */}
                 {userType === 'admin' && <div className="mb-2"><AgentSelector casa={casa} /></div>}
                 <button
                   onClick={() => {

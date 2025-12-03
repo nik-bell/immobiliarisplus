@@ -3,6 +3,31 @@ import { createPortal } from "react-dom";
 import { getEmployees, assignEmployeeToDashboard } from "../../api/api";
 import { useCasa } from "../../store/CasaContext";
 
+/**
+ * Employee object shape.
+ * @typedef {Object} Employee
+ * @property {string|number} id - Employee identifier.
+ * @property {string} [name] - First name.
+ * @property {string} [surname] - Last name.
+ * @property {string} [email] - Email address.
+ */
+
+/**
+ * Casa object shape.
+ * @typedef {Object} Casa
+ * @property {string|number} id - Casa identifier.
+ * @property {Employee|string|null} [assignedAgent] - Currently assigned agent (object, label string, or null).
+ */
+
+/**
+ * AgentSelector
+ *
+ * Button that opens a small popup allowing selection and assignment of an employee to a casa dashboard.
+ *
+ * @param {{casa: Casa}} props
+ * @param {Casa} props.casa - Casa for which to assign an agent.
+ * @returns {JSX.Element}
+ */
 export default function AgentSelector({ casa }) {
   const { refreshCases } = useCasa();
   const [open, setOpen] = useState(false);
@@ -13,6 +38,7 @@ export default function AgentSelector({ casa }) {
   const popupRef = useRef(null);
   const [popupStyle, setPopupStyle] = useState({});
 
+  // Load employees on mount
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -26,6 +52,7 @@ export default function AgentSelector({ casa }) {
     return () => (mounted = false);
   }, []);
 
+  // Close popup on outside click
   useEffect(() => {
     const onDoc = (e) => {
       const t = e.target;
@@ -37,6 +64,7 @@ export default function AgentSelector({ casa }) {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
+  // Update popup position on open and on window resize/scroll
   useEffect(() => {
     function updatePos() {
       if (!buttonRef.current) return;
@@ -57,6 +85,7 @@ export default function AgentSelector({ casa }) {
     }
   }, [open]);
 
+  // Filter employees based on query
   const filtered = employees
     .filter((emp) => {
       if (!query) return true;
@@ -69,6 +98,12 @@ export default function AgentSelector({ casa }) {
     })
     .slice(0, 8);
 
+  /**
+   * Assign an employee to the casa dashboard.
+   *
+   * @param {Employee} emp - Employee to assign.
+   * @returns {Promise<void>}
+   */
   const handleAssign = async (emp) => {
     setLoading(true);
     await assignEmployeeToDashboard(casa.id, emp.id);
@@ -77,6 +112,7 @@ export default function AgentSelector({ casa }) {
     if (typeof refreshCases === "function") await refreshCases();
   };
 
+  // Popup content for selecting an agent
   const popup = (
     <div ref={popupRef} style={popupStyle} className="bg-white border border-gray-200 rounded shadow-lg p-2">
       <input
@@ -109,6 +145,14 @@ export default function AgentSelector({ casa }) {
     </div>
   );
 
+  /**
+   * Get display label for the assigned agent.
+   *
+   * Handles three forms: null, string label, or Employee object.
+   *
+   * @param {null|Employee|string} a - Assigned agent representation.
+   * @returns {string|null} Display label or null when none.
+   */
   function getAssignedLabel(a) {
     if (!a) return null;
     if (typeof a === "string") return a;

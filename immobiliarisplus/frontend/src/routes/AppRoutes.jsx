@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import AreaAgentiLayout from "../layout/AreaAgentiLayout";
 
-// 1. IMPORT LAZY DELLE PAGINE
+// 1. IMPORT LAZY IN PAGES
 const Homepage = lazy(() => import("../pages/Homepage"));
 const Contattaci = lazy(() => import("../pages/Contattaci"));
 const ValutaCasa = lazy(() => import("../pages/ValutaCasa/ValutaCasa"));
@@ -26,7 +26,7 @@ function ProtectedAreaAgenti() {
     </Suspense>
   );
 }
-
+// 2. LOADING COMPONENT AND HELPER
 // 2. COMPONENTE DI CARICAMENTO E HELPER
 const Loading = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -75,7 +75,7 @@ const appRoutes = [
         title: "Migliora Casa",
       },
 
-      // 🔐 AREA AGENTI PROTETTA
+      // 🔐 PROTECTED AREA AGENT
       {
         path: "area-agenti",
         element: <AreaAgentiLayout />,
