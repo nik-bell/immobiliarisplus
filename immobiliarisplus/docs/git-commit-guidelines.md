@@ -5,7 +5,7 @@ This guide is based on the **Conventional Commits** style.
 
 ---
 
-## 1️⃣ Commit Types
+## 1️. Commit Types
 
 | Type       | When to use                                  | Example                                         |
 |------------|---------------------------------------------|-------------------------------------------------|
@@ -20,7 +20,7 @@ This guide is based on the **Conventional Commits** style.
 ---
 
 
-## 2️⃣ Commit Structure
+## 2️. Commit Structure
 
 <type>(<scope>): <short description>
 
@@ -37,7 +37,7 @@ docs(readme): add instructions for Docker setup
 
 ---
 
-## 3️⃣ Guidelines
+## 3️. Guidelines
 
 - Keep the **subject line ≤ 50 characters**  
 - Use **imperative mood**: Add, Fix, Update  
@@ -52,7 +52,7 @@ Added JWT token generation in the authentication module to support stateless log
 
 ---
 
-## 4️⃣ Quick Tips
+## 4️. Quick Tips
 
 - Always commit **small, self-contained changes**  
 - Avoid committing unrelated changes together  
