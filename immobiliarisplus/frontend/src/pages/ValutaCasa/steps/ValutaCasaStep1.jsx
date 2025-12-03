@@ -110,7 +110,6 @@ export default function ValutaCasaStep1() {
           onChange={handleAddressChange}
           error={state.errors.address}
         />
-        {state.errors.address && <p className="text-sm text-red-600">{state.errors.address}</p>}
       </div>
 
       <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
