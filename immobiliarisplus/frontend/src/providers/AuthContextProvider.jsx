@@ -12,25 +12,20 @@ import { useState, useEffect } from "react";
 import { AuthContext } from "../store/AuthContext";
 import { clearAuthToken, getPersistedAuthToken, setAuthToken } from "../api/api";
 
-/**
- * AuthContextProvider component.
- *
- * Wrap your app with this provider to make authentication state available
- * via the `useAuth` hook.
- *
- * @param {{children: React.ReactNode}} props - Provider props
- * @returns {JSX.Element} Auth context provider
- */
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session on mount if token exists in sessionStorage
+  /**
+   * Restore session on mount.
+   * Loads token and user info from sessionStorage if available.
+   */
   useEffect(() => {
     const token = getPersistedAuthToken();
     if (token) {
       setAuthToken(token);
-      // Retrieve user from sessionStorage if available
+
+      // Retrieve user from storage
       const storedUser = sessionStorage.getItem("auth_user");
       if (storedUser) {
         try {
@@ -43,21 +38,13 @@ export const AuthContextProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  /**
-   * Logs the user in and persists user data in sessionStorage.
-   * @param {Object} userData - Authenticated user data (name, type, email, ...)
-   */
   const login = (userData) => {
-    setUser(userData); // userData = { name, type, email, etc... }
-    // Persist user data to sessionStorage
+    setUser(userData);
     if (typeof window !== "undefined" && window.sessionStorage) {
       sessionStorage.setItem("auth_user", JSON.stringify(userData));
     }
   };
 
-  /**
-   * Logs the user out, clears token and removes persisted user data.
-   */
   const logout = () => {
     setUser(null);
     clearAuthToken();
@@ -75,7 +62,11 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Caricamento...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Caricamento...
+      </div>
+    );
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

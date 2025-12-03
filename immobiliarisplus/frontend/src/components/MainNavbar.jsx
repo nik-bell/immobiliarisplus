@@ -1,21 +1,24 @@
-/**
- * @file MainNavbar.jsx
- * @description Primary navigation bar with logo, main links, and a mobile drawer menu.
- */
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import LogoPNG from '../assets/Logo.png'
 
+/**
+ * MainNavbar
+ *
+ * Renders a responsive navigation bar with logo, desktop navigation links, and a mobile menu drawer.
+ * Desktop view shows horizontal navigation; mobile view displays a hamburger menu that opens a side drawer.
+ * Includes links to Home, Vendi casa, Migliora casa, and Valuta casa.
+ *
+ * @returns {JSX.Element} Navigation bar component with responsive mobile menu.
+ */
 const MainNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  /**
-   * Toggles the mobile drawer menu visibility.
-   * @returns {void}
-   */
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  
   const navLinkClasses = "block text-2xl py-4 px-6 text-gray-800 hover:bg-gray-100 transition duration-300";
+  
   return (
     <>
       <nav className="w-full bg-white shadow">
@@ -77,7 +80,7 @@ const MainNavbar = () => {
         </div>
       </nav>
 
-      {/* 4. Menu Drawer Mobile */}
+      {/* Mobile Menu Drawer */}
       <div
         className={`
                     fixed top-0 right-0 h-full w-full max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-40 
@@ -106,6 +109,8 @@ const MainNavbar = () => {
           </div>
         </div>
       </div>
+      
+      {/* Mobile Menu Overlay */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden"

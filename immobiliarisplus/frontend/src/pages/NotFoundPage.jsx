@@ -1,6 +1,15 @@
 import NotFoundImage from "../assets/image-page-not-found.png";
 import { Link } from "react-router-dom";
 
+/**
+ * 404 Not Found page component.
+ *
+ * Displays an illustration, a message explaining that the page doesn't exist,
+ * and quick navigation buttons to return to the main sections of the website.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered 404 page.
+ */
 function NotFoundPage() {
   return (
     <div className="flex flex-col items-center justify-center text-center">

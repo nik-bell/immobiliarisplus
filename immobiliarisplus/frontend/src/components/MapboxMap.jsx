@@ -1,3 +1,9 @@
+/**
+ * @file MapboxMap.jsx
+ * @description Mapbox map component that displays a map with a marker at given coordinates.
+ *              Initializes map once and updates marker position when coordinates change.
+ */
+
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -6,6 +12,25 @@ const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGFnbGllIiwiYSI6ImNtaW9sd25xMjAyZTczZnM5
 
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
+/**
+ * Props for MapboxMap component.
+ * @typedef {Object} MapboxMapProps
+ * @property {string} [address] - Address string (used for reference, not displayed on map).
+ * @property {Array<number>} [coordinates] - [longitude, latitude] coordinates to center map and place marker.
+ */
+
+/**
+ * MapboxMap
+ *
+ * Renders an interactive Mapbox map initialized to the Piemonte region.
+ * When coordinates are provided, the map flies to that location and places a teal marker.
+ * The map instance is created once and reused; markers are updated on coordinate changes.
+ *
+ * @param {MapboxMapProps} props
+ * @param {string} [props.address] - Address reference string.
+ * @param {Array<number>} [props.coordinates] - [longitude, latitude] array for map center and marker.
+ * @returns {JSX.Element} Map container with preview label.
+ */
 function MapboxMap({ address, coordinates }) {
   const mapContainer = useRef(null);
   const map = useRef(null);

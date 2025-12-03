@@ -7,6 +7,13 @@ import FAQContratto from "../sections/FAQContratto";
 import Note from "../components/Note";
 import CtaContratto from "../sections/CtaContratto";
 
+/**
+ * Page for the Exclusive Contract section.
+ * Displays all explanatory sections, FAQs, legal notes, and call-to-action.
+ *
+ * @component
+ * @returns {JSX.Element} The full Exclusive Contract informational page.
+ */
 function ContattoEsclusiva() {
     return (
         <>
@@ -17,11 +24,13 @@ function ContattoEsclusiva() {
                 <ComeFunzionaContratto />
                 <InclusioneContratto />
                 <FAQContratto />
-                <Note className="border border-indigo-900 border-l-4 bg-gray-100 p-4 rounded-lg shadow-sm my-6"> Prima di firmare qualsiasi contratto, ti consigliamo di leggerlo attentamente e, se necessario, farlo visionare da un legale di fiducia. La trasparenza è alla base del nostro lavoro.</Note>
+                <Note className="border border-indigo-900 border-l-4 bg-gray-100 p-4 rounded-lg shadow-sm my-6">
+                  Prima di firmare qualsiasi contratto, ti consigliamo di leggerlo attentamente e, se necessario, farlo visionare da un legale di fiducia. La trasparenza è alla base del nostro lavoro.
+                </Note>
                 <CtaContratto />
             </div>
         </>
-    )
+    );
 }
 
 export default ContattoEsclusiva;

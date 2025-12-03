@@ -47,3 +47,4 @@ const BulletPointImg = ({ imgSrc, title, description, className = '' }) => {
 };
 
 export default BulletPointImg;
+

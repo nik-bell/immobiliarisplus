@@ -9,7 +9,7 @@ export default function SpiegazioneContratto() {
             </h2>
             <p className="text-gray-700 mb-4 leading-relaxed">
                 Il contratto di vendita in esclusiva è un accordo tra te (il proprietario) e
-                ImmobiliariPLUS, con cui ci affidi il mandato esclusivo di vendere il tuo immobile
+                ImmobiliarisPLUS, con cui ci affidi il mandato esclusivo di vendere il tuo immobile
                 per un periodo di tempo stabilito.
             </p>
             <p className="text-gray-700 leading-relaxed">

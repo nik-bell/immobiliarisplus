@@ -9,18 +9,88 @@ const AreaAgentiImport = () => import("../pages/AreaAgenti");
 
 import BACKGROUND_IMAGE_URL from '../assets/img-login.png'
 
+/**
+ * LoginModal
+ *
+ * Authentication modal for agent and admin login.
+ * Features include:
+ * - Email and password input fields
+ * - Password visibility toggle
+ * - Role mapping from API response (ADMIN, AGENT, USER)
+ * - Dashboard prefetching for agents/admins to reduce perceived load time
+ * - Auto-navigation to area-agenti for authenticated agents and admins
+ * - Error handling and loading state management
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.isOpen - Controls modal visibility
+ * @param {Function} props.onClose - Callback to close the modal
+ * @returns {JSX.Element|null} Login modal overlay with form, or null if not open
+ */
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   const { login } = useAuth();
+  
+  /**
+   * Email input value.
+   * @type {[string, Function]}
+   */
   const [email, setEmail] = useState("");
+
+  /**
+   * Password input value.
+   * @type {[string, Function]}
+   */
   const [password, setPassword] = useState("");
+
+  /**
+   * User role (unused in current implementation, kept for backward compatibility).
+   * @type {[string, Function]}
+   */
   const [role, setRole] = useState("utente");
+
+  /**
+   * Loading state during login process.
+   * @type {[boolean, Function]}
+   */
   const [loading, setLoading] = useState(false);
+
+  /**
+   * Error message to display on failed login.
+   * @type {[string|null, Function]}
+   */
   const [error, setError] = useState(null);
+
+  /**
+   * Password field visibility toggle state.
+   * @type {[boolean, Function]}
+   */
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const navigate = useNavigate();
 
+  /**
+   * Maps API role string to standardized application role.
+   * Handles variations in role naming from backend (ADMIN, AGENT, AGENTE, USER).
+   *
+   * @param {string} r - Role string from API response
+   * @returns {string} Normalized role: 'admin', 'agente', or 'utente'
+   */
+  const mapRole = (r) => {
+    const upper = String(r).toUpperCase();
+    if (upper === "ADMIN") return "admin";
+    if (upper === "AGENT" || upper === "AGENTE") return "agente";
+    return "utente";
+  };
+
+  /**
+   * Handles form submission and login process.
+   * Authenticates user, maps role, updates auth context, and prefetches dashboard data.
+   * Redirects agents and admins to area-agenti page.
+   *
+   * @param {React.FormEvent} e - Form submission event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     (async () => {
@@ -32,12 +102,6 @@ export default function LoginModal({ isOpen, onClose }) {
 
           // determine role coming from API (could be resp.role or resp.user.role)
           const apiRole = (resp.role || resp.user?.role || role || "USER").toString();
-          const mapRole = (r) => {
-            const upper = String(r).toUpperCase();
-            if (upper === "ADMIN") return "admin";
-            if (upper === "AGENT" || upper === "AGENTE") return "agente";
-            return "utente";
-          };
           const mappedType = mapRole(apiRole);
 
           const userData = resp.user ? { ...resp.user, type: mappedType } : { name: email, type: mappedType };
@@ -64,9 +128,13 @@ export default function LoginModal({ isOpen, onClose }) {
     })();
   };
 
+  /**
+   * Toggles password field visibility between plain text and masked.
+   */
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(prev => !prev);
   };
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-end z-60 bg-cover bg-center"
@@ -152,16 +220,6 @@ export default function LoginModal({ isOpen, onClose }) {
                 )}
               </button>
             </div>
-
-            {/* <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
-          >
-            <option value="utente">Utente</option>
-            <option value="admin">Admin</option>
-            <option value="agente">Agente</option>
-          </select> */}
 
             {error && <div className="text-sm text-red-600">{error}</div>}
 

@@ -8,34 +8,63 @@ import { useState, useEffect } from "react";
 import CookiePolicy from "../components/CookiePolicy";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 
-
 import LogoPNG from "../assets/Logo.png";
 
-// Footer component with newsletter subscription form
+/**
+ * Footer
+ *
+ * Application footer component with navigation links, contact information, and newsletter subscription.
+ * Features include:
+ * - Logo and company tagline
+ * - Service links (Valuta casa, Vendi casa, Migliora casa, Contratto Esclusiva)
+ * - Contact information (phone, email, location)
+ * - Newsletter subscription form with privacy consent validation
+ * - Cookie policy and privacy policy links
+ * - Social media links
+ *
+ * @component
+ * @returns {JSX.Element} Footer section with multiple columns and newsletter form
+ */
 function Footer() {
+  /**
+   * Newsletter email input value.
+   * @type {[string, Function]}
+   */
   const [email, setEmail] = useState("");
+
+  /**
+   * Privacy consent checkbox state.
+   * @type {[boolean, Function]}
+   */
   const [consenso, setConsenso] = useState(false);
+
+  /**
+   * Privacy consent validation error message.
+   * @type {[string, Function]}
+   */
   const [consensoError, setConsensoError] = useState("");
+
+  /**
+   * Success message displayed after successful subscription.
+   * @type {[string, Function]}
+   */
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Clear success message after 1.5 seconds
+  /**
+   * Clears success message after 1.5 seconds of display.
+   * Prevents memory leaks by cleaning up timeout on unmount or message change.
+   */
   useEffect(() => {
     if (!successMessage) return;
     const t = setTimeout(() => setSuccessMessage(""), 1500);
     return () => clearTimeout(t);
   }, [successMessage]);
 
-  /**
-   * Handles newsletter form submission.
-   * Validates privacy consent and shows a transient success banner.
-   * @param {React.FormEvent<HTMLFormElement>} e - Submit event.
-   * @returns {void}
-   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!consenso) {
-      setConsensoError("Per favore accetta l’informativa privacy.");
+      setConsensoError("Per favore accetta l'informativa privacy.");
       return;
     }
 

@@ -1,7 +1,3 @@
-/**
- * @file validateStep3.js
- * @description Validation for step 3 (contact info and privacy consent).
- */
 export default function validateStep3(data) {
   /**
    * Validates step 3 fields and returns a validity flag with error messages.

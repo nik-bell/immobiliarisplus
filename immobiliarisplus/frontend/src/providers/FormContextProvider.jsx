@@ -17,10 +17,13 @@ import { createValuation } from "../api/api";
 import { mapPropertyTypeToEnum, mapPropertyConditionToEnum } from "../utils/mappers";
 import { useCallback } from "react";
 
+/**
+ * Initial state for the multi-step valuation form.
+ * Contains all data for step 1, 2, 3 + errors, submission flags.
+ * @type {Object}
+ */
 const initialState = {
   step: 1,
-
-  // ---- STEP 1 ----
   property: {
     address: "",
     zipCode: "",
@@ -29,8 +32,6 @@ const initialState = {
     condition: "",
     sizeMq: "",
   },
-
-  // ---- STEP 2 ----
   details: {
     rooms: "",
     bathrooms: "",
@@ -45,8 +46,6 @@ const initialState = {
       cantina: false,
     },
   },
-
-  // ---- STEP 3 ----
   contact: {
     name: "",
     surname: "",
@@ -54,18 +53,11 @@ const initialState = {
     phone: "",
     privacyAccepted: false,
   },
-
   errors: {},
-  submitMessage: "", // Messaggio di conferma
-  isSubmitted: false, // Flag per sapere se il form è stato inviato
+  submitMessage: "", 
+  isSubmitted: false, // Flag to know if the form has been submitted
 };
 
-/**
- * Reducer handling form state transitions.
- * @param {Object} state - Current form state
- * @param {{type: string, payload?: any}} action - Action descriptor
- * @returns {Object} Next form state
- */
 function formReducer(state, action) {
   switch (action.type) {
     case "NEXT_STEP":
@@ -115,23 +107,10 @@ function formReducer(state, action) {
   }
 }
 
-/**
- * Form context provider component.
- *
- * Wrap the valuation flow with this provider to access form state, validation
- * helpers and submission via the `FormContext`.
- *
- * @param {{children: React.ReactNode}} props - Provider props
- * @returns {JSX.Element} Form context provider
- */
 export default function FormContextProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
-  // ------ Step validator ------
-  /**
-   * Validates the current form step using step-specific validators.
-   * @returns {boolean} True if current step is valid
-   */
+  // ------ VALIDATOR BY STEP ------
   const validateCurrentStep = useCallback(() => {
     let result;
 
@@ -147,39 +126,24 @@ export default function FormContextProvider({ children }) {
     return result.valid;
   }, [state.step, state.property, state.details, state.contact]);
 
-  /**
-   * Advances to the next step if current step validates.
-   */
   const nextStep = useCallback(() => {
     if (validateCurrentStep()) {
       dispatch({ type: "NEXT_STEP" });
     }
   }, [validateCurrentStep]);
 
-  /**
-   * Returns to the previous step.
-   */
   const prevStep = useCallback(() => dispatch({ type: "PREV_STEP" }), []);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  /**
-   * Submits the valuation form to the backend.
-   *
-   * Performs final step validation, normalizes numeric fields, maps UI values
-   * to backend enums, and calls the calculate valuation API. Stores a user-facing
-   * confirmation or error message into context state.
-   *
-   * @returns {Promise<void>}
-   */
   const submitForm = useCallback(async () => {
-    // Valida lo step 3
+    // Validate step 3
     if (!validateCurrentStep()) {
       return;
     }
 
-    // Crea l'oggetto JSON con tutti i dati
+    // Create JSON object with all data
     const formData = {
       property: state.property,
       details: state.details,
@@ -188,19 +152,23 @@ export default function FormContextProvider({ children }) {
 
     setLoading(true);
     setError(null);
-    try {
-      // NORMALIZE: coerce numeric fields to numbers (backend often expects numbers, not strings)
 
+    try {
       const payload = {
         property: {
           ...formData.property,
-          // send sizeMq as numeric float to backend
-          sizeMq: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
-          // compatibility: also include the legacy field name `surfaceM2` in numeric form
-          surfaceM2: formData.property.sizeMq ? parseFloat(formData.property.sizeMq) : null,
-          // map to backend enums
-          propertyType: mapPropertyTypeToEnum(formData.property.propertyType),
-          condition: mapPropertyConditionToEnum(formData.property.condition),
+          sizeMq: formData.property.sizeMq
+            ? parseFloat(formData.property.sizeMq)
+            : null,
+          surfaceM2: formData.property.sizeMq
+            ? parseFloat(formData.property.sizeMq)
+            : null,
+          propertyType: mapPropertyTypeToEnum(
+            formData.property.propertyType
+          ),
+          condition: mapPropertyConditionToEnum(
+            formData.property.condition
+          ),
         },
         details: {
           ...formData.details,
@@ -214,24 +182,25 @@ export default function FormContextProvider({ children }) {
         },
       };
 
-      // Backend call (POST /api/valuations/calculate)
       const resp = await createValuation(payload);
 
       if (!resp) {
         // createValuation returns null on error
-        throw new Error("No valid response from the server");
+        throw new Error("Nessuna risposta valida dal server");
       }
 
-      // Prepare success message; if API returns a range/price, show it.
+      // Prepare success message. If API returns a range/price, show it.
       const baseMessage = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
       const range = resp.valuationRange || resp.recommendedPrice || resp.range || null;
-      const fullMessage = range ? `${baseMessage} Valutazione stimata: ${JSON.stringify(range)}` : baseMessage;
+      const fullMessage = range
+        ? `${baseMessage} Valutazione stimata: ${JSON.stringify(range)}`
+        : baseMessage;
 
       dispatch({ type: "SET_SUBMIT_MESSAGE", payload: fullMessage });
       dispatch({ type: "SET_SUBMITTED" });
     } catch (err) {
-      setError(err.message || "Error while submitting the request");
-      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Error while submitting the request." });
+      setError(err.message || "Errore durante l'invio della richiesta");
+      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Errore durante l'invio della richiesta." });
     } finally {
       setLoading(false);
     }

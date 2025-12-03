@@ -4,6 +4,25 @@
  */
 import allowedCaps from '../../../data/allowedCaps';
 
+/**
+ * Validate step 1 of the property valuation form.
+ *
+ * Checks required fields such as address, property type, condition,
+ * surface area, and ensures the ZIP code (CAP) is included in the
+ * allowed list.
+ *
+ * @param {Object} data - Form data for step 1.
+ * @param {string} data.address - Full property address.
+ * @param {string|number} data.zipCode - CAP entered by the user.
+ * @param {string} data.city - City name (optional at this step).
+ * @param {string} data.propertyType - Selected property type.
+ * @param {string} data.condition - Selected property condition.
+ * @param {number|string} data.sizeMq - Surface area in square meters.
+ *
+ * @returns {{ valid: boolean, errors: Object }} Validation result.
+ * - `valid` indicates whether the data is correct.
+ * - `errors` contains field-specific error messages.
+ */
 export default function validateStep1(data) {
   /**
    * Validates step 1 fields and returns a validity flag with error messages.

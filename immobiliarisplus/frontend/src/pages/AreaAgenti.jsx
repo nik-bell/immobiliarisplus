@@ -8,6 +8,13 @@ import { useCasa } from "../store/CasaContext";
 import CasaContextProvider from "../providers/CasaContextProvider";
 import { useAuth } from "../store/AuthContext";
 
+/**
+ * Agent dashboard page showing pipeline data, stats, and property/lead table.
+ * Accessible only to authenticated agent users.
+ *
+ * @component
+ * @returns {JSX.Element} The Area Agenti dashboard layout.
+ */
 export default function AreaAgenti() {
   const { selectedCasa } = useCasa();
   const { userType } = useAuth();

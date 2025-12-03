@@ -6,7 +6,15 @@ import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
 
-
+/**
+ * Step 3 of the "Valuta Casa" form.
+ * Manages user contact details and acceptance of privacy policy.
+ *
+ * Uses centralized state from `useValutaCasaForm`.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ValutaCasaStep3() {
   const { state, dispatch } = useValutaCasaForm();
   const c = state.contact;
@@ -15,11 +23,16 @@ export default function ValutaCasaStep3() {
   const hasError = state.errors.privacyAccepted;
 
   const textClasses = `
-  text-base leading-relaxed 
-  ${isChecked ? 'font-normal' : 'font-semibold'}
-`;
+    text-base leading-relaxed 
+    ${isChecked ? "font-normal" : "font-semibold"}
+  `;
 
-  // Handle privacy checkbox change
+  /**
+   * Handles the privacy checkbox logic.
+   * Updates contact state and clears validation errors if needed.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Checkbox event
+   */
   const handleChange = (e) => {
     /**
      * Updates the privacy consent flag and clears related error when checked.
@@ -33,10 +46,11 @@ export default function ValutaCasaStep3() {
       payload: { privacyAccepted: checked },
     });
 
+    // Remove the error if the user checks the box after validation
     if (hasError && checked) {
       dispatch({
         type: "SET_ERRORS",
-        payload: { ...state.errors, privacyAccepted: '' }
+        payload: { ...state.errors, privacyAccepted: "" },
       });
     }
   };
@@ -44,9 +58,11 @@ export default function ValutaCasaStep3() {
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
       <ScrollToTop />
+
       <h2 className="text-3xl font-semibold pb-2">I tuoi contatti</h2>
       <p className="pb-4">Dove possiamo inviarti la valutazione dettagliata?</p>
 
+      {/* Name */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Nome *</label>
         <input
@@ -65,6 +81,7 @@ export default function ValutaCasaStep3() {
         )}
       </div>
 
+      {/* Surname */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Cognome *</label>
         <input
@@ -83,6 +100,7 @@ export default function ValutaCasaStep3() {
         )}
       </div>
 
+      {/* Email */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Email *</label>
         <input
@@ -101,6 +119,7 @@ export default function ValutaCasaStep3() {
         )}
       </div>
 
+      {/* Phone */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Telefono *</label>
         <input
@@ -120,37 +139,43 @@ export default function ValutaCasaStep3() {
         )}
       </div>
 
+      {/* Privacy */}
       <div className="mb-8">
-        <label htmlFor="privacy-check" className="flex items-start gap-2 text-sm p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors duration-150">
+        <label
+          htmlFor="privacy-check"
+          className="flex items-start gap-2 text-sm p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
+        >
           <input
             id="privacy-check"
             type="checkbox"
             checked={c.privacyAccepted}
             onChange={handleChange}
-            className={`w-4 h-4 mt-1 accent-teal-500`}
+            className="w-4 h-4 mt-1 accent-teal-500"
           />
+
           <span className={`ml-1 ${textClasses}`}>
-            Accetto la <a
+            Accetto la{" "}
+            <a
               href="https://www.iubenda.com/privacy-policy/92486862"
               className="text-teal-500 hover:text-teal-600 underline"
               title="Privacy Policy"
               target="_blank"
             >
               Privacy Policy
-            </a>,
-            e autorizzo il trattamento dei miei dati personali per ricevere la valutazione <span className="text-red-600">*</span>
+            </a>
+            , e autorizzo il trattamento dei miei dati personali per ricevere la
+            valutazione <span className="text-red-600">*</span>
           </span>
         </label>
 
         {state.errors.privacyAccepted && (
-          <p className="text-sm text-red-600 mt-1 ml-6">{state.errors.privacyAccepted}</p>
+          <p className="text-sm text-red-600 mt-1 ml-6">
+            {state.errors.privacyAccepted}
+          </p>
         )}
       </div>
 
-
       <NavigationButtons />
-
-
     </div>
   );
 }

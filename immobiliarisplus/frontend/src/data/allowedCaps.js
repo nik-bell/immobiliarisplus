@@ -1,5 +1,25 @@
-// Lista CAP autorizzati con relative città (terzo valore ignorato)
-// Struttura: { cap: string, city: string }
+/**
+ * @file allowedCaps.js
+ * @description Data file containing a list of allowed Italian postal codes (CAP) with their corresponding cities.
+ *              Used for validating and filtering address inputs in the application.
+ */
+
+/**
+ * Postal code entry object.
+ * @typedef {Object} CapEntry
+ * @property {string} cap - Italian postal code (5 digits as string).
+ * @property {string} city - City name and district associated with the postal code.
+ */
+
+/**
+ * Allowed postal codes with city mappings.
+ * 
+ * This array contains authorized postal codes primarily from the Piedmont region (Piemonte),
+ * including cities such as Torino, Asti, Alessandria, and Cuneo.
+ * Each entry maps a CAP (Codice di Avviamento Postale) to its corresponding city/district.
+ *
+ * @type {Array<CapEntry>}
+ */
 export default [
   { cap: '10121', city: 'Torino Centro' },
   { cap: '10122', city: 'Torino Centro' },

@@ -4,6 +4,19 @@
  */
 import useValutaCasaForm from "./useValutaCasaForm";
 
+/**
+ * NavigationButtons component
+ *
+ * Renders the navigation buttons for the multi-step “Valuta Casa” form.
+ * Handles:
+ * - "Indietro" button (hidden on step 1)
+ * - "Continua" button (visible on steps 1–2)
+ * - "Invia Richiesta" button (only on step 3)
+ * - Auto-hides all controls after form submission
+ *
+ * @component
+ * @returns {JSX.Element|null} The navigation bar or null if the form is already submitted.
+ */
 export default function NavigationButtons() {
   const { state, nextStep, prevStep, submitForm, loading } = useValutaCasaForm();
 

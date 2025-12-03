@@ -1,3 +1,10 @@
+/**
+ * @file CasaModal.jsx
+ * @description Modal component for viewing and editing property/valuation details.
+ *              Supports inline editing of property info, contact details, notes, and documents management.
+ *              Admin users can delete records; includes confirmation modals for destructive actions.
+ */
+
 import { useState, useEffect } from "react";
 import { useCasa } from "../store/CasaContext";
 import { useAuth } from "../store/AuthContext";
@@ -9,15 +16,35 @@ import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { mapValuationStatusLabel, mapListItem, mapUIStatusToEnum } from "../utils/mappers";
 import { updateValuationDashboard, deleteValuation } from "../api/api";
 
+/**
+ * CasaModal
+ *
+ * A comprehensive modal for displaying and editing property valuation details.
+ * Features include:
+ * - Tabbed view (Details / Documents)
+ * - Inline editing for property info, contact details, and notes
+ * - Document management (add/view documents)
+ * - Status and agent assignment (admin only)
+ * - Record deletion with confirmation (admin only)
+ * - Real-time sync with backend and local context state
+ *
+ * @returns {JSX.Element} Modal overlay with property details and editing interface, or null if not open.
+ */
 export default function CasaModal() {
   const { modalOpen, selectedCasa, closeCasaModal, setAllCases, openCasaModal } = useCasa();
 
   const { userType } = useAuth();
 
-  // draft per edit inline (init safe when selectedCasa is null)
+  /**
+   * Draft state for inline editing. Initialized safely when selectedCasa is null.
+   * @type {[Object, Function]}
+   */
   const [draft, setDraft] = useState(() => selectedCasa ?? {});
 
-  // editing flags per section
+  /**
+   * Editing state flags for each section.
+   * @type {[Object, Function]}
+   */
   const [editing, setEditing] = useState({ info: false, contact: false, agent: false, notes: false });
 
   useEffect(() => {
@@ -25,29 +52,72 @@ export default function CasaModal() {
     setEditing({ info: false, contact: false, agent: false, notes: false });
   }, [selectedCasa]);
 
-  // view: 'details' (default) or 'documents'
+  /**
+   * Current view mode: 'details' or 'documents'.
+   * @type {[string, Function]}
+   */
   const [view, setView] = useState("details");
+
+  /**
+   * Document management state.
+   * @type {[boolean, Function]}
+   */
   const [showAddDoc, setShowAddDoc] = useState(false);
+
+  /**
+   * New document name input.
+   * @type {[string, Function]}
+   */
   const [newDocName, setNewDocName] = useState("");
+
+  /**
+   * Delete confirmation modal visibility.
+   * @type {[boolean, Function]}
+   */
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  /**
+   * Delete success notification visibility.
+   * @type {[boolean, Function]}
+   */
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
+  /**
+   * Updates a property field in the draft object.
+   * @param {string} key - Property field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftProperty = (key, value) => {
     setDraft((d) => ({ ...d, property: { ...(d?.property || {}), [key]: value } }));
   };
 
+  /**
+   * Updates a contact field in the draft object.
+   * @param {string} key - Contact field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftContact = (key, value) => {
     setDraft((d) => ({ ...d, contact: { ...(d?.contact || {}), [key]: value } }));
   };
 
+  /**
+   * Updates a root-level field in the draft object.
+   * @param {string} key - Root field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftRoot = (key, value) => {
     setDraft((d) => ({ ...d, [key]: value }));
   };
 
+  /**
+   * Saves changes for a specific section to the backend and updates local state.
+   * Builds a comprehensive payload with all modifiable fields and syncs with server.
+   *
+   * @param {string} section - Section identifier ('info', 'contact', 'notes').
+   */
   const saveSection = async (section) => {
     const updated = { ...draft };
 
-    // build a comprehensive patch body with all modifiable fields
     const payload = {
       notes: updated.notes ?? null,
       property: {
@@ -63,7 +133,6 @@ export default function CasaModal() {
       },
     };
 
-    // include valuation fields if present
     if (updated.valuationFinal !== undefined && updated.valuationFinal !== null) {
       payload.valuationFinal = updated.valuationFinal;
     }
@@ -71,7 +140,6 @@ export default function CasaModal() {
       payload.valuationRange = updated.valuationRange;
     }
 
-    // include status if changed - convert UI status key to backend enum
     if (updated.status) {
       const enumStatus = mapUIStatusToEnum(updated.status);
       if (enumStatus) {
@@ -79,7 +147,6 @@ export default function CasaModal() {
       }
     }
 
-    // Try to persist to backend; request requires auth token which is handled centrally
     let serverUpdated = null;
     try {
       serverUpdated = await updateValuationDashboard(updated.id, payload);
@@ -88,54 +155,60 @@ export default function CasaModal() {
     }
 
     const final = serverUpdated ?? updated;
-
-    // ensure list stored in context uses the mapped list item shape (so status keys are consistent)
     const listItem = serverUpdated ? mapListItem(serverUpdated) : final;
     setAllCases((prev) => prev.map((x) => (x.id === listItem.id ? listItem : x)));
-    // update selectedCasa in context so modal shows saved values; provider will fetch fresh details when given an id
     openCasaModal({ id: final.id });
     setEditing((e) => ({ ...e, [section]: false }));
   };
 
+  /**
+   * Cancels editing for a section and reverts draft to selectedCasa.
+   *
+   * @param {string} section - Section identifier.
+   */
   const cancelSection = (section) => {
     setDraft(selectedCasa ?? {});
     setEditing((e) => ({ ...e, [section]: false }));
   };
 
+  /**
+   * Opens the delete confirmation modal.
+   */
   const handleDeleteClick = () => {
     setShowDeleteConfirm(true);
   };
 
+  /**
+   * Confirms deletion of the selected valuation record.
+   * Removes from local state, shows success message, and closes modal after delay.
+   */
   const handleDeleteConfirm = async () => {
     if (!selectedCasa?.id) return;
     
     const success = await deleteValuation(selectedCasa.id);
     
     if (success) {
-      // Remove from local state
       setAllCases((prev) => prev.filter((x) => x.id !== selectedCasa.id));
-      
-      // Show success message
       setDeleteSuccess(true);
       setShowDeleteConfirm(false);
       
-      // Hide success message and close modal after 2 seconds
       setTimeout(() => {
         setDeleteSuccess(false);
         closeCasaModal();
       }, 2000);
     } else {
-      // Handle error - just close confirmation modal
       setShowDeleteConfirm(false);
       alert('Errore durante l\'eliminazione del record');
     }
   };
 
+  /**
+   * Closes the delete confirmation modal without taking action.
+   */
   const handleDeleteCancel = () => {
     setShowDeleteConfirm(false);
   };
 
-  // guard: don't render modal if closed
   if (!modalOpen) return null;
 
   const c = selectedCasa ?? draft ?? {};
@@ -190,90 +263,88 @@ export default function CasaModal() {
           </button>
         </div>
 
-        {/* Top actions removed — assign button moved to footer */}
-
         {/* Main content */}
-          <div className="px-8 py-4 space-y-4 text-sm text-gray-700">
-            {/* Menu toggle: Dettagli / Documenti */}
-            <div className="flex items-center justify-start gap-3">
-              <div className="inline-flex rounded-md bg-gray-100 p-1">
-                <button
-                  onClick={() => setView("details")}
-                  className={`px-3 py-1 rounded text-sm ${view === "details" ? "bg-white shadow" : "text-gray-600"}`}
-                >
-                  Dettagli
-                </button>
-                <button
-                  onClick={() => setView("documents")}
-                  className={`px-3 py-1 rounded text-sm ${view === "documents" ? "bg-white shadow" : "text-gray-600"}`}
-                >
-                  Documenti
-                </button>
-              </div>
+        <div className="px-8 py-4 space-y-4 text-sm text-gray-700">
+          {/* Menu toggle: Dettagli / Documenti */}
+          <div className="flex items-center justify-start gap-3">
+            <div className="inline-flex rounded-md bg-gray-100 p-1">
+              <button
+                onClick={() => setView("details")}
+                className={`px-3 py-1 rounded text-sm ${view === "details" ? "bg-white shadow" : "text-gray-600"}`}
+              >
+                Dettagli
+              </button>
+              <button
+                onClick={() => setView("documents")}
+                className={`px-3 py-1 rounded text-sm ${view === "documents" ? "bg-white shadow" : "text-gray-600"}`}
+              >
+                Documenti
+              </button>
             </div>
-            {view === "documents" ? (
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-800">Documenti</h3>
-                  <div className="flex items-center gap-2">
+          </div>
+          {view === "documents" ? (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-800">Documenti</h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setView("details")}
+                    className="text-sm text-gray-600 hover:underline"
+                  >
+                    Torna ai dettagli
+                  </button>
+                  <button
+                    onClick={() => setShowAddDoc(true)}
+                    className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
+                  >
+                    Aggiungi documento
+                  </button>
+                </div>
+              </div>
+
+              {(!draft.documents || draft.documents.length === 0) && !showAddDoc && (
+                <div className="text-gray-600">Nessun documento presente al momento.</div>
+              )}
+
+              {draft.documents && draft.documents.length > 0 && (
+                <ul className="space-y-2">
+                  {draft.documents.map((doc) => (
+                    <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
+                      <div className="text-sm text-gray-800">{doc.name}</div>
+                      <div className="flex items-center gap-2">
+                        <a href={doc.url || '#'} className="text-teal-700 text-sm hover:underline">Apri</a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {showAddDoc && (
+                <div className="mt-3 bg-white p-4 rounded shadow-sm border">
+                  <label className="text-xs text-gray-500">Nome documento</label>
+                  <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
+                  <div className="mt-3 flex gap-2">
                     <button
-                      onClick={() => setView("details")}
-                      className="text-sm text-gray-600 hover:underline"
-                    >
-                      Torna ai dettagli
-                    </button>
-                    <button
-                      onClick={() => setShowAddDoc(true)}
                       className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
+                      onClick={() => {
+                        if (!newDocName) return;
+                        const newDoc = { id: Date.now().toString(), name: newDocName };
+                        const updated = { ...draft, documents: [...(draft.documents || []), newDoc] };
+                        setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
+                        openCasaModal(updated);
+                        setDraft(updated);
+                        setNewDocName("");
+                        setShowAddDoc(false);
+                      }}
                     >
-                      Aggiungi documento
+                      Aggiungi
                     </button>
+                    <button className="px-3 py-1 border rounded text-sm" onClick={() => setShowAddDoc(false)}>Annulla</button>
                   </div>
                 </div>
-
-                {(!draft.documents || draft.documents.length === 0) && !showAddDoc && (
-                  <div className="text-gray-600">Nessun documento presente al momento.</div>
-                )}
-
-                {draft.documents && draft.documents.length > 0 && (
-                  <ul className="space-y-2">
-                    {draft.documents.map((doc) => (
-                      <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
-                        <div className="text-sm text-gray-800">{doc.name}</div>
-                        <div className="flex items-center gap-2">
-                          <a href={doc.url || '#'} className="text-teal-700 text-sm hover:underline">Apri</a>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {showAddDoc && (
-                  <div className="mt-3 bg-white p-4 rounded shadow-sm border">
-                    <label className="text-xs text-gray-500">Nome documento</label>
-                    <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
-                        onClick={() => {
-                          if (!newDocName) return;
-                          const newDoc = { id: Date.now().toString(), name: newDocName };
-                          const updated = { ...draft, documents: [...(draft.documents || []), newDoc] };
-                          setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
-                          openCasaModal(updated);
-                          setDraft(updated);
-                          setNewDocName("");
-                          setShowAddDoc(false);
-                        }}
-                      >
-                        Aggiungi
-                      </button>
-                      <button className="px-3 py-1 border rounded text-sm" onClick={() => setShowAddDoc(false)}>Annulla</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
+              )}
+            </div>
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 flex flex-col gap-6">
                 {/* Informazioni immobile */}
@@ -380,9 +451,8 @@ export default function CasaModal() {
                     )}
                   </div>
                 </section>
-
-                {/* "Altri dettagli" section removed per richiesta: mantenere solo Note sulla destra */}
               </div>
+              
 
               {/* Right column: note */}
               <aside className="md:col-span-1">
@@ -414,7 +484,7 @@ export default function CasaModal() {
               </aside>
             </div>
           )}
-          </div>
+        </div>
 
         {/* Footer */}
         <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-between items-center gap-3">
@@ -435,7 +505,7 @@ export default function CasaModal() {
           </button>
         </div>
       </div>
-      {/* Modal di conferma eliminazione */}
+
       <DeleteConfirmationModal
         isOpen={showDeleteConfirm}
         onCancel={handleDeleteCancel}
