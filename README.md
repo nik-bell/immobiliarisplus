@@ -101,9 +101,9 @@ Il gruppo lavora congiuntamente alla progettazione, allo sviluppo e alla documen
 
 ### Link GitHub Software Developer (SWD)
 
-- Bellotti Nicolas — https://github.com/placeholder
-- Abd El Aziz Nesma — https://github.com/placeholder
-- Cernat Maria — https://github.com/placeholder
+- Bellotti Nicolas — https://github.com/nik-bell
+- Abd El Aziz Nesma — https://github.com/NesmaAbd
+- Cernat Maria — https://github.com/mariacernat
 
 
 
