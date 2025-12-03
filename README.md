@@ -1,3 +1,16 @@
+# Disclaimer / Avvertenza (IT/EN)
+
+- Italiano: Questo documento è bilingue. Usa gli anchor link qui sotto per navigare tra le sezioni in italiano e inglese. Per dettagli tecnici, consulta i README dedicati di frontend e backend.
+- English: This document is bilingual. Use the anchor links below to navigate between Italian and English sections. For technical details, see the dedicated frontend and backend READMEs.
+
+Quick links / Link rapidi:
+- Frontend README: `immobiliarisplus/frontend/README.md`
+- Backend README: `immobiliarisplus/backend/README.md`
+
+Indice / Index:
+- Sezione italiana: [Vai alla sezione italiana](#laboratorio-integrato-–-immobiliarisplus-gruppo-9-→-novegruppo)
+- English section: [Go to English section](#integrated-laboratory-–-immobiliarisplus-group-9-→-novegruppo)
+
 # **Laboratorio Integrato – ImmobiliarisPlus (Gruppo 9 → NOVEGRUPPO)**
 
 Progetto Didattico – ITS-ICT Piemonte – A.A. 2025/2026
@@ -79,6 +92,18 @@ Il gruppo lavora congiuntamente alla progettazione, allo sviluppo e alla documen
 | Paglietta Matteo    | Abd El Aziz Nesma        | Pisano Fausto            |
 | Cecchi Matteo       | Cernat Maria             | Dacca Matte              |
 
+
+### Link GitHub Web Developer (WDV)
+
+- Luca Montanaro — https://github.com/LucaM0nt
+- Matteo Cecchi — https://github.com/Matte05daje
+- Matteo Paglietta — https://github.com/Pagliez
+
+### Link GitHub Software Developer (SWD)
+
+- Bellotti Nicolas — https://github.com/placeholder
+- Abd El Aziz Nesma — https://github.com/placeholder
+- Cernat Maria — https://github.com/placeholder
 
 
 
@@ -167,6 +192,19 @@ The group collaborates on the design, development, and documentation of the port
 | Montanaro Luca      | Bellotti Nicolas         | Pulvirenti Sara          |
 | Paglietta Matteo    | Abd El Aziz Nesma        | Pisano Fausto            |
 | Cecchi Matteo       | Cernat Maria             | Dacca Matte              |
+
+
+### Web Developer (WDV) GitHub Links
+
+- Luca Montanaro — https://github.com/LucaM0nt
+- Matteo Cecchi — https://github.com/Matte05daje
+- Matteo Paglietta — https://github.com/Pagliez
+
+### Software Developer (SWD) GitHub Links
+
+- Bellotti Nicolas — https://github.com/placeholder
+- Abd El Aziz Nesma — https://github.com/placeholder
+- Cernat Maria — https://github.com/placeholder
 
 
 
