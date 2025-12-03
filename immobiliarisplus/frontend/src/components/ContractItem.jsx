@@ -1,3 +1,25 @@
+/**
+ * @file ContractItem.jsx
+ * @description List item component with a checkmark icon and text content.
+ *              Commonly used for displaying contract terms or feature lists.
+ */
+
+/**
+ * Props for ContractItem component.
+ * @typedef {Object} ContractItemProps
+ * @property {string} text - Text content to display next to the checkmark icon.
+ */
+
+/**
+ * ContractItem
+ *
+ * Renders a list item with a teal checkmark icon and accompanying text.
+ * Typically used for displaying contract terms, features, or checklist items.
+ *
+ * @param {ContractItemProps} props
+ * @param {string} props.text - Text to display.
+ * @returns {JSX.Element} List item with checkmark icon and text.
+ */
 export const ContractItem = ({ text }) => {
     return (
         <div className="flex items-start mb-3">

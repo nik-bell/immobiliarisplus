@@ -46,8 +46,8 @@ const initialState = {
   },
 
   errors: {},
-  submitMessage: "", // Messaggio di conferma
-  isSubmitted: false, // Flag per sapere se il form è stato inviato
+  submitMessage: "", 
+  isSubmitted: false, // Flag to know if the form has been submitted
 };
 
 function formReducer(state, action) {
@@ -102,7 +102,7 @@ function formReducer(state, action) {
 export default function FormContextProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
-  // ------ VALIDATORE A STEP ------
+  // ------ VALIDATOR BY STEP ------
   const validateCurrentStep = useCallback(() => {
     let result;
 
@@ -130,12 +130,12 @@ export default function FormContextProvider({ children }) {
   const [error, setError] = useState(null);
 
   const submitForm = useCallback(async () => {
-    // Valida lo step 3
+    // Validate step 3
     if (!validateCurrentStep()) {
       return;
     }
 
-    // Crea l'oggetto JSON con tutti i dati
+    // Create JSON object with all data
     const formData = {
       property: state.property,
       details: state.details,
@@ -170,7 +170,7 @@ export default function FormContextProvider({ children }) {
         },
       };
 
-      // Chiamata al backend (POST /api/valuations/calculate)
+      // Backend call (POST /api/valuations/calculate)
       const resp = await createValuation(payload);
 
       if (!resp) {
@@ -178,7 +178,7 @@ export default function FormContextProvider({ children }) {
         throw new Error("Nessuna risposta valida dal server");
       }
 
-      // Prepara messaggio di successo. Se l'API ritorna un range/price, mostralo.
+      // Prepare success message. If API returns a range/price, show it.
       const baseMessage = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
       const range = resp.valuationRange || resp.recommendedPrice || resp.range || null;
       const fullMessage = range ? `${baseMessage} Valutazione stimata: ${JSON.stringify(range)}` : baseMessage;

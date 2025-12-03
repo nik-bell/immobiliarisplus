@@ -1,3 +1,31 @@
+/**
+ * @file BulletPointImg.jsx
+ * @description Reusable bullet point component with a circular image and text content.
+ *              Displays an image or placeholder in a rounded container alongside title and description.
+ */
+
+/**
+ * Props for BulletPointImg component.
+ * @typedef {Object} BulletPointImgProps
+ * @property {string} [imgSrc] - URL of the image to display. If not provided, shows a placeholder.
+ * @property {string} title - Main title text.
+ * @property {string} description - Description text below the title.
+ * @property {string} [className] - Additional custom Tailwind classes for the container.
+ */
+
+/**
+ * BulletPointImg
+ *
+ * Renders a bullet point with a circular image badge and accompanying text.
+ * If imgSrc is not provided, displays a placeholder with "Foto" text.
+ *
+ * @param {BulletPointImgProps} props
+ * @param {string} [props.imgSrc] - Image source URL.
+ * @param {string} props.title - Title text.
+ * @param {string} props.description - Description text.
+ * @param {string} [props.className] - Additional container classes.
+ * @returns {JSX.Element} Bullet point component with image.
+ */
 const BulletPointImg = ({ imgSrc, title, description, className = '' }) => {
   return (
     <div className={`flex items-start space-x-4 py-3 ${className}`}>

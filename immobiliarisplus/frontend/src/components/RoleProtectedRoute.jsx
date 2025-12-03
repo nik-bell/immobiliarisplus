@@ -4,16 +4,16 @@ import { useAuth } from "../store/AuthContext";
 export default function RoleProtectedRoute({ allowedRoles }) {
   const { isLoggedIn, userType } = useAuth();
 
-  // Non loggato → redirect
+  // Not logged in → redirect
   if (!isLoggedIn) {
     return <Navigate to="/" replace />;
   }
 
-  // Ruolo NON ammesso → redirect
+  // Role NOT allowed → redirect
   if (!allowedRoles.includes(userType)) {
     return <Navigate to="/" replace />;
   }
 
-  // Accesso consentito → render delle sottorotte
+  // Access allowed → render sub-routes
   return <Outlet />;
 }

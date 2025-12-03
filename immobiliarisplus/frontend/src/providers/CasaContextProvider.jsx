@@ -5,21 +5,21 @@ import { useAuth } from "../store/AuthContext";
 import { mapListItem, mapDetailItem, mapStatus, mapValuationStatusLabel, mapPropertyType, mapPropertyCondition } from "../utils/mappers";
 
 export default function CasaContextProvider({ children }) {
-  // dati iniziali (caricati dall'API)
+  // Initial data (loaded from the API)
   const [allCases, setAllCases] = useState([]);
 
-  // stato filtro (tutti, non_assegnati, in_corso, attesa_cliente, terminati)
+  // filter state (tutti, non_assegnati, in_corso, attesa_cliente, terminati)
   const [filter, setFilter] = useState("tutti");
 
-  // sorting: key è una stringa che può essere nested (es: "property.address")
+  // sorting: key is a string that can be nested (e.g., "property.address")
   const [sortKey, setSortKey] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
 
-  // modale e selezione
+  // modal and selection
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCasa, setSelectedCasa] = useState(null);
 
-  // mappa utilità per etichette piu leggibili (opzionale)
+  // utility map for more readable labels (optional)
   const statusLabels = {
     non_assegnati: "non assegnati",
     nuovi: "nuovi",
@@ -28,7 +28,7 @@ export default function CasaContextProvider({ children }) {
     terminati: "terminati",
   };
 
-  // funzione helper per leggere chiavi nested (es: "property.sizeMq")
+  // helper function to read nested keys (e.g., "property.sizeMq")
   const getByPath = (obj, path) => {
     if (!path) return undefined;
     return path
@@ -36,7 +36,7 @@ export default function CasaContextProvider({ children }) {
       .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
   };
 
-  // applica filtro ai dati
+  // apply filter to data
   const filtered = useMemo(() => {
     if (filter === "tutti") return allCases;
     return allCases.filter((c) => c.status === filter);
@@ -66,7 +66,7 @@ export default function CasaContextProvider({ children }) {
 
   // mapListItem and mapDetailItem moved to utils/mappers
 
-  // applica sorting ai dati filtrati
+  // apply sorting to the filtered data
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
     const copy = [...filtered];
@@ -74,17 +74,17 @@ export default function CasaContextProvider({ children }) {
       const va = getByPath(a, sortKey);
       const vb = getByPath(b, sortKey);
 
-      // tratta numeri e stringhe in modo semplice
+      // handle numbers and strings simply
       if (va == null && vb == null) return 0;
       if (va == null) return sortDir === "asc" ? -1 : 1;
       if (vb == null) return sortDir === "asc" ? 1 : -1;
 
-      // se sono numeri
+      // if they are numbers
       if (typeof va === "number" && typeof vb === "number") {
         return sortDir === "asc" ? va - vb : vb - va;
       }
 
-      // confronto stringhe (case-insensitive)
+      // string comparison (case-insensitive)
       const sa = String(va).toLowerCase();
       const sb = String(vb).toLowerCase();
       if (sa < sb) return sortDir === "asc" ? -1 : 1;
@@ -94,7 +94,7 @@ export default function CasaContextProvider({ children }) {
     return copy;
   }, [filtered, sortKey, sortDir]);
 
-  // apri la modale e seleziona casa: se disponibile, carica i dettagli dall'API
+  // open modal and select casa: if available, load details from API
   const openCasaModal = useCallback(async (casa) => {
     if (!casa || !casa.id) {
       setSelectedCasa(casa);
@@ -115,7 +115,7 @@ export default function CasaContextProvider({ children }) {
     setModalOpen(true);
   }, []);
 
-  // chiudi modale e deseleziona
+  // close modal and deselect
   const closeCasaModal = () => {
     setSelectedCasa(null);
     setModalOpen(false);
@@ -141,10 +141,10 @@ export default function CasaContextProvider({ children }) {
     }
   }, [sortKey]);
 
-  // esporta tutto nel context
+  // export all in context
   const value = {
-    cases: sorted, // lista già filtrata e ordinata
-    rawCases: allCases, // lista originale se serve
+    cases: sorted, 
+    rawCases: allCases, 
     setAllCases,
     refreshCases: async () => {
       if (!isLoggedIn) return;

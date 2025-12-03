@@ -12,6 +12,8 @@ const ImprovementCard = ({
     const statsGridClasses = "grid grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-4 mt-6";
     const labelClasses = "text-sm text-gray-500";
     const valueClasses = "text-base font-medium text-gray-900";
+  
+  // Function to determine value color based on key
     const getValueColorClass = (key) => {
         if (key === 'Aumento valore' || key === 'ROI atteso') {
             return 'text-teal-800';

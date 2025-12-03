@@ -1,3 +1,32 @@
+// ...existing code...
+/**
+ * @file CasaTableHeader.jsx
+ * @description Table header for the CasaTable. Renders sortable column headers and
+ *              hides the agent column for non-admin users.
+ */
+
+/**
+ * Column descriptor used in the header.
+ * @typedef {Object} Column
+ * @property {string} key - Key path used for sorting (e.g. "property.address").
+ * @property {string} label - Visible label for the column.
+ */
+
+/**
+ * Props for CasaTableHeader (none; uses contexts).
+ * @typedef {Object} CasaTableHeaderProps
+ */
+
+/**
+ * CasaTableHeader
+ *
+ * Reads sort state and toggleSort from CasaContext and userType from AuthContext
+ * to render a table header row with sortable columns. The "assignedAgent" column
+ * is omitted for non-admin users.
+ *
+ * @param {CasaTableHeaderProps} props
+ * @returns {JSX.Element} Table header element
+ */
 import { useCasa } from "../../store/CasaContext";
 import { useAuth } from "../../store/AuthContext";
 
@@ -6,17 +35,17 @@ export default function CasaTableHeader() {
 
   const { userType } = useAuth();
 
-  // colonne con key path usate per sort
+  // columns with key paths used for sorting
   const allColumns = [
     { key: "property.address", label: "Indirizzo" },
     { key: "property.sizeMq", label: "Mq" },
     { key: "valuationFinal", label: "Valutazione finale" },
     { key: "status", label: "Stato" },
     { key: "assignedAgent", label: "Agente" },
-    { key: "actions", label: "" }, // colonna icons/azioni
+    { key: "actions", label: "" },
   ];
 
-  // mostra la colonna Agente solo agli admin
+  // show the Agent column only to admins
   const columns = allColumns.filter((c) => {
     if (c.key === "assignedAgent" && userType !== "admin") return false;
     return true;
@@ -33,7 +62,7 @@ export default function CasaTableHeader() {
       <tr className="text-left text-gray-600">
         {columns.map((col) => (
           <th key={col.key} scope="col" className="px-4 py-3 font-medium">
-            {/* se è colonna azioni non attiviamo sort */}
+            {/* if it's the actions column, do not enable sorting */}
             {col.key !== "actions" ? (
               <button
                 onClick={() => toggleSort(col.key)}

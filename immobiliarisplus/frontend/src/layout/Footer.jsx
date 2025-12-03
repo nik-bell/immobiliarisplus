@@ -4,15 +4,17 @@ import { useState, useEffect } from "react";
 import CookiePolicy from "../components/CookiePolicy";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 
-// IMPORTA QUI IL LOGO SVG
+
 import LogoPNG from "../assets/Logo.png";
 
+// Footer component with newsletter subscription form
 function Footer() {
   const [email, setEmail] = useState("");
   const [consenso, setConsenso] = useState(false);
   const [consensoError, setConsensoError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Clear success message after 1.5 seconds
   useEffect(() => {
     if (!successMessage) return;
     const t = setTimeout(() => setSuccessMessage(""), 1500);
@@ -48,7 +50,7 @@ function Footer() {
           </p>
         </div>
 
-        {/* SERVIZI */}
+        {/* SERVICES */}
         <div>
           <h3 className="h5 font-semibold mb-2 text-white">Servizi</h3>
           <ul className="space-y-1 text-sm">
@@ -59,7 +61,7 @@ function Footer() {
           </ul>
         </div>
 
-        {/* CONTATTI */}
+        {/* CONTACT */}
         <div>
           <h3 className="h5 font-semibold mb-2 text-white">Contatti</h3>
           <p className="text-sm text-gray-400">+39 02 1234 5678</p>
