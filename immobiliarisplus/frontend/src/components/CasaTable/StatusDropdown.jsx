@@ -70,15 +70,15 @@ export default function StatusDropdown({ casa }) {
     }
   };
 
-  // non-admin: show plain badge with label
-  if (userType !== "admin") {
-    return <Badge status={casa.status} label={casa.statusLabel} />;
-  }
+  // Filter status options based on user type
+  const availableStatuses = userType === "agente" 
+    ? ALL_STATUS_ENUMS.filter(e => e !== "NOT_ASSIGNED")
+    : ALL_STATUS_ENUMS;
 
   const popup = (
     <div ref={popupRef} style={popupStyle} className="bg-white border border-gray-200 rounded shadow-lg p-3">
       <div className="flex gap-2 flex-wrap">
-        {ALL_STATUS_ENUMS.map((e) => {
+        {availableStatuses.map((e) => {
           const label = mapValuationStatusLabel(e);
           const uiKey = mapStatus(e);
           const active = uiKey === currentUIKey;

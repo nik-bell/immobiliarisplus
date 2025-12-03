@@ -1,9 +1,11 @@
 import { useCasa } from "../../store/CasaContext";
+import { useAuth } from "../../store/AuthContext";
 import { useState } from "react";
 import StatusChip from "./StatusChip";
 
 export default function StatsRow() {
   const { rawCases, filter, setFilter, refreshCases } = useCasa();
+  const { userType } = useAuth();
   const [loading, setLoading] = useState(false);
 
   // conta per stato (usiamo rawCases per i numeri globali)
@@ -17,7 +19,7 @@ export default function StatsRow() {
     terminati: rawCases.filter((c) => c.status === "terminati").length,
   };
 
-  const items = [
+  const allItems = [
     { key: "tutti", label: `Tutti (${counts.tutti})` },
     { key: "non_assegnati", label: `Non assegnati (${counts.non_assegnati})` },
     { key: "nuovi", label: `Nuovi (${counts.nuovi})` },
@@ -28,6 +30,11 @@ export default function StatsRow() {
     },
     { key: "terminati", label: `Terminati (${counts.terminati})` },
   ];
+
+  // Filtra "non_assegnati" per gli agenti
+  const items = userType === "agente" 
+    ? allItems.filter(item => item.key !== "non_assegnati")
+    : allItems;
 
   return (
     <div className="mb-6">
