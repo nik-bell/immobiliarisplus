@@ -37,7 +37,7 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-        // Autentica l'utente
+        // user authentication
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -45,10 +45,10 @@ public class AuthService {
                 )
         );
 
-        // Genera il token JWT
+        // generate JWT token
         String token = jwtUtil.generateToken(loginRequest.getEmail());
 
-        // Recupera l'utente dal database
+        // Retrieve user details
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -56,7 +56,7 @@ public class AuthService {
     }
 
     public User register(RegisterRequestDTO registerRequest) {
-        // Verifica se l'email esiste già
+        // Verify if email already exists
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -67,7 +67,7 @@ public class AuthService {
         user.setRole(registerRequest.getRole());
         user.setCreatedAt(LocalDateTime.now());
 
-        // Se viene fornito un ownerId, associa l'owner all'utente
+        // Associate owner if ownerId is provided
         if (registerRequest.getOwnerId() != null) {
             Optional<Owner> owner = ownerRepository.findById(registerRequest.getOwnerId());
             owner.ifPresent(user::setOwner);
