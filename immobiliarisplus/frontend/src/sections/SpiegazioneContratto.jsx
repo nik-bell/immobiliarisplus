@@ -1,5 +1,17 @@
 import Card from "../components/Card";
 
+/**
+ * SpiegazioneContratto Component
+ *
+ * Sezione introduttiva che spiega in modo chiaro e semplice
+ * cos’è il **contratto di vendita in esclusiva**.
+ *
+ * Utilizzata nella pagina dedicata al contratto per fornire
+ * una descrizione immediata del mandato esclusivo e dei suoi vantaggi.
+ *
+ * @component
+ * @returns {JSX.Element} Un blocco informativo che illustra il significato del contratto in esclusiva.
+ */
 export default function SpiegazioneContratto() {
 
     return (
@@ -20,4 +32,3 @@ export default function SpiegazioneContratto() {
         </Card>
     );
 }
-

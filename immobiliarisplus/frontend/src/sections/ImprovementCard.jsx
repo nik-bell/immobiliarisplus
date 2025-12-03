@@ -1,5 +1,25 @@
 import Card from "../components/Card";
 
+/**
+ * ImprovementCard Component
+ *
+ * Mostra una card con icona, titolo, sottotitolo, statistiche in griglia
+ * e una barra di impatto percentuale sul valore dell’immobile.
+ *
+ * Utilizzato nella pagina “Migliora Casa” per presentare interventi
+ * che aumentano il valore dell’immobile (es: ristrutturazioni, home staging).
+ *
+ * @component
+ *
+ * @param {Object} props - Proprietà del componente.
+ * @param {JSX.Element} props.icon - Icona illustrativa da mostrare nella card.
+ * @param {string} props.title - Titolo dell’intervento di miglioramento.
+ * @param {string} props.subtitle - Breve descrizione dell’intervento.
+ * @param {Object.<string, string|number>} props.stats - Valori statistici/metriche da mostrare (es: costo medio, tempo, ROI).
+ * @param {number} props.impactValue - Valore percentuale dell’impatto sul valore dell’immobile.
+ *
+ * @returns {JSX.Element} Una card visiva con informazioni sull'intervento di miglioramento.
+ */
 const ImprovementCard = ({
     icon,
     title,
@@ -12,8 +32,8 @@ const ImprovementCard = ({
     const statsGridClasses = "grid grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-4 mt-6";
     const labelClasses = "text-sm text-gray-500";
     const valueClasses = "text-base font-medium text-gray-900";
-  
-  // Function to determine value color based on key
+
+    // Function to determine value color based on key
     const getValueColorClass = (key) => {
         if (key === 'Aumento valore' || key === 'ROI atteso') {
             return 'text-teal-800';

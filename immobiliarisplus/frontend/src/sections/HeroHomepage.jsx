@@ -4,8 +4,15 @@ import HeroImageJpg from "../assets/homepage/homepage-immobiliaris.jpeg";
 import HeroImageWebp from "../assets/homepage/homepage-immobiliaris.webp";
 import HeroImageAvif from "../assets/homepage/homepage-immobiliaris.avif";
 
-
-
+/**
+ * HeroHomepage Component
+ *
+ * Sezione hero principale della homepage.
+ * Mostra un'immagine ottimizzata (JPG/WEBP/AVIF), un titolo,
+ * un sottotitolo e due call-to-action principali.
+ *
+ * @returns {JSX.Element} Il componente grafico dell'hero della homepage.
+ */
 export default function HeroHomepage() {
     return (
         <div className="min-h-[80vh]">
@@ -52,6 +59,6 @@ export default function HeroHomepage() {
                     </Link>
                 </div>
             </Hero>
-        </div >
-    )
+        </div>
+    );
 }

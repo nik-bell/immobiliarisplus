@@ -1,6 +1,19 @@
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
 
+/**
+ * CtaValutazioneSuccesso Component
+ *
+ * Mostra due call-to-action dopo l'invio riuscito della valutazione:
+ *  1. Invito a scoprire il servizio di "Contratto in Esclusiva"
+ *  2. Invito a visitare la pagina "Migliora Casa"
+ *
+ * Ogni card è strutturata con titolo, descrizione e un pulsante che
+ * rimanda alla pagina dedicata. Ideale per guidare l’utente verso
+ * i prossimi step dopo aver completato la valutazione.
+ *
+ * @returns {JSX.Element} Sezione con due CTA grafiche affiancate.
+ */
 export default function CtaValutazioneSuccesso() {
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
@@ -58,7 +71,6 @@ export default function CtaValutazioneSuccesso() {
                     border-yellow-400
                     "
                 >
-
                     <div className="flex-grow">
                         <h3 className="text-3xl font-bold mb-3 text-blue-950">
                             Migliora Casa

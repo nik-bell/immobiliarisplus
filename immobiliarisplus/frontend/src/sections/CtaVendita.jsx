@@ -1,6 +1,18 @@
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
 
+/**
+ * CtaVendita Component
+ *
+ * Mostra due call-to-action dedicate alla pagina "Vendi Casa":
+ *  - Promozione del "Contratto in Esclusiva"
+ *  - Invito a scoprire il servizio "Migliora Casa"
+ *
+ * Ogni card è pensata per guidare l’utente verso servizi che
+ * aumentano il valore e la qualità del processo di vendita.
+ *
+ * @returns {JSX.Element} Un layout a due colonne con CTA interattive.
+ */
 export default function CtaVendita() {
     return (
         <div className="flex flex-col lg:flex-row gap-4 mb-8">

@@ -5,6 +5,14 @@ import TerzoAgente from "../assets/terzo-agente.jpg";
 import QuartoAgente from "../assets/quarto-agente.jpg";
 import Card from '../components/Card';
 
+/**
+ * @typedef {Object} TeamMember
+ * @property {string} imgSrc - Percorso dell'immagine dell'agente.
+ * @property {string} title - Nome e ruolo della persona.
+ * @property {string} description - Descrizione breve dell’esperienza o mansione.
+ */
+
+/** @type {TeamMember[]} */
 const chiSiamoData = [
   {
     imgSrc: PrimoAgente,
@@ -28,6 +36,15 @@ const chiSiamoData = [
   }
 ];
 
+/**
+ * ChiSiamo Component
+ *
+ * Sezione "Chi Siamo" che presenta il team con immagini, ruoli e descrizioni.
+ * Utilizza Card + BulletPointImg per mostrare ogni membro dello staff
+ * con una struttura visiva coerente e responsiva.
+ *
+ * @returns {JSX.Element} Sezione informativa sulla squadra di Immobiliaris Plus.
+ */
 const ChiSiamo = () => {
   return (
     <section className="w-full py-16 bg-white">
@@ -35,6 +52,7 @@ const ChiSiamo = () => {
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
           Chi Siamo
         </h2>
+
         <p className="text-lg text-gray-700 leading-relaxed text-center">
           Siamo Immobiliaris Plus, un team di <strong className="font-semibold text-indigo-900">esperti immobiliari </strong>
           radicati nelle principali città del <strong className="font-semibold text-indigo-900">Piemonte </strong>
@@ -52,10 +70,9 @@ const ChiSiamo = () => {
           {chiSiamoData.map((item, index) => (
             <Card
               key={index}
-              // Aggiungi qui le classi di stile della Card che desideri (es. ombre, bordi)
+              /** Card styling per la sezione team */
               className="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-l-4 border-indigo-900"
             >
-              {/* BulletPointImg è il contenuto figlio della Card */}
               <BulletPointImg
                 imgSrc={item.imgSrc}
                 title={item.title}

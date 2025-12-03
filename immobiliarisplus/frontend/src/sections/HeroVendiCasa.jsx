@@ -4,7 +4,15 @@ import HeroImageJpg from "../assets/vendi-casa/vendi-casa-immobiliaris.jpeg";
 import HeroImageWebp from "../assets/vendi-casa/vendi-casa-immobiliaris.webp";
 import HeroImageAvif from "../assets/vendi-casa/vendi-casa-immobiliaris.avif";
 
-
+/**
+ * HeroVendiCasa Component
+ *
+ * Sezione hero principale della pagina "Vendi Casa".
+ * Mostra un'immagine full-width responsive, un titolo motivazionale e
+ * una call-to-action che reindirizza alla pagina di valutazione dell'immobile.
+ *
+ * @returns {JSX.Element} Il componente visivo della sezione hero dedicata alla vendita casa.
+ */
 export default function HeroVendiCasa() {
     return (
         <div className="min-h-[80vh]">
@@ -23,18 +31,18 @@ export default function HeroVendiCasa() {
                 <Link
                     to="/valuta-casa"
                     className="
-                            px-6 py-3
-                            bg-yellow-400 text-black
-                            font-semibold text-base
-                            rounded-lg
-                            shadow-md
-                            hover:bg-yellow-300 hover:shadow-lg
-                            transition duration-150 ease-in-out
-                            focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
+                        px-6 py-3
+                        bg-yellow-400 text-black
+                        font-semibold text-base
+                        rounded-lg
+                        shadow-md
+                        hover:bg-yellow-300 hover:shadow-lg
+                        transition duration-150 ease-in-out
+                        focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                 >
                     Inizia valutazione
                 </Link>
             </Hero>
         </div >
-    )
+    );
 }

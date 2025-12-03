@@ -4,7 +4,15 @@ import HeroImageJpg from "../assets/migliora-casa/migliora-casa-immobiliaris.jpg
 import HeroImageWebp from "../assets/migliora-casa/migliora-casa-immobiliaris.webp";
 import HeroImageAvif from "../assets/migliora-casa/migliora-casa-immobiliaris.avif";
 
-
+/**
+ * HeroMiglioraCasa Component
+ *
+ * Sezione hero della pagina "Migliora Casa".
+ * Presenta immagini ottimizzate, titolo, sottotitolo e una call-to-action
+ * per richiedere una consulenza personalizzata sul miglioramento dell’immobile.
+ *
+ * @returns {JSX.Element} Il componente grafico della sezione hero "Migliora Casa".
+ */
 export default function HeroMiglioraCasa() {
     return (
         <div className="min-h-[80vh]">
@@ -26,18 +34,18 @@ export default function HeroMiglioraCasa() {
                 <Link
                     to='/contattaci'
                     className="
-                            px-6 py-3
-                            bg-yellow-400 text-black
-                            font-semibold text-base
-                            rounded-lg
-                            shadow-md
-                            hover:bg-yellow-300 hover:shadow-lg
-                            transition duration-150 ease-in-out
-                            focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
+                        px-6 py-3
+                        bg-yellow-400 text-black
+                        font-semibold text-base
+                        rounded-lg
+                        shadow-md
+                        hover:bg-yellow-300 hover:shadow-lg
+                        transition duration-150 ease-in-out
+                        focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
                 >
                     Richiedi consulenza
                 </Link>
             </Hero>
         </div >
-    )
+    );
 }

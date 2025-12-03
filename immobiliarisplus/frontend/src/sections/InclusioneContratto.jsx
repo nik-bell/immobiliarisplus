@@ -1,6 +1,18 @@
 import Card from '../components/Card';
 import { ContractItem } from '../components/ContractItem';
 
+/**
+ * InclusioneContratto Component
+ *
+ * Mostra un elenco strutturato di voci che compongono il contratto
+ * di vendita in esclusiva. Ogni elemento viene renderizzato tramite
+ * `ContractItem`, che include un'icona check e il testo descrittivo.
+ *
+ * Utilizzato nella pagina "Contratto Esclusiva".
+ *
+ * @component
+ * @returns {JSX.Element} Una card contenente le sezioni del contratto.
+ */
 const InclusioneContratto = () => {
     return (
         <div className="p-8 ">
@@ -23,24 +35,12 @@ const InclusioneContratto = () => {
                 </div>
 
                 <div className="pl-4">
-                    <ContractItem
-                        text="Durata del mandato (tipicamente 6-12 mesi, rinnovabile)"
-                    />
-                    <ContractItem
-                        text="Prezzo di vendita e modalità di determinazione"
-                    />
-                    <ContractItem
-                        text="Percentuale di provvigione (solo a vendita conclusa)"
-                    />
-                    <ContractItem
-                        text="Servizi inclusi: marketing, foto professionali, visite, reportistica"
-                    />
-                    <ContractItem
-                        text="Clausole di recesso anticipato in casi specifici"
-                    />
-                    <ContractItem
-                        text="Modalità di comunicazione e aggiornamenti"
-                    />
+                    <ContractItem text="Durata del mandato (tipicamente 6-12 mesi, rinnovabile)" />
+                    <ContractItem text="Prezzo di vendita e modalità di determinazione" />
+                    <ContractItem text="Percentuale di provvigione (solo a vendita conclusa)" />
+                    <ContractItem text="Servizi inclusi: marketing, foto professionali, visite, reportistica" />
+                    <ContractItem text="Clausole di recesso anticipato in casi specifici" />
+                    <ContractItem text="Modalità di comunicazione e aggiornamenti" />
                 </div>
             </Card>
         </div>

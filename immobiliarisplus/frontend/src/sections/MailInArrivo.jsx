@@ -1,6 +1,20 @@
 import Card from '../components/Card';
 import { ContractItem } from '../components/ContractItem';
 
+/**
+ * MailInArrivo Component
+ *
+ * Mostra una card informativa che comunica all’utente
+ * che riceverà a breve una mail di riepilogo della valutazione.
+ *
+ * Include un titolo, una breve descrizione e una lista degli elementi
+ * che saranno presenti nella mail, ciascuno renderizzato tramite `ContractItem`.
+ *
+ * Utilizzato nella pagina di successo della valutazione ("ValutaCasaSuccesso").
+ *
+ * @component
+ * @returns {JSX.Element} Una card con i contenuti della mail in arrivo.
+ */
 const MailInArrivo = () => {
     return (
         <div >
@@ -21,20 +35,16 @@ const MailInArrivo = () => {
                         <h2 className="text-left text-xl font-semibold text-gray-800">
                             Mail di riepilogo in arrivo
                         </h2>
-                        <p className='pt-2 text-sm text-left font-light'>Entro le prossime ore riceverai una mail all'indirizzo fornito con:</p>
+                        <p className='pt-2 text-sm text-left font-light'>
+                            Entro le prossime ore riceverai una mail all'indirizzo fornito con:
+                        </p>
                     </div>
                 </div>
 
                 <div className="pl-4">
-                    <ContractItem
-                        text="Riepilogo completo dei dati inseriti"
-                    />
-                    <ContractItem
-                        text="Range di valutazione preliminare"
-                    />
-                    <ContractItem
-                        text="Contatti del tuo agente dedicato"
-                    />
+                    <ContractItem text="Riepilogo completo dei dati inseriti" />
+                    <ContractItem text="Range di valutazione preliminare" />
+                    <ContractItem text="Contatti del tuo agente dedicato" />
                 </div>
             </Card>
         </div>

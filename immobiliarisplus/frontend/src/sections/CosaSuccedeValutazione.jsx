@@ -1,5 +1,18 @@
 import BulletPoint from "../components/BulletPoint";
 
+/**
+ * CosaSuccedeValutazione Component
+ *
+ * Sezione informativa mostrata dopo l'invio della valutazione immobiliare.
+ * Presenta tre step che spiegano cosa accade dopo la compilazione del form:
+ *  1) Analisi automatica AVM  
+ *  2) Revisione manuale da parte di un agente  
+ *  3) Invio della valutazione via email  
+ *
+ * Ogni step è presentato tramite il componente BulletPoint.
+ *
+ * @returns {JSX.Element} Sezione con la timeline del processo di valutazione.
+ */
 const CosaSuccedeValutazione = () => {
     const dettagliBulletPoint = [
         {
@@ -17,10 +30,11 @@ const CosaSuccedeValutazione = () => {
         {
             number: 3,
             title: 'Ricezione valutazione via email',
-            description: "Riceverai una mail con: riepilogo dati, range di valutazione e se vorrei approfondire possiamo organizzare un incontro",
+            description: "Riceverai una mail con: riepilogo dati, range di valutazione e se vorrai approfondire possiamo organizzare un incontro",
             color: 'bg-yellow-400',
         },
     ];
+
     return (
         <div className="p-6 bg-gray-50 rounded-lg shadow-lg my-8">
             <h2 className="text-2xl font-normal text-gray-900 mb-6 text-left">

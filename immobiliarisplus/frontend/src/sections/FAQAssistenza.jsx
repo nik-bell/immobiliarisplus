@@ -2,6 +2,10 @@ import { useState } from 'react';
 import Card from '../components/Card';
 import FAQItem from '../components/FAQItem';
 
+/**
+ * Elenco delle FAQ da mostrare nel componente.
+ * @type {{id:number, question:string, answer:string}[]}
+ */
 const faqData = [
     {
         id: 1,
@@ -20,13 +24,22 @@ const faqData = [
     },
 ];
 
-    // Tracks which FAQ item is currently expanded
-
+/**
+ * FAQAssistenza Component
+ *
+ * Mostra una lista di domande frequenti in una card.
+ * Permette l'espansione di una sola risposta alla volta.
+ *
+ * @returns {JSX.Element} Sezione FAQ con elementi espandibili.
+ */
 const FAQAssistenza = () => {
     const [activeId, setActiveId] = useState(null);
 
-    
-    // Tracks which FAQ item is currently expanded
+    /**
+     * Gestisce l'apertura/chiusura delle FAQ.
+     *
+     * @param {number} id - ID della FAQ da mostrare o nascondere.
+     */
     const toggleFAQ = (id) => {
         setActiveId(activeId === id ? null : id);
     };

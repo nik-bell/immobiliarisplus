@@ -2,6 +2,10 @@ import { useState } from 'react';
 import Card from '../components/Card';
 import FAQItem from '../components/FAQItem';
 
+/**
+ * Lista delle FAQ relative al contratto di esclusiva.
+ * @type {{id:number, question:string, answer:string}[]}
+ */
 const faqsData = [
     {
         id: 1,
@@ -25,10 +29,22 @@ const faqsData = [
     },
 ];
 
-// Tracks which FAQ item is currently expanded
+/**
+ * FAQContratto Component
+ *
+ * Mostra una card contenente FAQ espandibili relative al contratto in esclusiva.
+ * Permette di espandere una risposta alla volta.
+ *
+ * @returns {JSX.Element} La sezione FAQ visualizzata in una card.
+ */
 const FAQContratto = () => {
     const [activeId, setActiveId] = useState(null);
 
+    /**
+     * Gestisce l'apertura/chiusura delle FAQ.
+     *
+     * @param {number} id - ID della FAQ da mostrare o chiudere.
+     */
     const toggleFAQ = (id) => {
         setActiveId(activeId === id ? null : id);
     };

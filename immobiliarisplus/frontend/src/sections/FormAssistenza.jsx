@@ -1,7 +1,17 @@
 import ContactForm from "../components/ContactForm";
 import { useState, useRef } from "react";
 
-// Modal component to show success message
+/**
+ * SuccessModal Component
+ *
+ * Mostra una modale di conferma dopo il corretto invio del form.
+ *
+ * @param {Object} props
+ * @param {string} props.nome - Nome dell'utente che ha inviato il form.
+ * @param {string} props.cognome - Cognome dell'utente che ha inviato il form.
+ * @param {Function} props.onClose - Funzione per chiudere la modale.
+ * @returns {JSX.Element} La modale visualizzata al centro della pagina.
+ */
 const SuccessModal = ({ nome, cognome, onClose }) => {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -23,21 +33,39 @@ const SuccessModal = ({ nome, cognome, onClose }) => {
     );
 };
 
-// Main FormAssistenza component
+/**
+ * FormAssistenza Component
+ *
+ * Gestisce il form di contatto, mostra una modale di successo
+ * e permette il reset del form tramite ref.
+ *
+ * @returns {JSX.Element} Il contenitore del form assistenza e della modale.
+ */
 const FormAssistenza = () => {
     const formRef = useRef(null);
 
+    /** @type {[boolean, Function]} Stato che controlla la visibilità della modale. */
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    /** @type {[{nome:string, cognome:string}, Function]} - Dati inviati dall'utente. */
     const [submitData, setSubmitData] = useState({ nome: '', cognome: '' });
 
+    /**
+     * Gestisce la submit del form.
+     *
+     * @param {{nome: string, cognome: string}} data - Dati inviati dal form.
+     */
     const handleFormSubmit = (data) => {
         setSubmitData({ nome: data.nome, cognome: data.cognome });
         setShowSuccessModal(true);
+
+        // Resetta il form se la funzione è esposta dal child
         if (formRef.current && formRef.current.resetForm) {
             formRef.current.resetForm();
         }
-    }
+    };
 
+    /** Chiude la modale di successo. */
     const handleCloseModal = () => {
         setShowSuccessModal(false);
     };
@@ -47,8 +75,11 @@ const FormAssistenza = () => {
             <h2 className="text-xl font-normal text-teal-700 mb-6">
                 Invia un messaggio
             </h2>
+
+            {/* Form di contatto */}
             <ContactForm onSubmit={handleFormSubmit} ref={formRef} />
 
+            {/* Modale di successo */}
             {showSuccessModal && (
                 <SuccessModal
                     nome={submitData.nome}
