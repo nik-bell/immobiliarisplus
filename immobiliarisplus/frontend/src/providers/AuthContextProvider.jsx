@@ -1,7 +1,26 @@
+/**
+ * @file AuthContextProvider.jsx
+ * @description Authentication context provider.
+ *
+ * Restores sessions from storage, exposes `login` and `logout` helpers, and
+ * provides the auth value (user, isLoggedIn, userType) to the app.
+ *
+ * @module providers/AuthContextProvider
+ */
+
 import { useState, useEffect } from "react";
 import { AuthContext } from "../store/AuthContext";
 import { clearAuthToken, getPersistedAuthToken, setAuthToken } from "../api/api";
 
+/**
+ * AuthContextProvider component.
+ *
+ * Wrap your app with this provider to make authentication state available
+ * via the `useAuth` hook.
+ *
+ * @param {{children: React.ReactNode}} props - Provider props
+ * @returns {JSX.Element} Auth context provider
+ */
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,6 +43,10 @@ export const AuthContextProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  /**
+   * Logs the user in and persists user data in sessionStorage.
+   * @param {Object} userData - Authenticated user data (name, type, email, ...)
+   */
   const login = (userData) => {
     setUser(userData); // userData = { name, type, email, etc... }
     // Persist user data to sessionStorage
@@ -32,6 +55,9 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Logs the user out, clears token and removes persisted user data.
+   */
   const logout = () => {
     setUser(null);
     clearAuthToken();

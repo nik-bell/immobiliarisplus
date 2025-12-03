@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasa.jsx
+ * @description Multi-step valuation flow wrapper with error handling and loading states.
+ */
 import FormContextProvider from "../../providers/FormContextProvider";
 import useValutaCasaForm from "./useValutaCasaForm";
 
@@ -12,6 +16,10 @@ function StepperWrapper() {
   const { state } = useValutaCasaForm();
   const currentStep = state.step;
 
+  /**
+   * Renders the top stepper reflecting the current step.
+   * @returns {JSX.Element}
+   */
   return (
     <div>
       <BarraStep currentStep={currentStep} />
@@ -43,6 +51,11 @@ function StepsRenderer() {
 }
 
 function ErrorBanner({ message, onRetry, loading }) {
+  /**
+   * Inline error banner with a retry action for form submission errors.
+   * @param {{message?: string, onRetry: () => void, loading: boolean}} props
+   * @returns {null|JSX.Element}
+   */
   if (!message) return null;
 
   return (
@@ -74,6 +87,10 @@ function ErrorBanner({ message, onRetry, loading }) {
 }
 
 export default function ValutaCasa() {
+  /**
+   * Wraps the valuation stepper with form context and renders the flow.
+   * @returns {JSX.Element}
+   */
   return (
     <FormContextProvider>
       <div className="flex-1 min-w-10 px-2">
@@ -93,6 +110,10 @@ function StepperContent() {
   const { state } = useValutaCasaForm();
   const showStepper = !state.isSubmitted;
 
+  /**
+   * Conditionally shows the stepper separators and wrapper.
+   * @returns {JSX.Element}
+   */
   return (
     <>
       {showStepper && (

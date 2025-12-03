@@ -1,9 +1,17 @@
+/**
+ * @file MainNavbar.jsx
+ * @description Primary navigation bar with logo, main links, and a mobile drawer menu.
+ */
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import LogoPNG from '../assets/Logo.png'
 
 const MainNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  /**
+   * Toggles the mobile drawer menu visibility.
+   * @returns {void}
+   */
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

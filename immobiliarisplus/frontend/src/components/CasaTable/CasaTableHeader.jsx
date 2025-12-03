@@ -1,51 +1,40 @@
-// ...existing code...
 /**
  * @file CasaTableHeader.jsx
- * @description Table header for the CasaTable. Renders sortable column headers and
- *              hides the agent column for non-admin users.
+ * @description Table header with sortable columns.
+ * 
+ * Renders table header with clickable column headers for sorting.
+ * Conditionally shows/hides columns based on user permissions.
+ * 
+ * @module components/CasaTable/CasaTableHeader
  */
 
-/**
- * Column descriptor used in the header.
- * @typedef {Object} Column
- * @property {string} key - Key path used for sorting (e.g. "property.address").
- * @property {string} label - Visible label for the column.
- */
-
-/**
- * Props for CasaTableHeader (none; uses contexts).
- * @typedef {Object} CasaTableHeaderProps
- */
-
-/**
- * CasaTableHeader
- *
- * Reads sort state and toggleSort from CasaContext and userType from AuthContext
- * to render a table header row with sortable columns. The "assignedAgent" column
- * is omitted for non-admin users.
- *
- * @param {CasaTableHeaderProps} props
- * @returns {JSX.Element} Table header element
- */
 import { useCasa } from "../../store/CasaContext";
 import { useAuth } from "../../store/AuthContext";
 
+/**
+ * Sortable table header component.
+ * 
+ * Renders column headers with sort indicators. Clicking a header toggles
+ * sort direction. The "Agente" column is only visible to admin users.
+ * 
+ * @returns {JSX.Element} Table header with sortable columns
+ */
 export default function CasaTableHeader() {
   const { toggleSort, sortKey, sortDir } = useCasa();
 
   const { userType } = useAuth();
 
-  // columns with key paths used for sorting
+  // Columns with key paths used for sorting
   const allColumns = [
     { key: "property.address", label: "Indirizzo" },
     { key: "property.sizeMq", label: "Mq" },
     { key: "valuationFinal", label: "Valutazione finale" },
     { key: "status", label: "Stato" },
     { key: "assignedAgent", label: "Agente" },
-    { key: "actions", label: "" },
+    { key: "actions", label: "" }, // Icons/actions column
   ];
 
-  // show the Agent column only to admins
+  // Show Agent column only to admins
   const columns = allColumns.filter((c) => {
     if (c.key === "assignedAgent" && userType !== "admin") return false;
     return true;
@@ -62,7 +51,7 @@ export default function CasaTableHeader() {
       <tr className="text-left text-gray-600">
         {columns.map((col) => (
           <th key={col.key} scope="col" className="px-4 py-3 font-medium">
-            {/* if it's the actions column, do not enable sorting */}
+            {/* Don't activate sort for actions column */}
             {col.key !== "actions" ? (
               <button
                 onClick={() => toggleSort(col.key)}
@@ -75,7 +64,7 @@ export default function CasaTableHeader() {
                 </span>
 
                 <span className="flex items-center">
-                  {/* sort icon: when sorted show direction, otherwise subtle up/down */}
+                  {/* Sort icon: when sorted show direction, otherwise subtle up/down */}
                   {sortKey === col.key ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 text-gray-700 transform ${sortDir === 'asc' ? '' : 'rotate-180'}`} viewBox="0 0 20 20" fill="currentColor">
                       <path d="M10 3l6 6H4l6-6z" />

@@ -1,6 +1,21 @@
+/**
+ * @file validateStep1.js
+ * @description Validation for step 1 (address and basic property data).
+ */
 import allowedCaps from '../../../data/allowedCaps';
 
 export default function validateStep1(data) {
+  /**
+   * Validates step 1 fields and returns a validity flag with error messages.
+   * @param {{
+   *   address?: string,
+   *   propertyType?: string,
+   *   condition?: string,
+   *   sizeMq?: number,
+   *   zipCode?: string|number
+   * }} data
+   * @returns {{valid: boolean, errors: Record<string,string>}}
+   */
   const errors = {};
 
   if (!data.address || !data.address.trim()) errors.address = "Inserisci l'indirizzo.";

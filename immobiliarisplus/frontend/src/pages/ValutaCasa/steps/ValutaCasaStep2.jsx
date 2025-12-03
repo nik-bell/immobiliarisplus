@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasaStep2.jsx
+ * @description Step 2: Detailed property characteristics and features toggles.
+ */
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
@@ -7,6 +11,11 @@ export default function ValutaCasaStep2() {
   const d = state.details;
 
   function toggleFeature(name) {
+    /**
+     * Toggles a boolean feature flag inside the form state.
+     * @param {string} name - Feature key to toggle.
+     * @returns {void}
+     */
     dispatch({
       type: "UPDATE_FEATURES",
       payload: { [name]: !d.features[name] },

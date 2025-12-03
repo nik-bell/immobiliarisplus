@@ -1,3 +1,13 @@
+/**
+ * @file CasaContextProvider.jsx
+ * @description Casa (valuations) context provider.
+ *
+ * Manages dashboard data lifecycle: fetching, filtering, sorting, and modal
+ * state for valuation items. Exposes a rich context consumed by UI components.
+ *
+ * @module providers/CasaContextProvider
+ */
+
 import { useMemo, useState, useEffect, useCallback } from "react";
 import CasaContext from "../store/CasaContext";
 import { getValuationsDashboard, getValuationDetail } from "../api/api";
@@ -5,21 +15,21 @@ import { useAuth } from "../store/AuthContext";
 import { mapListItem, mapDetailItem, mapStatus, mapValuationStatusLabel, mapPropertyType, mapPropertyCondition } from "../utils/mappers";
 
 export default function CasaContextProvider({ children }) {
-  // Initial data (loaded from the API)
+  // dati iniziali (caricati dall'API)
   const [allCases, setAllCases] = useState([]);
 
-  // filter state (tutti, non_assegnati, in_corso, attesa_cliente, terminati)
+  // stato filtro (tutti, non_assegnati, in_corso, attesa_cliente, terminati)
   const [filter, setFilter] = useState("tutti");
 
-  // sorting: key is a string that can be nested (e.g., "property.address")
+  // sorting: key è una stringa che può essere nested (es: "property.address")
   const [sortKey, setSortKey] = useState(null);
   const [sortDir, setSortDir] = useState("asc");
 
-  // modal and selection
+  // modale e selezione
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCasa, setSelectedCasa] = useState(null);
 
-  // utility map for more readable labels (optional)
+  // mappa utilità per etichette piu leggibili (opzionale)
   const statusLabels = {
     non_assegnati: "non assegnati",
     nuovi: "nuovi",
@@ -28,7 +38,13 @@ export default function CasaContextProvider({ children }) {
     terminati: "terminati",
   };
 
-  // helper function to read nested keys (e.g., "property.sizeMq")
+  // Helper to read nested keys (e.g., "property.sizeMq")
+  /**
+   * Safely retrieves a nested property from an object via dot-path.
+   * @param {Object} obj - Source object
+   * @param {string} path - Dot-separated path (e.g., "a.b.c")
+   * @returns {*} Value at path or undefined
+   */
   const getByPath = (obj, path) => {
     if (!path) return undefined;
     return path
@@ -36,7 +52,7 @@ export default function CasaContextProvider({ children }) {
       .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
   };
 
-  // apply filter to data
+  // applica filtro ai dati
   const filtered = useMemo(() => {
     if (filter === "tutti") return allCases;
     return allCases.filter((c) => c.status === filter);
@@ -66,7 +82,7 @@ export default function CasaContextProvider({ children }) {
 
   // mapListItem and mapDetailItem moved to utils/mappers
 
-  // apply sorting to the filtered data
+  // applica sorting ai dati filtrati
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
     const copy = [...filtered];
@@ -74,17 +90,17 @@ export default function CasaContextProvider({ children }) {
       const va = getByPath(a, sortKey);
       const vb = getByPath(b, sortKey);
 
-      // handle numbers and strings simply
+      // tratta numeri e stringhe in modo semplice
       if (va == null && vb == null) return 0;
       if (va == null) return sortDir === "asc" ? -1 : 1;
       if (vb == null) return sortDir === "asc" ? 1 : -1;
 
-      // if they are numbers
+      // se sono numeri
       if (typeof va === "number" && typeof vb === "number") {
         return sortDir === "asc" ? va - vb : vb - va;
       }
 
-      // string comparison (case-insensitive)
+      // confronto stringhe (case-insensitive)
       const sa = String(va).toLowerCase();
       const sb = String(vb).toLowerCase();
       if (sa < sb) return sortDir === "asc" ? -1 : 1;
@@ -94,7 +110,12 @@ export default function CasaContextProvider({ children }) {
     return copy;
   }, [filtered, sortKey, sortDir]);
 
-  // open modal and select casa: if available, load details from API
+  // Open modal and select casa; fetch details from API when available
+  /**
+   * Opens the Casa modal for a given item, fetching detail data when possible.
+   * @param {{id?: string|number}} casa - Casa list item or object with id
+   * @returns {Promise<void>}
+   */
   const openCasaModal = useCallback(async (casa) => {
     if (!casa || !casa.id) {
       setSelectedCasa(casa);
@@ -115,7 +136,10 @@ export default function CasaContextProvider({ children }) {
     setModalOpen(true);
   }, []);
 
-  // close modal and deselect
+  // Close modal and clear selection
+  /**
+   * Closes the Casa modal and clears the selected item.
+   */
   const closeCasaModal = () => {
     setSelectedCasa(null);
     setModalOpen(false);
@@ -131,7 +155,11 @@ export default function CasaContextProvider({ children }) {
     return () => window.removeEventListener("openCasaModal", onOpen);
   }, [openCasaModal]);
 
-  // toggle sort: se clicchi stessa chiave inverte direzione
+  // Toggle sort: clicking the same key flips direction
+  /**
+   * Toggles sort key/direction for the dashboard list.
+   * @param {string} key - Dot-path key to sort by
+   */
   const toggleSort = useCallback((key) => {
     if (sortKey === key) {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
@@ -141,10 +169,10 @@ export default function CasaContextProvider({ children }) {
     }
   }, [sortKey]);
 
-  // export all in context
+  // esporta tutto nel context
   const value = {
-    cases: sorted, 
-    rawCases: allCases, 
+    cases: sorted, // lista già filtrata e ordinata
+    rawCases: allCases, // lista originale se serve
     setAllCases,
     refreshCases: async () => {
       if (!isLoggedIn) return;

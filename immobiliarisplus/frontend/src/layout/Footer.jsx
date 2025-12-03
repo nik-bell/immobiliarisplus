@@ -1,3 +1,7 @@
+/**
+ * @file Footer.jsx
+ * @description Page footer with links, contact info, and a simple newsletter subscription form.
+ */
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -21,6 +25,12 @@ function Footer() {
     return () => clearTimeout(t);
   }, [successMessage]);
 
+  /**
+   * Handles newsletter form submission.
+   * Validates privacy consent and shows a transient success banner.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit event.
+   * @returns {void}
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 

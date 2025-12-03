@@ -1,4 +1,12 @@
+/**
+ * @file DeleteConfirmationModal.jsx
+ * @description Generic confirmation modal for destructive actions (lead deletion).
+ */
 export default function DeleteConfirmationModal({ isOpen, onCancel, onConfirm, leadAddress }) {
+  /**
+   * Do not render anything when the modal is closed.
+   * @returns {null|JSX.Element}
+   */
   if (!isOpen) return null;
 
   return (

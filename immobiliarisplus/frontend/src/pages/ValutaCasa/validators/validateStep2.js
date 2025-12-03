@@ -1,4 +1,13 @@
+/**
+ * @file validateStep2.js
+ * @description Validation for step 2 (details like rooms, bathrooms, floor).
+ */
 export default function validateStep2(data) {
+  /**
+   * Validates step 2 fields and returns a validity flag with error messages.
+   * @param {{rooms?: number, bathrooms?: number, floor?: number|string}} data
+   * @returns {{valid: boolean, errors: Record<string,string>}}
+   */
   const errors = {};
 
   if (!data.rooms || data.rooms <= 0)

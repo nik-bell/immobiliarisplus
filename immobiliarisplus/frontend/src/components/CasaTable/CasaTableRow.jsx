@@ -1,49 +1,13 @@
 /**
  * @file CasaTableRow.jsx
- * @description Table row renderer for a single "casa" (property/case). Renders
- *              table cells for address, size, valuation, status, assigned agent
- *              and action controls. Handles row click to open modal and admin
- *              delete flow.
+ * @description Table row component for individual valuations.
+ * 
+ * Renders a single valuation row with editable status, agent assignment,
+ * and action buttons. Clicking the row opens the detail modal.
+ * 
+ * @module components/CasaTable/CasaTableRow
  */
 
-/**
- * Employee shape used in casa objects.
- * @typedef {Object} Employee
- * @property {string|number} id - Employee identifier.
- * @property {string} [name] - First name.
- * @property {string} [surname] - Last name.
- * @property {string} [email] - Email.
- */
-
-/**
- * Casa (case/property) shape.
- * @typedef {Object} Casa
- * @property {string|number} id - Casa identifier.
- * @property {Object} [property] - Property details.
- * @property {string} [property.address] - Property address.
- * @property {number} [property.sizeMq] - Size in square meters.
- * @property {number|string|null} [valuationFinal] - Final valuation or placeholder.
- * @property {string} [status] - Internal status key.
- * @property {string} [statusLabel] - Human readable status label.
- * @property {Employee|string|null} [assignedAgent] - Assigned agent (object, label or null).
- */
-
-/**
- * Props for CasaTableRow.
- * @typedef {Object} CasaTableRowProps
- * @property {Casa} casa - Casa object to render in the row.
- */
-
-/**
- * CasaTableRow
- *
- * Renders a single row for the CasaTable. Shows AgentSelector and delete controls
- * only to admin users. Emits modal open events and handles deletion using API.
- *
- * @param {CasaTableRowProps} props
- * @param {Casa} props.casa - Casa to render.
- * @returns {JSX.Element}
- */
 import { useState } from "react";
 import { useCasa } from "../../store/CasaContext";
 import Badge from "./Badge";
@@ -53,6 +17,24 @@ import AgentSelector from "./AgentSelector";
 import DeleteConfirmationModal from "../../layout/DeleteConfirmationModal";
 import { deleteValuation } from "../../api/api";
 
+/**
+ * Valuation table row with inline editing.
+ * 
+ * Displays valuation data in table format with:
+ * - Clickable row to open detail modal
+ * - Inline status dropdown (with permission filtering)
+ * - Agent selector (admin only)
+ * - Info and delete action buttons
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.casa - Valuation data object
+ * @param {string|number} props.casa.id - Valuation ID
+ * @param {Object} props.casa.property - Property details (address, size, type)
+ * @param {number} [props.casa.valuationFinal] - Final valuation amount
+ * @param {string} props.casa.status - Current status key
+ * @param {Object} [props.casa.assignedAgent] - Assigned agent data
+ * @returns {JSX.Element} Table row element
+ */
 export default function CasaTableRow({ casa }) {
   const { openCasaModal, setAllCases } = useCasa();
   const { userType } = useAuth();
@@ -63,13 +45,13 @@ export default function CasaTableRow({ casa }) {
     openCasaModal(casa);
   };
 
-  // Info icon click handler: stops propagation and opens modal
+  // Info icon handler: stops propagation and opens modal
   const handleInfoClick = (e) => {
-    e.stopPropagation(); // prevents the click on the button from triggering the entire tr twice
+    e.stopPropagation(); // Prevent button click from triggering the entire tr twice
     openCasaModal(casa);
   };
 
-  // Delete button click handler
+  // Delete button handler
   const handleDeleteClick = (e) => {
     e.stopPropagation();
     setShowDeleteConfirm(true);
@@ -134,27 +116,27 @@ export default function CasaTableRow({ casa }) {
       onClick={handleRowClick}
       className="hover:bg-gray-50 cursor-pointer transition"
     >
-      {/* Address */}
+      {/* Indirizzo */}
       <td className="px-4 py-3">{casa.property?.address ?? ''}</td>
 
       {/* Mq */}
       <td className="px-4 py-3">{casa.property?.sizeMq ?? ''} m²</td>
 
-      {/* Final valuation */}
+      {/* Valutazione finale */}
       <td className="px-4 py-3">{typeof casa.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(casa.valuationFinal) : (casa.valuationFinal ?? '-')}</td>
 
-      {/* Status with badge */}
+      {/* Stato con badge */}
       <td className="px-4 py-3">
         <StatusDropdown casa={casa} />
       </td>
 
-      {/* Assigned agent (visible only to admin) */}
+      {/* Agente assegnato (visibile solo ad admin) */}
       {userType === "admin" && (
         <td className="px-4 py-3 relative" onClick={(e) => e.stopPropagation()}>
           <AgentSelector casa={casa} />
         </td>
       )}
-      {/* Actions: info icon that opens modal */}
+      {/* Azioni: icona info che apre modale */}
       <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-2">
           <button
@@ -162,7 +144,7 @@ export default function CasaTableRow({ casa }) {
             aria-label={`Info ${casa.id}`}
             className="p-1 rounded hover:bg-gray-100"
           >
-            {/* simple info icon SVG */}
+            {/* semplice icona info SVG */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-gray-600"
@@ -203,7 +185,7 @@ export default function CasaTableRow({ casa }) {
         </div>
       </td>
     </tr>
-    {/* Delete confirmation modal */}
+    {/* Modal di conferma eliminazione */}
     <DeleteConfirmationModal
       isOpen={showDeleteConfirm}
       onCancel={handleDeleteCancel}

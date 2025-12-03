@@ -1,7 +1,12 @@
 /**
  * @file StatusDropdown.jsx
- * @description Dropdown component for changing casa status. Shows a plain badge for non-admins
- *              and an interactive dropdown for admins with all available status options.
+ * @description Status selection dropdown with permission filtering.
+ * 
+ * Allows users to change valuation status inline. Filters available
+ * statuses based on user role (agents cannot select "NOT_ASSIGNED").
+ * Uses React Portal for proper z-index layering.
+ * 
+ * @module components/CasaTable/StatusDropdown
  */
 
 import React, { useState, useRef, useEffect } from "react";
@@ -14,29 +19,18 @@ import { mapValuationStatusLabel, ALL_STATUS_ENUMS, mapUIStatusToEnum, mapListIt
 import { useCasa } from "../../store/CasaContext";
 
 /**
- * Casa (case/property) shape.
- * @typedef {Object} Casa
- * @property {string|number} id - Casa identifier.
- * @property {string} [status] - Current status key.
- * @property {string} [statusLabel] - Human-readable status label.
- */
-
-/**
- * Props for StatusDropdown component.
- * @typedef {Object} StatusDropdownProps
- * @property {Casa} casa - Casa object to display and update status for.
- */
-
-/**
- * StatusDropdown
- *
- * Renders a status selector for a casa. Non-admin users see a read-only badge.
- * Admin users see a dropdown button that opens a popup with all available status options
- * as clickable StatusChip buttons. Updates the casa status via API on selection.
- *
- * @param {StatusDropdownProps} props
- * @param {Casa} props.casa - Casa object with id, status, and statusLabel.
- * @returns {JSX.Element} Status badge or interactive dropdown component.
+ * Inline status dropdown with role-based filtering.
+ * 
+ * Renders a clickable status chip that opens a portal dropdown with
+ * available status options. Agents cannot select "NOT_ASSIGNED" status.
+ * Updates valuation via API and refreshes local state on change.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.casa - Valuation object
+ * @param {string|number} props.casa.id - Valuation ID
+ * @param {string} props.casa.status - Current status UI key
+ * @param {string} [props.casa.statusLabel] - Current status display label
+ * @returns {JSX.Element} Status dropdown button
  */
 export default function StatusDropdown({ casa }) {
   const { userType } = useAuth();
@@ -47,7 +41,6 @@ export default function StatusDropdown({ casa }) {
   const popupRef = useRef(null);
   const [popupStyle, setPopupStyle] = useState({});
 
-  // Close dropdown on outside click
   useEffect(() => {
     const onDoc = (e) => {
       const t = e.target;
@@ -59,7 +52,6 @@ export default function StatusDropdown({ casa }) {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  // Update popup position on open/resize/scroll
   useEffect(() => {
     function updatePos() {
       if (!buttonRef.current) return;
@@ -69,8 +61,6 @@ export default function StatusDropdown({ casa }) {
       const width = 280;
       setPopupStyle({ position: "absolute", top: `${top}px`, left: `${left}px`, width: `${width}px`, zIndex: 9999 });
     }
-
-    // Update position when opened
     if (open) {
       updatePos();
       window.addEventListener("resize", updatePos);
@@ -84,7 +74,6 @@ export default function StatusDropdown({ casa }) {
 
   const currentUIKey = casa?.status;
 
-  // Handle selection of a new status
   const handleSelect = async (enumValue) => {
     setLoading(true);
     try {
@@ -111,7 +100,6 @@ export default function StatusDropdown({ casa }) {
     ? ALL_STATUS_ENUMS.filter(e => e !== "NOT_ASSIGNED")
     : ALL_STATUS_ENUMS;
 
-  // admin: show dropdown
   const popup = (
     <div ref={popupRef} style={popupStyle} className="bg-white border border-gray-200 rounded shadow-lg p-3">
       <div className="flex gap-2 flex-wrap">

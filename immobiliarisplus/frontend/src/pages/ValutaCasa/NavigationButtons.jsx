@@ -1,3 +1,7 @@
+/**
+ * @file NavigationButtons.jsx
+ * @description Next/Previous/Submit controls for the valuation wizard.
+ */
 import useValutaCasaForm from "./useValutaCasaForm";
 
 export default function NavigationButtons() {
@@ -8,6 +12,13 @@ export default function NavigationButtons() {
     return null;
   }
 
+  /**
+   * Renders contextual navigation buttons:
+   * - Back when step > 1
+   * - Continue when step < 3
+   * - Submit on last step
+   * @returns {JSX.Element}
+   */
   return (
     <div className="max-w-3xl mx-auto mt-6 flex items-center justify-between gap-4">
       {state.step > 1 ? (

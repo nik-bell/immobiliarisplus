@@ -1,3 +1,7 @@
+/**
+ * @file BarraStep.jsx
+ * @description Horizontal progress indicator for the three-step valuation flow.
+ */
 import React from 'react';
 
 const steps = [
@@ -7,6 +11,11 @@ const steps = [
 ];
 
 const BarraStep = ({ currentStep }) => {
+    /**
+     * Renders a 3-step progress bar highlighting current and completed steps.
+     * @param {{currentStep: 1|2|3}} props
+     * @returns {JSX.Element}
+     */
 
     return (
         <div className="mt-2"> 

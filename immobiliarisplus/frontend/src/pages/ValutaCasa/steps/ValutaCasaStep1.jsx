@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasaStep1.jsx
+ * @description Step 1: Essential property information and address capture with CAP autocomplete and map preview.
+ */
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
@@ -8,6 +12,11 @@ import MapboxMap from "../../../components/MapboxMap";
 
 // Autocomplete input for CAP selection
 function CapAutocomplete({ value, onChange }) {
+  /**
+   * Lightweight autocomplete for selecting a CAP with city hint.
+   * @param {{value?: string|number, onChange?: (cap: string, city: string|null) => void}} props
+   * @returns {JSX.Element}
+   */
   const [query, setQuery] = useState(value || "");
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -73,11 +82,22 @@ function CapAutocomplete({ value, onChange }) {
 }
 
 export default function ValutaCasaStep1() {
+  /**
+   * Renders the first step collecting address, CAP, type, condition, size.
+   * Also shows a Mapbox preview when coordinates are available.
+   * @returns {JSX.Element}
+   */
   const { state, dispatch } = useValutaCasaForm();
   const p = state.property;
   const [mapCoordinates, setMapCoordinates] = useState(null);
 
   const handleAddressChange = (newAddressData) => {
+    /**
+     * Updates address-related fields in the form state.
+     * Accepts optional city inference from CAP or suggestion payload.
+     * @param {{address?: string, zipCode?: string|number, city?: string, coordinates?: number[]}} newAddressData
+     * @returns {void}
+     */
     const payload = {
       address: newAddressData.address,
     };

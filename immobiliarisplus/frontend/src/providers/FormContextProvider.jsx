@@ -1,3 +1,13 @@
+/**
+ * @file FormContextProvider.jsx
+ * @description Multi-step valuation form context provider.
+ *
+ * Centralizes form state, step validation, navigation, and submission logic
+ * for the valuation flow. Exposes helpers via `FormContext`.
+ *
+ * @module providers/FormContextProvider
+ */
+
 import { useReducer, useState } from "react";
 import FormContext from "../store/FormContext";
 import validateStep1 from "../pages/ValutaCasa/validators/validateStep1";
@@ -46,10 +56,16 @@ const initialState = {
   },
 
   errors: {},
-  submitMessage: "", 
-  isSubmitted: false, // Flag to know if the form has been submitted
+  submitMessage: "", // Messaggio di conferma
+  isSubmitted: false, // Flag per sapere se il form è stato inviato
 };
 
+/**
+ * Reducer handling form state transitions.
+ * @param {Object} state - Current form state
+ * @param {{type: string, payload?: any}} action - Action descriptor
+ * @returns {Object} Next form state
+ */
 function formReducer(state, action) {
   switch (action.type) {
     case "NEXT_STEP":
@@ -99,10 +115,23 @@ function formReducer(state, action) {
   }
 }
 
+/**
+ * Form context provider component.
+ *
+ * Wrap the valuation flow with this provider to access form state, validation
+ * helpers and submission via the `FormContext`.
+ *
+ * @param {{children: React.ReactNode}} props - Provider props
+ * @returns {JSX.Element} Form context provider
+ */
 export default function FormContextProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
-  // ------ VALIDATOR BY STEP ------
+  // ------ Step validator ------
+  /**
+   * Validates the current form step using step-specific validators.
+   * @returns {boolean} True if current step is valid
+   */
   const validateCurrentStep = useCallback(() => {
     let result;
 
@@ -118,24 +147,39 @@ export default function FormContextProvider({ children }) {
     return result.valid;
   }, [state.step, state.property, state.details, state.contact]);
 
+  /**
+   * Advances to the next step if current step validates.
+   */
   const nextStep = useCallback(() => {
     if (validateCurrentStep()) {
       dispatch({ type: "NEXT_STEP" });
     }
   }, [validateCurrentStep]);
 
+  /**
+   * Returns to the previous step.
+   */
   const prevStep = useCallback(() => dispatch({ type: "PREV_STEP" }), []);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  /**
+   * Submits the valuation form to the backend.
+   *
+   * Performs final step validation, normalizes numeric fields, maps UI values
+   * to backend enums, and calls the calculate valuation API. Stores a user-facing
+   * confirmation or error message into context state.
+   *
+   * @returns {Promise<void>}
+   */
   const submitForm = useCallback(async () => {
-    // Validate step 3
+    // Valida lo step 3
     if (!validateCurrentStep()) {
       return;
     }
 
-    // Create JSON object with all data
+    // Crea l'oggetto JSON con tutti i dati
     const formData = {
       property: state.property,
       details: state.details,
@@ -175,10 +219,10 @@ export default function FormContextProvider({ children }) {
 
       if (!resp) {
         // createValuation returns null on error
-        throw new Error("Nessuna risposta valida dal server");
+        throw new Error("No valid response from the server");
       }
 
-      // Prepare success message. If API returns a range/price, show it.
+      // Prepare success message; if API returns a range/price, show it.
       const baseMessage = `Grazie ${state.contact.name} ${state.contact.surname}! La tua richiesta è stata inviata con successo.`;
       const range = resp.valuationRange || resp.recommendedPrice || resp.range || null;
       const fullMessage = range ? `${baseMessage} Valutazione stimata: ${JSON.stringify(range)}` : baseMessage;
@@ -186,8 +230,8 @@ export default function FormContextProvider({ children }) {
       dispatch({ type: "SET_SUBMIT_MESSAGE", payload: fullMessage });
       dispatch({ type: "SET_SUBMITTED" });
     } catch (err) {
-      setError(err.message || "Errore durante l'invio della richiesta");
-      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Errore durante l'invio della richiesta." });
+      setError(err.message || "Error while submitting the request");
+      dispatch({ type: "SET_SUBMIT_MESSAGE", payload: "Error while submitting the request." });
     } finally {
       setLoading(false);
     }

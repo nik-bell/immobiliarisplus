@@ -1,3 +1,7 @@
+/**
+ * @file ValutaCasaStep3.jsx
+ * @description Step 3: Contact details and privacy consent.
+ */
 import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
@@ -17,6 +21,11 @@ export default function ValutaCasaStep3() {
 
   // Handle privacy checkbox change
   const handleChange = (e) => {
+    /**
+     * Updates the privacy consent flag and clears related error when checked.
+     * @param {React.ChangeEvent<HTMLInputElement>} e
+     * @returns {void}
+     */
     const checked = e.target.checked;
 
     dispatch({
