@@ -29,6 +29,9 @@ public record PropertyValuationDTO(
         @Min(value = 0, message = "Il prezzo massimo stimato deve essere almeno 0.")
         Double estimatedPriceMax,
 
+        @Min(value = 0, message = "Il valore finale della valutazione deve essere almeno 0.")
+        Double valuationFinal,
+
         @Min(value = 0, message = "Il prezzo al mq deve essere almeno 0.")
         Double pricePerMq,
 

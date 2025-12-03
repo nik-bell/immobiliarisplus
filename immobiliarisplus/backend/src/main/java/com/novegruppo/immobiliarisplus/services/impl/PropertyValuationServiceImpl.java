@@ -323,7 +323,7 @@ public class PropertyValuationServiceImpl implements PropertyValuationService {
         }
         PropertyValuation entity = propertyValuationRepository.findById(valuationId)
                 .orElseThrow(() -> new ResourceNotFoundException("PropertyValuation non trovata con id=" + valuationId));
-        entity.setEstimatedPriceMax(finalPrice);
+        entity.setValuationFinal(finalPrice);
         propertyValuationRepository.save(entity);
         return propertyValuationMapper.toDTO(entity);
     }

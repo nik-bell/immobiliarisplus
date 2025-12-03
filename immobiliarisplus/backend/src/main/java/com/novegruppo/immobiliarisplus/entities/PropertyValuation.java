@@ -41,6 +41,9 @@ public class PropertyValuation {
     @Column(name = "estimated_price_max")
     private Double estimatedPriceMax;
 
+    @Column(name = "valuation_final")
+    private Double valuationFinal;
+
     @Column(name = "price_per_mq")
     private Double pricePerMq;
 
@@ -127,6 +130,14 @@ public class PropertyValuation {
 
     public void setEstimatedPriceMax(Double estimatedPriceMax) {
         this.estimatedPriceMax = estimatedPriceMax;
+    }
+
+    public Double getValuationFinal() {
+        return valuationFinal;
+    }
+
+    public void setValuationFinal(Double valuationFinal) {
+        this.valuationFinal = valuationFinal;
     }
 
     public Double getPricePerMq() {
