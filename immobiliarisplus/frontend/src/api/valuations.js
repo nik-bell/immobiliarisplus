@@ -32,3 +32,11 @@ export async function updateValuationDashboard(id, patchBody) {
   if (res.ok) return res.data;
   return null;
 }
+
+export async function deleteValuation(id) {
+  if (!id) {
+    return null;
+  }
+  const res = await request(`/valuations/${id}`, { method: "DELETE", expectJson: false });
+  return res.ok;
+}
