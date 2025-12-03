@@ -10,9 +10,9 @@
 
 ## Frontend Contributors
 
-- Luca Montanaro — Frontend Development — [GitHub](https://github.com/LucaM0nt)
-- Matteo Cecchi — Frontend Development — [GitHub](https://github.com/Matte05daje)
-- Matteo Paglietta — Frontend Development — [GitHub](https://github.com/Pagliez )
+- Luca Montanaro (@LucaM0nt) — Frontend Development — [GitHub](https://github.com/LucaM0nt)
+- Matteo Paglietta (@Pagliez) — Frontend Development — [GitHub](https://github.com/Pagliez)
+- Matteo Cecchi (@Matte05daje) — Frontend Development — [GitHub](https://github.com/Matte05daje)
 
 ---
 
