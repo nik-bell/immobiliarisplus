@@ -1,11 +1,12 @@
-# 📏 Java Spring Boot - Coding Style Guide
+#  Java Spring Boot - Coding Style Guide
+ [English version 🇬🇧](#java-spring-boot---coding-style-guide-english-version)
 
 Questa guida descrive le convenzioni di stile da seguire nel nostro progetto Java Spring Boot.
 
 L’obiettivo è mantenere il codice leggibile, uniforme e facile da mantenere.
 
 
-## 🗣️ Linguaggio del codice
+##  Linguaggio del codice
 
 Tutto il codice, inclusi nomi di classi, variabili, metodi e commenti, deve essere scritto in **inglese**.  
 Questo facilita la collaborazione con sviluppatori esterni e l’utilizzo di librerie e strumenti internazionali.
@@ -128,3 +129,138 @@ src/main/java/com/company/project/
 - Usa `Optional` per valori che potrebbero essere assenti  
 - Mantieni il codice semplice e leggibile
 
+---
+
+---
+
+#  Java Spring Boot - Coding Style Guide (English Version)
+
+[Go back to Italian 🇮🇹](#java-spring-boot---coding-style-guide)
+
+This guide describes the style conventions to be followed in our Java Spring Boot project.
+
+The goal is to keep the code readable, consistent, and easy to maintain.
+
+
+##  Code language
+
+All code, including class names, variables, methods, and comments, must be written in **English**.  
+This facilitates collaboration with external developers and the use of international libraries and tools.
+
+
+## 1. Code formatting
+
+- Use **4 spaces indentation**, not tabs (unless the tab is configured to 4 spaces, see the note below)  
+- Keep a **maximum line length of 120 characters**  
+- Place opening braces `{` on the same line as the declaration  
+- Use a space after `if`, `for`, `while`, `switch` before the opening parenthesis
+
+```java
+if (condition) {
+    // code here
+}
+```
+
+### Indentation: why prefer spaces over tabs?
+
+#### Consistency across editors:
+Each editor or IDE can render tabs with different widths (2, 4, or 8 spaces).  
+This can cause misalignment if team members have different settings.
+
+#### Consistency in version control:
+Using spaces ensures everyone sees the same indentation regardless of the editor used,  
+making diffs more readable and clean.
+
+#### Industry standards:
+Many style guides, such as the Google Java Style Guide, recommend using spaces for uniform formatting.
+
+#### Avoid mixing:
+Mixing tabs and spaces can cause indentation issues that are hard to spot.  
+Choosing spaces and sticking to them helps prevent these problems.
+
+> **Note:**  
+> Tabs are not inherently wrong and can be used if **everyone** on the team has tabs configured to 4 spaces,  
+> so that the visual result remains consistent.
+
+
+## 2. Class and package names
+
+- **Classes** in *PascalCase* (e.g., `UserController`, `OrderService`)  
+- **Packages** in lowercase, separated by dots (e.g., `com.company.project.controller`)  
+- Do not use underscores or hyphens in class or package names
+
+
+## 3. Variable and method names
+
+- Use *camelCase* (e.g., `userRepository`, `calculateTotal()`)  
+- Names must be meaningful and descriptive; avoid overly cryptic abbreviations  
+- Methods should be verbs or verb phrases (e.g., `saveUser()`, `getOrderById()`)
+
+
+## 4. Constants
+
+- Static final constants in **UPPER_SNAKE_CASE**  
+- Example: `public static final int MAX_SIZE = 50;`
+
+
+## 5. Comments
+
+- Use comments to explain “why”, not “what” the code does  
+- Use Javadoc for public classes, methods, and APIs  
+- Keep comments up to date
+
+Javadoc example:
+
+```java
+/**
+ * Retrieves a user from the database by ID.
+ * @param id the user's ID
+ * @return the found user or null if not found
+ */
+public User getUserById(Long id) {
+    // implementation
+}
+```
+
+
+## 6. Exception handling
+
+- Use specific exceptions  
+- Avoid catching generic exceptions like `Exception` or `Throwable` unless strictly necessary  
+- Always log exceptions when you catch them
+
+
+## 7. Spring Boot specifics
+
+- Use **Dependency Injection** via `@Autowired` annotations or constructor injection (preferred)  
+- Use `@Service`, `@Repository`, `@Controller`, `@RestController` appropriately  
+- Configure properties in `application.properties` or `application.yml`, avoid hard-coded values in code  
+- Follow Spring naming conventions for methods and beans
+
+
+## 8. Project structure
+
+Organize files into clear, feature-oriented packages, for example:
+
+```bash
+src/main/java/com/company/project/
+├── controller
+├── services
+├── repos
+├── entities
+└── config
+```
+
+## 9. Tests
+
+- Write unit and integration tests using JUnit and Mockito  
+- Test names must be clear and describe what they verify  
+- Example: `shouldReturnUserWhenIdExists()`
+
+
+## 10. General Best Practices
+
+- Avoid code duplication (DRY - Don't Repeat Yourself)  
+- Write short methods with a single responsibility (Single Responsibility Principle)  
+- Use `Optional` for values that may be absent  
+- Keep the code simple and readable
