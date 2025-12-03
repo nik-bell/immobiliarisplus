@@ -18,19 +18,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // JWT Authentication Filter bean injection for security configuration
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    // Password encoder bean using BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Authentication manager bean configuration
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+        // Security filter chain configuration
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -51,7 +55,7 @@ public class SecurityConfig {
                                 "/api/price-per-sqm/**",
                                 "/api/employees/**"
                         ).hasRole("ADMIN")
-                        // Altri endpoint: autenticati con uno dei ruoli
+                        // others endpoint: ADMIN, AGENT, OWNER
                         .requestMatchers("/api/**").hasAnyRole("ADMIN","AGENT","OWNER")
                         .anyRequest().authenticated()
                 )
