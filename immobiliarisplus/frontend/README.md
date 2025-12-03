@@ -139,6 +139,20 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+### Demo Credentials
+
+For testing the protected dashboard and authentication, use these credentials provided by the backend:
+
+**Agent Login** (standard permissions):
+- Email: `agent.smith@immobiliarisplus.com`
+- Password: `9password`
+
+**Admin Login** (full permissions):
+- Email: `ad.min@immobiliarisplus.com`
+- Password: `novegruppo`
+
+Both accounts access `/area-agenti` with different permission levels.
+
 ### Production Build
 
 ```bash
