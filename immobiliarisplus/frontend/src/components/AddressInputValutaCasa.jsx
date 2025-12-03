@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import capData from '../data/allowedCaps'
 
 const MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGFnbGllIiwiYSI6ImNtaW9sd25xMjAyZTczZnM5a3k4bjFxYTgifQ.TDL9kEFOXdbQDr91_YB2UA";
@@ -21,6 +21,7 @@ function AddressInputValutaCasa({ address, onChange, error }) {
     const [inputValue, setInputValue] = useState(address || "");
     const [suggestions, setSuggestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [awaitingSuggestion, setAwaitingSuggestion] = useState(false);
 
     const extractCapFromContext = (suggestion) => {
         if (!suggestion.context || !Array.isArray(suggestion.context)) {
@@ -36,10 +37,12 @@ function AddressInputValutaCasa({ address, onChange, error }) {
     const fetchSuggestions = async (text) => {
         if (text.length < 3) {
             setSuggestions([]);
+            setAwaitingSuggestion(false);
             return;
         }
 
         setIsLoading(true);
+        setAwaitingSuggestion(true);
         try {
             const response = await fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
@@ -59,8 +62,12 @@ function AddressInputValutaCasa({ address, onChange, error }) {
             });
 
             setSuggestions(filteredSuggestions);
+            if (filteredSuggestions.length > 0) {
+                setAwaitingSuggestion(false);
+            }
         } catch (error) {
             console.error("Errore nel recupero dei suggerimenti Mapbox:", error);
+            setAwaitingSuggestion(false);
         } finally {
             setIsLoading(false);
         }
@@ -74,6 +81,9 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         onChange({
             address: newText
         });
+        if (newText.length < 3) {
+            setAwaitingSuggestion(false);
+        }
         debouncedFetch(newText);
     };
 
@@ -93,6 +103,7 @@ function AddressInputValutaCasa({ address, onChange, error }) {
             address: cleanAddress,
             zipCode: cap,
             city: city,
+            coordinates: suggestion.geometry ? suggestion.geometry.coordinates : null,
         });
         setSuggestions([]);
     };
@@ -101,8 +112,27 @@ function AddressInputValutaCasa({ address, onChange, error }) {
         setInputValue(address || "");
     }, [address]);
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const handleOutside = (e) => {
+            if (containerRef.current && !containerRef.current.contains(e.target)) {
+                setAwaitingSuggestion(false);
+                setSuggestions([]);
+            }
+        };
+        document.addEventListener('mousedown', handleOutside);
+        document.addEventListener('touchstart', handleOutside);
+        document.addEventListener('focusin', handleOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleOutside);
+            document.removeEventListener('touchstart', handleOutside);
+            document.removeEventListener('focusin', handleOutside);
+        };
+    }, []);
+
     return (
-        <div className="mb-4 relative">
+        <div className="mb-4 relative" ref={containerRef}>
             <label className="block text-sm font-medium mb-1">Indirizzo *</label>
             <input
                 className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
@@ -124,8 +154,14 @@ function AddressInputValutaCasa({ address, onChange, error }) {
                     ))}
                 </ul>
             )}
-            {isLoading && inputValue.length >= 3 && (
-                <div className="text-xs text-gray-500 mt-1">Caricamento suggerimenti...</div>
+            {(awaitingSuggestion && inputValue.length >= 3) && (
+                <div className="text-xs text-gray-500 mt-1">
+
+                    <div className="flex items-start justify-start">
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-teal-700 mr-2"></div>
+                    Cercando l'indirizzo... Prova a inserire anche la città
+                    </div>
+                </div>
             )}
         </div>
     );

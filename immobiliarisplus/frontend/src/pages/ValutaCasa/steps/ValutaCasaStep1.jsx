@@ -4,12 +4,13 @@ import ScrollToTop from "../../../components/ScrollToTop";
 import { useState, useRef, useEffect } from "react";
 import allowedCaps from "../../../data/allowedCaps";
 import AddressInputValutaCasa from "../../../components/AddressInputValutaCasa";
+import MapboxMap from "../../../components/MapboxMap";
 
 function CapAutocomplete({ value, onChange }) {
   const [query, setQuery] = useState(value || "");
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-  
+
   useEffect(() => {
     setQuery(value || "");
   }, [value]);
@@ -70,6 +71,8 @@ function CapAutocomplete({ value, onChange }) {
 export default function ValutaCasaStep1() {
   const { state, dispatch } = useValutaCasaForm();
   const p = state.property;
+  const [mapCoordinates, setMapCoordinates] = useState(null);
+
   const handleAddressChange = (newAddressData) => {
     const payload = {
       address: newAddressData.address,
@@ -84,6 +87,10 @@ export default function ValutaCasaStep1() {
       if (match) {
         payload.city = match.city;
       }
+    }
+    // If the suggestion has geometry, extract coordinates
+    if (newAddressData.coordinates && Array.isArray(newAddressData.coordinates)) {
+      setMapCoordinates(newAddressData.coordinates);
     }
     dispatch({
       type: "UPDATE_PROPERTY",
@@ -130,10 +137,11 @@ export default function ValutaCasaStep1() {
               })
             }
             placeholder="Torino"
-          />
+            />
           {state.errors.city && <p className="text-sm text-red-600">{state.errors.city}</p>}
         </div>
       </div>
+            {mapCoordinates && <MapboxMap address={p.address} coordinates={mapCoordinates} />}
 
       <div className="mb-4">
         <label htmlFor="property-type" className="block text-sm font-medium mb-1">Tipologia immobile *</label>
@@ -200,6 +208,7 @@ export default function ValutaCasaStep1() {
         />
         {state.errors.sizeMq && <p className="text-sm text-red-600">{state.errors.sizeMq}</p>}
       </div>
+
 
       <NavigationButtons />
     </div>
