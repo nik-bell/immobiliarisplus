@@ -92,7 +92,7 @@ export default function ValutaCasaStep2() {
                 type="checkbox"
                 checked={d.features[feature]}
                 onChange={() => toggleFeature(feature)}
-                className="w-4 h-4"
+                className="w-4 h-4 accent-teal-500"
               />
               <span className="capitalize">{feature.replace(/_/g, " ")}</span>
             </label>
