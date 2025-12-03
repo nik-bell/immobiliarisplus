@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.*;
 import com.novegruppo.immobiliarisplus.enums.ContractStatus;
 
+// for future use
+
 public record ExclusiveContractDTO(
 
         @NotNull(message = "L'ID del contratto non può essere nullo.")

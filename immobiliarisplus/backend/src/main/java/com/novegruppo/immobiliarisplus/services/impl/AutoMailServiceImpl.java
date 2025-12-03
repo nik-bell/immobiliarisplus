@@ -15,22 +15,23 @@ public class AutoMailServiceImpl implements AutoMailService {
     private final String from;
 
     public AutoMailServiceImpl(JavaMailSender mailSender,
-                               @Value("${app.mail.from}") String from) {
+                               @Value("${app.mail.from}") String from) { // MUST be replace with a verified email
         this.mailSender = mailSender;
         this.from = from;
     }
 
+    // Send valuation summary email
     @Override
     public void sendValuationSummary(String to, String subject, String htmlBody, @Nullable String replyTo) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
             helper.setFrom(from);
-            helper.setTo(to);              // Qui puoi usare un Firefox Relay
+            helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(htmlBody, true); // true = HTML
+            helper.setText(htmlBody, true);
             if (replyTo != null && !replyTo.isBlank()) {
-                helper.setReplyTo(replyTo); // facoltativo: può essere un alias Relay
+                helper.setReplyTo(replyTo); // optional: can be Relay alias
             }
             mailSender.send(message);
         } catch (MessagingException e) {

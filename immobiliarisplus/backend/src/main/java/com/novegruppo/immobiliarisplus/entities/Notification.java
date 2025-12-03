@@ -2,8 +2,16 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.NotificationRoleTarget;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+/* Notifications for registered users is only partially implemented,
+   but will be fully functional in future releases. */
+
+@Getter
+@Setter
 @Entity
 @Table(name = "notifications")
 public class Notification {
@@ -29,7 +37,7 @@ public class Notification {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-
+    // Lombok will generate getters and setters
 
     public Integer getId() {
         return id;
@@ -39,44 +47,5 @@ public class Notification {
         this.id = id;
     }
 
-    public User getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
-    }
-
-    public NotificationRoleTarget getRoleTarget() {
-        return roleTarget;
-    }
-
-    public void setRoleTarget(NotificationRoleTarget roleTarget) {
-        this.roleTarget = roleTarget;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Boolean getIsRead() {
-        return isRead;
-    }
-
-    public void setIsRead(Boolean isRead) {
-        this.isRead = isRead;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
 

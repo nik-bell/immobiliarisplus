@@ -8,6 +8,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
+// CORS configuration to allow requests from specified origins
 
 @Configuration
 public class CorsConfig {

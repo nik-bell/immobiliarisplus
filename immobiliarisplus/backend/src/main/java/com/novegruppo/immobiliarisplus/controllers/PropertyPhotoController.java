@@ -16,6 +16,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+// for future use
+
 @RestController
 @RequestMapping("/api/property-photos")
 public class PropertyPhotoController {

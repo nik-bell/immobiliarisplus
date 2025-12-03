@@ -5,10 +5,12 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyAddressDTO;
 import com.novegruppo.immobiliarisplus.dtos.frontend.*;
 
+// Mapper class to convert Property, Owner, and Address DTOs into a PropertyFrontendDTO. No more used.
+
 public class PropertyFrontendMapper {
 
     public static PropertyFrontendDTO toFrontendDTO(PropertyDTO property, OwnerDTO owner, PropertyAddressDTO address) {
-        // Estrae i dati di indirizzo se disponibili
+        // extract address fields safely
         String street = address != null ? address.street() : null;
         String cap = address != null ? address.cap() : null;
         String city = address != null ? address.city() : null;
@@ -23,10 +25,10 @@ public class PropertyFrontendMapper {
         );
 
         PropertyFeaturesDTO features = new PropertyFeaturesDTO(
-                false,                 // balcone non presente nel backend
+                false,
                 property != null ? property.boxAuto() : null,
                 property != null ? property.garden() : null,
-                false,                 // parcheggio non presente nel backend
+                false,
                 property != null ? property.terrace() : null,
                 property != null ? property.elevator() : null,
                 property != null ? property.basement() : null
@@ -44,7 +46,7 @@ public class PropertyFrontendMapper {
                 owner != null ? owner.surname() : null,
                 owner != null ? owner.email() : null,
                 owner != null ? owner.phone() : null,
-                true                    // privacyAccepted lato frontend (puoi cambiare)
+                true
         );
 
         return new PropertyFrontendDTO(propertyInfo, details, contact);

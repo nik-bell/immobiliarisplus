@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (Exception e) {
-                // Log dell'errore ma continua con la catena di filtri
+                // error during token extraction or validation
                 logger.error("Cannot set user authentication: {}", e);
             }
         }

@@ -1,7 +1,11 @@
 package com.novegruppo.immobiliarisplus.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "property_address")
 public class PropertyAddress {
@@ -36,77 +40,7 @@ public class PropertyAddress {
     @Column(name = "zone_score")
     private Integer zoneScore;
 
-    // Getters and Setters
-    public Integer getPropertyId() {
-        return propertyId;
-    }
+    // Lombok will generate getters and setters
 
-    public void setPropertyId(Integer propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCap() {
-        return cap;
-    }
-
-    public void setCap(String cap) {
-        this.cap = cap;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public Float getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
-    }
-
-    public Integer getZoneScore() {
-        return zoneScore;
-    }
-
-    public void setZoneScore(Integer zoneScore) {
-        this.zoneScore = zoneScore;
-    }
 }
 

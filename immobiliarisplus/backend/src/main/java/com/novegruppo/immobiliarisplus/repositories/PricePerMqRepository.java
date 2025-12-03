@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface PricePerMqRepository extends JpaRepository<PricePerMq, Integer> {
+
+    // Find PricePerMq by zip code
     Optional<PricePerMq> findByZipCode(String zipCode);
 }
 

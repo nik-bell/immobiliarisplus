@@ -6,9 +6,9 @@ import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
 import com.novegruppo.immobiliarisplus.dtos.OwnerDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyAddressDTO;
 import com.novegruppo.immobiliarisplus.dtos.UserDTO;
-import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyFrontendDTO;
+//import com.novegruppo.immobiliarisplus.dtos.frontend.PropertyFrontendDTO;
 import com.novegruppo.immobiliarisplus.enums.UserRole;
-import com.novegruppo.immobiliarisplus.mappers.PropertyFrontendMapper;
+//import com.novegruppo.immobiliarisplus.mappers.PropertyFrontendMapper;
 import com.novegruppo.immobiliarisplus.security.SecurityUtil;
 import com.novegruppo.immobiliarisplus.services.PropertyService;
 import com.novegruppo.immobiliarisplus.services.OwnerService;
@@ -46,7 +46,7 @@ public class PropertyController {
             return List.of();
         }
         Set<String> roles = SecurityUtil.getRoles();
-        // ADMIN e AGENT vedono tutte le proprietà
+        // ADMIN and AGENT can access all properties
         if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
             return propertyService.findAll();
         }
@@ -92,7 +92,7 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<PropertyDTO> create(@RequestBody PropertyCreateDTO dto) {
-        // Solo ADMIN e AGENT possono creare proprietà
+        // only ADMIN e AGENT can create properties
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name()) && !SecurityUtil.hasRole(UserRole.AGENT.name())) {
             return ResponseEntity.status(403).build();
         }
@@ -112,11 +112,11 @@ public class PropertyController {
             return null;
         }
         Set<String> roles = SecurityUtil.getRoles();
-        // ADMIN e AGENT possono modificare qualsiasi proprietà
+        // ADMIN and AGENT can modify all properties
         if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
             return propertyService.update(id, dto);
         }
-        // OWNER può modificare solo le proprie proprietà
+        // OWNER can modify only their own properties
         if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
             String email = SecurityUtil.getUsername();
             if (email != null) {
@@ -133,7 +133,7 @@ public class PropertyController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        // Solo ADMIN può eliminare proprietà
+        // only ADMIN can delete properties
         if (!SecurityUtil.hasRole(UserRole.ADMIN.name())) {
             return ResponseEntity.status(403).build();
         }
@@ -141,47 +141,48 @@ public class PropertyController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/frontend/{id}")
-    public ResponseEntity<PropertyFrontendDTO> getFrontendById(@PathVariable Integer id) {
-        PropertyDTO property;
-        try {
-            property = propertyService.findById(id);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // Verifica accesso come negli altri metodi
-        if (!SecurityUtil.isAuthenticated()) {
-            return ResponseEntity.status(403).build();
-        }
-        Set<String> roles = SecurityUtil.getRoles();
-        boolean hasAccess = false;
-        if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
-            hasAccess = true;
-        } else if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
-            String email = SecurityUtil.getUsername();
-            if (email != null) {
-                UserDTO current = userService.findAll().stream()
-                        .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
-                        .findFirst().orElse(null);
-                if (current != null && current.ownerId() != null && current.ownerId().equals(property.ownerId())) {
-                    hasAccess = true;
-                }
-            }
-        }
-
-        if (!hasAccess) {
-            return ResponseEntity.status(403).build();
-        }
-
-        OwnerDTO owner = null;
-        PropertyAddressDTO address = null;
-        try {
-            address = propertyAddressService.findById(id);
-        } catch (RuntimeException ignored) {
-        }
-
-        PropertyFrontendDTO frontend = PropertyFrontendMapper.toFrontendDTO(property, owner, address);
-        return ResponseEntity.ok(frontend);
-    }
+    // Unnecessary endpoint for frontend nested payload structure, commented out for now.
+//    @GetMapping("/frontend/{id}")
+//    public ResponseEntity<PropertyFrontendDTO> getFrontendById(@PathVariable Integer id) {
+//        PropertyDTO property;
+//        try {
+//            property = propertyService.findById(id);
+//        } catch (RuntimeException ex) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        // verify access permissions
+//        if (!SecurityUtil.isAuthenticated()) {
+//            return ResponseEntity.status(403).build();
+//        }
+//        Set<String> roles = SecurityUtil.getRoles();
+//        boolean hasAccess = false;
+//        if (roles.contains("ROLE_" + UserRole.ADMIN.name()) || roles.contains("ROLE_" + UserRole.AGENT.name())) {
+//            hasAccess = true;
+//        } else if (roles.contains("ROLE_" + UserRole.OWNER.name())) {
+//            String email = SecurityUtil.getUsername();
+//            if (email != null) {
+//                UserDTO current = userService.findAll().stream()
+//                        .filter(u -> u.email() != null && u.email().equalsIgnoreCase(email))
+//                        .findFirst().orElse(null);
+//                if (current != null && current.ownerId() != null && current.ownerId().equals(property.ownerId())) {
+//                    hasAccess = true;
+//                }
+//            }
+//        }
+//
+//        if (!hasAccess) {
+//            return ResponseEntity.status(403).build();
+//        }
+//
+//        OwnerDTO owner = null;
+//        PropertyAddressDTO address = null;
+//        try {
+//            address = propertyAddressService.findById(id);
+//        } catch (RuntimeException ignored) {
+//        }
+//
+//        PropertyFrontendDTO frontend = PropertyFrontendMapper.toFrontendDTO(property, owner, address);
+//        return ResponseEntity.ok(frontend);
+//    }
 }

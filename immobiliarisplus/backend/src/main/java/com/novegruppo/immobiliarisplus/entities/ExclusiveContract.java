@@ -2,8 +2,13 @@ package com.novegruppo.immobiliarisplus.entities;
 
 import com.novegruppo.immobiliarisplus.enums.ExclusiveContractStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "exclusive_contract")
 public class ExclusiveContract {
@@ -29,52 +34,5 @@ public class ExclusiveContract {
     @JoinColumn(name = "property_id", nullable = false, unique = true)
     private Property property;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public String getContractUrl() {
-        return contractUrl;
-    }
-
-    public ExclusiveContractStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getSignedAt() {
-        return signedAt;
-    }
-
-    public LocalDateTime getExpirationDate() {
-        return expirationDate;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setContractUrl(String contractUrl) {
-        this.contractUrl = contractUrl;
-    }
-
-    public void setStatus(ExclusiveContractStatus status) {
-        this.status = status;
-    }
-
-    public void setSignedAt(LocalDateTime signedAt) {
-        this.signedAt = signedAt;
-    }
-
-    public void setExpirationDate(LocalDateTime expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
+    // Lombok will generate getters and setters
 }

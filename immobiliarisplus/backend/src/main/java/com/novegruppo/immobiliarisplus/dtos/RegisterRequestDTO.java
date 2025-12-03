@@ -5,7 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+// DTO for user registration requests.
+
+
+@Setter
+@Getter
 public class RegisterRequestDTO {
 
     @NotBlank(message = "Email is required")
@@ -19,8 +26,10 @@ public class RegisterRequestDTO {
     @NotNull(message = "Role is required")
     private UserRole role;
 
-    private Integer ownerId; // opzionale, se l'utente è un owner
+    // For owner registration, this can be null
+    private Integer ownerId;
 
+    // Parameterless constructor
     public RegisterRequestDTO() {
     }
 
@@ -31,36 +40,5 @@ public class RegisterRequestDTO {
         this.ownerId = ownerId;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
-    }
 }
 
