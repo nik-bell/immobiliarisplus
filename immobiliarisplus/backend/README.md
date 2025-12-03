@@ -15,35 +15,35 @@
 
 ## Team
 
-| Membro | Ruolo | GitHub Name |
-|--------|-------|-------|
-| **Nesma Abd El Aziz** | Backend Developer | **NesmaAbd**
-| **Nicolas Bellotti** | Backend Developer | **nik-bell**
-| **Maria Cernat** | Backend Developer | **mariacernat**
+| Membro | Ruolo                         | GitHub Name  |
+|--------|-------------------------------|--------------|
+| **Nesma Abd El Aziz** | Backend Developer             | [NesmaAbd](https://github.com/NesmaAbd) |
+| **Nicolas Bellotti** | Backend Developer - referente | [nik-bell](https://github.com/nik-bell) |
+| **Maria Cernat** | Backend Developer             | [mariacernat](https://github.com/mariacernat) |
 
-> **Mentor** : Vincent Franciosa | V1n5Fr4n
+> **Mentor** : Vincent Franciosa | [V1n5Fr4n](https://github.com/V1n5Fr4n)
 
 ---
 
 ## Indice
 
-- [Descrizione del Progetto](#descrizione-del-progetto)
-- [Architettura e Approccio Tecnico](#architettura-e-approccio-tecnico)
-- [Stack Tecnologico](#stack-tecnologico)
-- [Requisiti di Sistema](#requisiti-di-sistema)
-- [Installazione e Configurazione](#installazione-e-configurazione)
-- [Avvio del Progetto](#avvio-del-progetto)
-- [Struttura del Progetto](#struttura-del-progetto)
-- [API Endpoints](#api-endpoints)
-- [Database e Migrazioni](#database-e-migrazioni)
-- [Docker](#docker)
-- [Testing](#testing)
-- [Troubleshooting](#troubleshooting)
-- [Best Practices](#best-practices)
+- [Descrizione del Portale](#-descrizione-del-portale)
+- [Architettura e Approccio Tecnico](#-architettura-e-approccio-tecnico)
+- [Stack Tecnologico](#-stack-tecnologico)
+- [Requisiti di Sistema](#-requisiti-di-sistema)
+- [Installazione e Configurazione](#-installazione-e-configurazione)
+- [Avvio del Progetto](#-avvio-del-progetto)
+- [Struttura del Progetto](#-struttura-del-progetto)
+- [API Endpoints](#-api-endpoints)
+- [Database e Migrazioni](#-database-e-migrazioni)
+- [Docker](#-docker)
+- [Testing](#-testing)
+- [Troubleshooting](#-troubleshooting)
+- [Best Practices](#-best-practices)
 
 ---
 
-## ◆ Descrizione del Progetto
+## ◆ Descrizione del Portale
 
 **Immobiliaris Plus** è un portale immobiliare completo sviluppato per gestire proprietà, contratti esclusivi, valutazioni immobiliari e notifiche utente. Il sistema offre funzionalità avanzate per agenzie immobiliari, proprietari e potenziali acquirenti.
 
@@ -51,19 +51,23 @@
 
 <table>
 <tr>
-<td width="50%">
+<td>
 
 **Core Features**
-- **Gestione Proprietà**: CRUD completo per immobili con supporto foto e documenti
+- **Gestione Proprietà**: CRUD completo per immobili con indirizzi
 - **Gestione Utenti**: Autenticazione JWT con ruoli (Admin, Employee, Owner, User)
 - **Contratti Esclusivi**: Gestione contratti tra proprietari e agenzia
 - **Valutazione Immobili**: Sistema di valutazione automatica basato su prezzi medi al metro quadro
+- **Dashboard Role-Based**: Dashboard differenziate per Admin e Agente con visualizzazione valutazioni filtrate
+- **Azioni Role-Based**: Operazioni CRUD con permessi specifici per ruolo (Admin, Agent)
+- **Assegnazione Agente**: Funzionalità di assegnazione agenti alle valutazioni (solo Admin)
+- **Aggiornamento Valore Finale**: Modifica del valore finale di valutazione da parte degli agenti assegnati
 
 </td>
-<td width="50%">
+<td>
 
 **Technical Features**
-- **Notifiche Email**: Invio automatico email tramite Brevo SMTP
+- **Riepilogo Email**: Invio automatico email tramite Brevo SMTP
 - **Sicurezza**: Spring Security con JWT tokens
 - **Monitoring**: Actuator endpoints per monitoraggio applicazione
 - **Database**: MySQL con Flyway migrations
@@ -71,6 +75,31 @@
 </td>
 </tr>
 </table>
+
+### Implementazioni Future
+
+Le seguenti funzionalità sono pianificate per le prossime versioni dell'applicazione:
+
+####  Automazione e Integrazione
+- **API Validazione Indirizzi**: Integrazione con servizi esterni (Google Maps API, HERE API) per validazione e normalizzazione automatica degli indirizzi
+- **API Calcolo Valutazione Automatico**: Sistema avanzato di valutazione basato su algoritmi di machine learning e dati di mercato real-time
+- **Assegnazione Automatica Agente**: Algoritmo di distribuzione intelligente delle valutazioni agli agenti disponibili con load balancing
+
+####  Gestione Utenti e Sicurezza
+- **Password Temporanea via Email**: Generazione e invio automatico di credenziali temporanee ai proprietari per primo accesso
+- **Dashboard Proprietari**: Interfaccia dedicata per proprietari con visualizzazione stato valutazioni e contratti
+
+####  Gestione Documentale
+- **Upload/Download Documenti**: Sistema di gestione file per contratti, documenti catastali e certificazioni
+- **Upload/Download Foto Immobili**: Galleria fotografica per ogni proprietà con supporto per immagini
+- **Repository Cloud**: Integrazione con storage cloud per archiviazione sicura
+
+####  Notifiche e Comunicazioni
+- **Notifiche Dashboard**: Sistema di notifiche real-time per aggiornamenti su valutazioni e assegnazioni
+- **Notifiche Push**: Integrazione con servizi di push notification per aggiornamenti tempestivi
+- **Invio Contratti via Portale**: Funzionalità per caricamento e invio contratti direttamente dalla piattaforma
+
+>  **Nota**: Le implementazioni future sono soggette a valutazione di fattibilità tecnica e prioritizzazione in base ai requisiti di business.
 
 ---
 
@@ -305,7 +334,7 @@ Metrics
 | **Maven** | 3.9+ | `mvn -version` |
 | **MySQL** | 8.0+ | `mysql --version` |
 
-**[DOWNLOAD]**:
+**DOWNLOAD**:
 - [Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) / [OpenJDK](https://adoptium.net/)
 - [Maven](https://maven.apache.org/download.cgi)
 - [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
@@ -321,7 +350,7 @@ Metrics
 | **Docker Desktop** | 4.0+ | `docker --version` |
 | **Docker Compose** | Incluso | `docker compose version` |
 
-**[DOWNLOAD]**:
+**DOWNLOAD**:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 </td>
@@ -466,7 +495,7 @@ Questo comando:
 
 ## ◆ Avvio del Progetto
 
-### [SETUP] Scelta Rapida del Metodo di Avvio
+### SETUP: Scelta Rapida del Metodo di Avvio
 
 <table>
 <tr>
@@ -511,7 +540,7 @@ cd immobiliarisplus
 docker compose up --build
 ```
 
-#### [PROCESS] Processo di Avvio
+#### Processo di Avvio
 
 ```mermaid
 graph LR
@@ -558,11 +587,13 @@ docker compose up --build backend
 
 </details>
 
+Guida completa Docker: [Docker-guide](https://github.com/nik-bell/immobiliarisplus/blob/9163f3ee477ec41f8342dbf74099617cdc6dfa57/immobiliarisplus/docs/docker-guide.md)
+
 ---
 
 ### Opzione 2: Avvio Completamente Locale (Sviluppo)
 
-> **[!] Nota**: Per questa opzione serve MySQL installato localmente sulla porta 3306.
+> **Nota**: Per questa opzione serve MySQL installato localmente sulla porta 3306.
 
 <details>
 <summary><b>Pre-requisiti e Configurazione</b></summary>
@@ -616,7 +647,7 @@ java -jar target/immobiliarisplus-0.0.1-SNAPSHOT.jar
 - Database persistente con Docker
 - Configurazione predefinita (porta 3307)
 
-#### [QUICK START] Procedura Avvio Rapido
+#### Procedura Avvio Rapido
 
 ```bash
 # 1. Avviare database Docker
@@ -627,11 +658,16 @@ cd backend
 mvn spring-boot:run
 ```
 
-[OK] **Backend disponibile su:** `http://localhost:8080`
+**Backend disponibile su:** `http://localhost:8080`
 
 > **Configurazione**: Nessuna modifica necessaria - porta 3307 già configurata
 
+
+
 </details>
+
+> ◆ **Importante**: Il backend è ora operativo, ma per utilizzare l'applicazione completa è necessario avviare anche il **frontend**.  
+> Per istruzioni dettagliate sull'installazione e l'avvio del frontend React, consultare il [README](https://github.com/nik-bell/immobiliarisplus/blob/9163f3ee477ec41f8342dbf74099617cdc6dfa57/immobiliarisplus/frontend/README.md) del frontend.
 
 ---
 
@@ -717,11 +753,11 @@ backend/
 
 ## ◆ API Endpoints
 
-### [BASE URL] Endpoint Configuration
+### Endpoint Configuration
 
 <table>
 <tr>
-<td width="50%">
+<td>
 
 **Esecuzione Locale**
 ```
@@ -730,7 +766,7 @@ http://localhost:8080
 `mvn spring-boot:run`
 
 </td>
-<td width="50%">
+<td>
 
 **Esecuzione Docker**
 ```
@@ -744,7 +780,7 @@ http://localhost:8081
 
 ---
 
-### [AUTH] Authentication Endpoints
+### Authentication Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -753,7 +789,7 @@ http://localhost:8081
 | POST | `/api/auth/forgot-password` | Richiesta reset password | No |
 | POST | `/api/auth/reset-password` | Reset password con token | No |
 
-### [USER] User Endpoints
+###  User Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -763,7 +799,7 @@ http://localhost:8081
 | DELETE | `/api/users/{id}` | Elimina utente | Sì (ADMIN) |
 | GET | `/api/users/me` | Profilo utente corrente | Sì |
 
-### [PROPERTY] Property Endpoints
+### Property Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -774,7 +810,7 @@ http://localhost:8081
 | DELETE | `/api/properties/{id}` | Elimina proprietà | Sì (ADMIN) |
 | GET | `/api/properties/search` | Ricerca proprietà | No |
 
-### [OWNER] Owner Endpoints
+### Owner Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -784,7 +820,7 @@ http://localhost:8081
 | PUT | `/api/owners/{id}` | Aggiorna proprietario | Sì |
 | DELETE | `/api/owners/{id}` | Elimina proprietario | Sì (ADMIN) |
 
-### [EMPLOYEE] Employee Endpoints
+### Employee Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -794,7 +830,7 @@ http://localhost:8081
 | PUT | `/api/employees/{id}` | Aggiorna dipendente | Sì (ADMIN) |
 | DELETE | `/api/employees/{id}` | Elimina dipendente | Sì (ADMIN) |
 
-### [VALUATION] Property Valuation Endpoints
+### Property Valuation Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -803,7 +839,7 @@ http://localhost:8081
 | POST | `/api/valuations` | Crea valutazione | Sì (EMPLOYEE) |
 | PUT | `/api/valuations/{id}` | Aggiorna valutazione | Sì (EMPLOYEE) |
 
-### [NOTIFICATION] Notification Endpoints
+###  Notification Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -811,7 +847,7 @@ http://localhost:8081
 | GET | `/api/notifications/{id}` | Dettaglio notifica | Sì |
 | PUT | `/api/notifications/{id}/read` | Marca come letta | Sì |
 
-### [MONITORING] Actuator Endpoints
+### Actuator Endpoints
 
 | Method | Endpoint | Descrizione | Autenticazione Richiesta |
 |--------|----------|-------------|---------------|
@@ -819,7 +855,7 @@ http://localhost:8081
 | GET | `/actuator/info` | Informazioni app | No |
 | GET | `/actuator/metrics` | Metriche | Sì (ADMIN) |
 
-### [EXAMPLE] Esempio Richiesta con JWT
+### Esempio Richiesta con JWT
 
 <details>
 <summary><b>Clicca per vedere esempio completo</b></summary>
@@ -1567,11 +1603,12 @@ curl http://localhost:8081/actuator/health?details=true
 
 ### Development Guidelines
 
-1. **Branch Naming**: `feature/nome-feature`, `bugfix/nome-bug`, `hotfix/nome-fix`
-2. **Commit Messages**: Semantici e descrittivi (es: `feat: add property search endpoint`)
-3. **Code Review**: Almeno un reviewer prima del merge
-4. **Testing**: Scrivere test per nuove funzionalità
-5. **Documentation**: Aggiornare README e commenti per cambiamenti significativi
+1. **Version Control**: Utilizzare Git con branching model (feature branches, develop, main)
+2. **Code Reviews**: Richiedere PR reviews prima del merge
+3. **Commit Messages**: Scrivere messaggi chiari e descrittivi
+4. **Testing**: Scrivere test unitari e di integrazione per nuove funzionalità
+5. **Documentation**: Aggiornare README e commenti codice
+6. **Continuous Integration**: Configurare CI/CD per build e test automatici
 
 ### Security Guidelines
 
@@ -1595,6 +1632,8 @@ curl http://localhost:8081/actuator/health?details=true
 4. **Exception Handling**: Gestione centralizzata con `@ControllerAdvice`
 5. **Logging**: Livelli appropriati (DEBUG, INFO, WARN, ERROR)
 
+Linee guida per il team: [Documentazione](https://github.com/nik-bell/immobiliarisplus/tree/9163f3ee477ec41f8342dbf74099617cdc6dfa57/immobiliarisplus/docs)
+
 ---
 
 ## Supporto
@@ -1602,20 +1641,59 @@ curl http://localhost:8081/actuator/health?details=true
 Per problemi non risolti da questo README:
 
 1. **Controllare logs**: `docker compose logs backend`
-2. **Issue tracker**: [Link al repository]
-3. **Team contact**: [Email del team]
+2. **Issue tracker**: [GitHub Issues](https://github.com/nik-bell/immobiliarisplus/issues)
+3. **Contattare il team**: support@9gruppo.it
+
+Link utili:
+- [Documentazione Ufficiale Spring Boot](https://spring.io/projects/spring-boot)
+- [Documentazione Ufficiale Docker](https://docs.docker.com/)
+- [Documentazione Ufficiale MySQL](https://dev.mysql.com/doc/)
+- [Documentazione Ufficiale Flyway](https://flywaydb.org/documentation/)
+- [Documentazione Ufficiale MapStruct](https://mapstruct.org/documentation/stable/reference/html/)
+- [Documentazione Ufficiale Lombok](https://projectlombok.org/features/all)
+- [Documentazione Ufficiale JWT](https://jwt.io/introduction/)
+- [Documentazione Ufficiale Brevo SMTP](https://www.brevo.com/en/smtp/)
+- [Documentazione Ufficiale Maven](https://maven.apache.org/guides/index.html)
 
 ---
 
-## Licenza
+## Progetto Didattico
 
-Progetto sviluppato per **Laboratorio Integrato - Gruppo 9**
+Questo progetto è stato sviluppato a **scopo esclusivamente didattico** nell'ambito del corso di **Laboratorio Integrato**.
 
-© 2025 - Immobiliaris Plus Team
+### ITS ICT Academy Piemonte
+
+<div align="center">
+
+**[ITS ICT Piemonte - Fondazione](https://www.its-ictpiemonte.it/)**
+
+*Istituto Tecnico Superiore per le Tecnologie dell'Informazione e della Comunicazione*
+
+📍 **Sede**: Via Jacopo Durandi, 10 - 10144 Torino  
+📧 **Email**: info@its-ictpiemonte.it  
+🌐 **Web**: [www.its-ictpiemonte.it](https://www.its-ictpiemonte.it/)  
+📱 **LinkedIn**: [ITS ICT Piemonte](https://www.linkedin.com/school/its-ict-piemonte/)
+
+</div>
+
+### Scopo del Progetto
+
+Questo repository contiene il codice sorgente sviluppato durante il percorso formativo per:
+- Apprendimento di tecnologie moderne (Spring Boot, React, Docker)
+- Sviluppo di competenze full-stack
+- Applicazione di best practices di sviluppo software
+- Lavoro di gruppo e metodologie agile
+
+### Licenza
+
+**Progetto Educativo - Non per uso commerciale**
+
+© 2025 - Immobiliaris Plus Team  
+Sviluppato per ITS ICT Academy Piemonte
+
+Questo progetto è rilasciato sotto licenza MIT per scopi didattici e di apprendimento.
 
 ---
 
-**Ultima revisione**: Novembre 2025
-**Versione Backend**: 0.0.1-SNAPSHOT
-**Spring Boot**: 3.5.7
-**Java**: 17
+
+**Revisione** Dicembre 2025 · **Backend** 0.0.1-SNAPSHOT · **Spring Boot** 3.5.7 · **Java** 17
