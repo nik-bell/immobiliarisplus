@@ -95,9 +95,9 @@ Il gruppo lavora congiuntamente alla progettazione, allo sviluppo e alla documen
 
 ### Link GitHub Web Developer (WDV)
 
-- Luca Montanaro — https://github.com/LucaM0nt
-- Matteo Cecchi — https://github.com/Matte05daje
-- Matteo Paglietta — https://github.com/Pagliez
+- Luca Montanaro (@LucaM0nt) — Frontend Development — [GitHub](https://github.com/LucaM0nt)
+- Matteo Paglietta (@Pagliez) — Frontend Development — [GitHub](https://github.com/Pagliez)
+- Matteo Cecchi (@Matte05daje) — Frontend Development — [GitHub](https://github.com/Matte05daje)
 
 ### Link GitHub Software Developer (SWD)
 
@@ -196,9 +196,9 @@ The group collaborates on the design, development, and documentation of the port
 
 ### Web Developer (WDV) GitHub Links
 
-- Luca Montanaro — https://github.com/LucaM0nt
-- Matteo Cecchi — https://github.com/Matte05daje
-- Matteo Paglietta — https://github.com/Pagliez
+- Luca Montanaro (@LucaM0nt) — Frontend Development — [GitHub](https://github.com/LucaM0nt)
+- Matteo Paglietta (@Pagliez) — Frontend Development — [GitHub](https://github.com/Pagliez)
+- Matteo Cecchi (@Matte05daje) — Frontend Development — [GitHub](https://github.com/Matte05daje)
 
 ### Software Developer (SWD) GitHub Links
 
