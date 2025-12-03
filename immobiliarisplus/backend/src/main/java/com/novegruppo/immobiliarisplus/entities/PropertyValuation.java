@@ -1,6 +1,6 @@
 package com.novegruppo.immobiliarisplus.entities;
 
-import com.novegruppo.immobiliarisplus.enums.Priority;
+import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -30,14 +30,19 @@ public class PropertyValuation {
     private Boolean exclusiveContract = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "priority")
-    private Priority priority;
+    private ValuationStatus status = ValuationStatus.NOT_ASSIGNED;
+
+    @Column(name = "notes", length = 1000)
+    private String notes;
 
     @Column(name = "estimated_price_min")
     private Double estimatedPriceMin;
 
     @Column(name = "estimated_price_max")
     private Double estimatedPriceMax;
+
+    @Column(name = "valuation_final")
+    private Double valuationFinal;
 
     @Column(name = "price_per_mq")
     private Double pricePerMq;
@@ -94,12 +99,21 @@ public class PropertyValuation {
         this.exclusiveContract = exclusiveContract;
     }
 
-    public Priority getPriority() {
-        return priority;
+
+    public ValuationStatus getStatus() {
+        return status;
     }
 
-    public void setPriority(Priority priority) {
-        this.priority = priority;
+    public void setStatus(ValuationStatus status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public Double getEstimatedPriceMin() {
@@ -116,6 +130,14 @@ public class PropertyValuation {
 
     public void setEstimatedPriceMax(Double estimatedPriceMax) {
         this.estimatedPriceMax = estimatedPriceMax;
+    }
+
+    public Double getValuationFinal() {
+        return valuationFinal;
+    }
+
+    public void setValuationFinal(Double valuationFinal) {
+        this.valuationFinal = valuationFinal;
     }
 
     public Double getPricePerMq() {

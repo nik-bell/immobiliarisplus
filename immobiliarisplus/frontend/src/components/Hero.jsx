@@ -1,3 +1,34 @@
+/**
+ * @file Hero.jsx
+ * @description Hero section component with responsive background images and overlay.
+ *              Supports modern image formats (AVIF, WebP) with fallback.
+ */
+
+/**
+ * Props for Hero component.
+ * @typedef {Object} HeroProps
+ * @property {string} backgroundImage - Fallback background image URL (PNG/JPG).
+ * @property {string} [backgroundImageWebp] - WebP format background image URL for better compression.
+ * @property {string} [backgroundImageAvif] - AVIF format background image URL for optimal modern browser support.
+ * @property {React.ReactNode} children - Hero content (typically headings, text, buttons).
+ * @property {string} [className] - Additional custom Tailwind classes for the section.
+ */
+
+/**
+ * Hero
+ *
+ * Renders a full-width hero section with a responsive background image and dark overlay.
+ * Supports multiple image formats (AVIF, WebP, fallback) for optimal performance.
+ * Content is centered and overlaid on top of the background with a semi-transparent dark layer.
+ *
+ * @param {HeroProps} props
+ * @param {string} props.backgroundImage - Fallback image URL.
+ * @param {string} [props.backgroundImageWebp] - WebP image URL.
+ * @param {string} [props.backgroundImageAvif] - AVIF image URL.
+ * @param {React.ReactNode} props.children - Hero content.
+ * @param {string} [props.className] - Additional container classes.
+ * @returns {JSX.Element} Hero section element.
+ */
 const Hero = ({ 
   backgroundImage, 
   backgroundImageWebp,

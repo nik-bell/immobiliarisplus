@@ -1,74 +1,257 @@
+/**
+ * @file CasaModal.jsx
+ * @description Modal component for viewing and editing property/valuation details.
+ *              Supports inline editing of property info, contact details, notes, and documents management.
+ *              Admin users can delete records; includes confirmation modals for destructive actions.
+ */
+
 import { useState, useEffect } from "react";
 import { useCasa } from "../store/CasaContext";
 import { useAuth } from "../store/AuthContext";
 import FeatureIcon from "../components/FeatureIcon";
+import Badge from "../components/CasaTable/Badge";
+import StatusDropdown from "../components/CasaTable/StatusDropdown";
+import AgentSelector from "../components/CasaTable/AgentSelector";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { mapValuationStatusLabel, mapListItem, mapUIStatusToEnum } from "../utils/mappers";
+import { updateValuationDashboard, deleteValuation } from "../api/api";
 
+/**
+ * CasaModal
+ *
+ * A comprehensive modal for displaying and editing property valuation details.
+ * Features include:
+ * - Tabbed view (Details / Documents)
+ * - Inline editing for property info, contact details, and notes
+ * - Document management (add/view documents)
+ * - Status and agent assignment (admin only)
+ * - Record deletion with confirmation (admin only)
+ * - Real-time sync with backend and local context state
+ *
+ * @returns {JSX.Element} Modal overlay with property details and editing interface, or null if not open.
+ */
 export default function CasaModal() {
   const { modalOpen, selectedCasa, closeCasaModal, setAllCases, openCasaModal } = useCasa();
 
   const { userType } = useAuth();
 
-  if (!modalOpen || !selectedCasa) return null;
+  /**
+   * Draft state for inline editing. Initialized safely when selectedCasa is null.
+   * @type {[Object, Function]}
+   */
+  const [draft, setDraft] = useState(() => selectedCasa ?? {});
 
-  const c = selectedCasa;
-
-  // draft per edit inline
-  const [draft, setDraft] = useState(c);
-
-  // editing flags per section
+  /**
+   * Editing state flags for each section.
+   * @type {[Object, Function]}
+   */
   const [editing, setEditing] = useState({ info: false, contact: false, agent: false, notes: false });
 
   useEffect(() => {
-    setDraft(selectedCasa);
+    setDraft(selectedCasa ?? {});
     setEditing({ info: false, contact: false, agent: false, notes: false });
   }, [selectedCasa]);
 
-  // view: 'details' (default) or 'documents'
+  /**
+   * Current view mode: 'details' or 'documents'.
+   * @type {[string, Function]}
+   */
   const [view, setView] = useState("details");
+
+  /**
+   * Document management state.
+   * @type {[boolean, Function]}
+   */
   const [showAddDoc, setShowAddDoc] = useState(false);
+
+  /**
+   * New document name input.
+   * @type {[string, Function]}
+   */
   const [newDocName, setNewDocName] = useState("");
 
+  /**
+   * Delete confirmation modal visibility.
+   * @type {[boolean, Function]}
+   */
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  /**
+   * Delete success notification visibility.
+   * @type {[boolean, Function]}
+   */
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+
+  /**
+   * Updates a property field in the draft object.
+   * @param {string} key - Property field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftProperty = (key, value) => {
-    setDraft((d) => ({ ...d, property: { ...d.property, [key]: value } }));
+    setDraft((d) => ({ ...d, property: { ...(d?.property || {}), [key]: value } }));
   };
 
+  /**
+   * Updates a contact field in the draft object.
+   * @param {string} key - Contact field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftContact = (key, value) => {
-    setDraft((d) => ({ ...d, contact: { ...d.contact, [key]: value } }));
+    setDraft((d) => ({ ...d, contact: { ...(d?.contact || {}), [key]: value } }));
   };
 
+  /**
+   * Updates a root-level field in the draft object.
+   * @param {string} key - Root field key.
+   * @param {*} value - New value for the field.
+   */
   const updateDraftRoot = (key, value) => {
     setDraft((d) => ({ ...d, [key]: value }));
   };
 
-  const saveSection = (section) => {
+  /**
+   * Saves changes for a specific section to the backend and updates local state.
+   * Builds a comprehensive payload with all modifiable fields and syncs with server.
+   *
+   * @param {string} section - Section identifier ('info', 'contact', 'notes').
+   */
+  const saveSection = async (section) => {
     const updated = { ...draft };
-    setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
-    // update selectedCasa in context so modal shows saved values
-    openCasaModal(updated);
+
+    const payload = {
+      notes: updated.notes ?? null,
+      property: {
+        sizeMq: updated.property?.sizeMq ?? updated.property?.surfaceM2 ?? null,
+        propertyType: updated.property?.propertyType ?? null,
+        condition: updated.property?.condition ?? null,
+      },
+      contact: {
+        name: updated.contact?.name ?? null,
+        surname: updated.contact?.surname ?? null,
+        email: updated.contact?.email ?? null,
+        phone: updated.contact?.phone ?? null,
+      },
+    };
+
+    if (updated.valuationFinal !== undefined && updated.valuationFinal !== null) {
+      payload.valuationFinal = updated.valuationFinal;
+    }
+    if (updated.valuationRange !== undefined && updated.valuationRange !== null) {
+      payload.valuationRange = updated.valuationRange;
+    }
+
+    if (updated.status) {
+      const enumStatus = mapUIStatusToEnum(updated.status);
+      if (enumStatus) {
+        payload.status = enumStatus;
+      }
+    }
+
+    let serverUpdated = null;
+    try {
+      serverUpdated = await updateValuationDashboard(updated.id, payload);
+    } catch (err) {
+      serverUpdated = null;
+    }
+
+    const final = serverUpdated ?? updated;
+    const listItem = serverUpdated ? mapListItem(serverUpdated) : final;
+    setAllCases((prev) => prev.map((x) => (x.id === listItem.id ? listItem : x)));
+    openCasaModal({ id: final.id });
     setEditing((e) => ({ ...e, [section]: false }));
   };
 
+  /**
+   * Cancels editing for a section and reverts draft to selectedCasa.
+   *
+   * @param {string} section - Section identifier.
+   */
   const cancelSection = (section) => {
-    setDraft(selectedCasa);
+    setDraft(selectedCasa ?? {});
     setEditing((e) => ({ ...e, [section]: false }));
   };
+
+  /**
+   * Opens the delete confirmation modal.
+   */
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  /**
+   * Confirms deletion of the selected valuation record.
+   * Removes from local state, shows success message, and closes modal after delay.
+   */
+  const handleDeleteConfirm = async () => {
+    if (!selectedCasa?.id) return;
+    
+    const success = await deleteValuation(selectedCasa.id);
+    
+    if (success) {
+      setAllCases((prev) => prev.filter((x) => x.id !== selectedCasa.id));
+      setDeleteSuccess(true);
+      setShowDeleteConfirm(false);
+      
+      setTimeout(() => {
+        setDeleteSuccess(false);
+        closeCasaModal();
+      }, 2000);
+    } else {
+      setShowDeleteConfirm(false);
+      alert('Errore durante l\'eliminazione del record');
+    }
+  };
+
+  /**
+   * Closes the delete confirmation modal without taking action.
+   */
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+  };
+
+  if (!modalOpen) return null;
+
+  const c = selectedCasa ?? draft ?? {};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      {deleteSuccess && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-[70] bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <span className="font-medium">Record eliminato con successo</span>
+        </div>
+      )}
       <div className="bg-white w-full max-w-6xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6">
+        <div className="flex items-center justify-between px-8 py-4">
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-2xl font-semibold text-gray-800">Dettagli lead</h2>
               {userType === "admin" && (
-                <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded">Admin</span>
+                <span className="text-xs bg-teal-700 text-white px-2 py-1 rounded">Admin</span>
               )}
             </div>
-            <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
-              <span className="i-lucide-map-pin" />
-              <span className="truncate max-w-[36rem]">{c.property.address}</span>
-            </p>
+            <div className="flex items-center gap-3 mt-1 flex-wrap">
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <span className="i-lucide-map-pin" />
+                <span className="truncate max-w-[36rem]">{c.property?.address ?? ''}</span>
+              </p>
+
+              <div className="flex items-center gap-2">
+                <StatusDropdown casa={c} />
+              </div>
+            </div>
+
+            {userType === 'admin' && (
+              <div className="mt-2 pt-2 border-t border-gray-100">
+                <div className="text-xs font-medium text-gray-500 mb-1.5">Agente assegnato</div>
+                <div className="bg-gray-50 rounded-md p-1.5">
+                  <AgentSelector casa={c} />
+                </div>
+              </div>
+            )}
           </div>
 
           <button
@@ -80,90 +263,88 @@ export default function CasaModal() {
           </button>
         </div>
 
-        {/* Top actions removed — assign button moved to footer */}
-
         {/* Main content */}
-          <div className="px-8 py-4 space-y-4 text-sm text-gray-700">
-            {/* Menu toggle: Dettagli / Documenti */}
-            <div className="flex items-center justify-start gap-3">
-              <div className="inline-flex rounded-md bg-gray-100 p-1">
-                <button
-                  onClick={() => setView("details")}
-                  className={`px-3 py-1 rounded text-sm ${view === "details" ? "bg-white shadow" : "text-gray-600"}`}
-                >
-                  Dettagli
-                </button>
-                <button
-                  onClick={() => setView("documents")}
-                  className={`px-3 py-1 rounded text-sm ${view === "documents" ? "bg-white shadow" : "text-gray-600"}`}
-                >
-                  Documenti
-                </button>
-              </div>
+        <div className="px-8 py-4 space-y-4 text-sm text-gray-700">
+          {/* Menu toggle: Dettagli / Documenti */}
+          <div className="flex items-center justify-start gap-3">
+            <div className="inline-flex rounded-md bg-gray-100 p-1">
+              <button
+                onClick={() => setView("details")}
+                className={`px-3 py-1 rounded text-sm ${view === "details" ? "bg-white shadow" : "text-gray-600"}`}
+              >
+                Dettagli
+              </button>
+              <button
+                onClick={() => setView("documents")}
+                className={`px-3 py-1 rounded text-sm ${view === "documents" ? "bg-white shadow" : "text-gray-600"}`}
+              >
+                Documenti
+              </button>
             </div>
-            {view === "documents" ? (
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-800">Documenti</h3>
-                  <div className="flex items-center gap-2">
+          </div>
+          {view === "documents" ? (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-800">Documenti</h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setView("details")}
+                    className="text-sm text-gray-600 hover:underline"
+                  >
+                    Torna ai dettagli
+                  </button>
+                  <button
+                    onClick={() => setShowAddDoc(true)}
+                    className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
+                  >
+                    Aggiungi documento
+                  </button>
+                </div>
+              </div>
+
+              {(!draft.documents || draft.documents.length === 0) && !showAddDoc && (
+                <div className="text-gray-600">Nessun documento presente al momento.</div>
+              )}
+
+              {draft.documents && draft.documents.length > 0 && (
+                <ul className="space-y-2">
+                  {draft.documents.map((doc) => (
+                    <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
+                      <div className="text-sm text-gray-800">{doc.name}</div>
+                      <div className="flex items-center gap-2">
+                        <a href={doc.url || '#'} className="text-teal-700 text-sm hover:underline">Apri</a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {showAddDoc && (
+                <div className="mt-3 bg-white p-4 rounded shadow-sm border">
+                  <label className="text-xs text-gray-500">Nome documento</label>
+                  <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
+                  <div className="mt-3 flex gap-2">
                     <button
-                      onClick={() => setView("details")}
-                      className="text-sm text-gray-600 hover:underline"
+                      className="px-3 py-1 bg-teal-700 text-white rounded text-sm"
+                      onClick={() => {
+                        if (!newDocName) return;
+                        const newDoc = { id: Date.now().toString(), name: newDocName };
+                        const updated = { ...draft, documents: [...(draft.documents || []), newDoc] };
+                        setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
+                        openCasaModal(updated);
+                        setDraft(updated);
+                        setNewDocName("");
+                        setShowAddDoc(false);
+                      }}
                     >
-                      Torna ai dettagli
+                      Aggiungi
                     </button>
-                    <button
-                      onClick={() => setShowAddDoc(true)}
-                      className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
-                    >
-                      Aggiungi documento
-                    </button>
+                    <button className="px-3 py-1 border rounded text-sm" onClick={() => setShowAddDoc(false)}>Annulla</button>
                   </div>
                 </div>
-
-                {(!draft.documents || draft.documents.length === 0) && !showAddDoc && (
-                  <div className="text-gray-600">Nessun documento presente al momento.</div>
-                )}
-
-                {draft.documents && draft.documents.length > 0 && (
-                  <ul className="space-y-2">
-                    {draft.documents.map((doc) => (
-                      <li key={doc.id} className="flex items-center justify-between bg-white p-3 rounded shadow-sm border">
-                        <div className="text-sm text-gray-800">{doc.name}</div>
-                        <div className="flex items-center gap-2">
-                          <a href={doc.url || '#'} className="text-emerald-600 text-sm hover:underline">Apri</a>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {showAddDoc && (
-                  <div className="mt-3 bg-white p-4 rounded shadow-sm border">
-                    <label className="text-xs text-gray-500">Nome documento</label>
-                    <input value={newDocName} onChange={(e) => setNewDocName(e.target.value)} className="w-full border rounded px-3 py-2 mt-1 text-sm" />
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        className="px-3 py-1 bg-emerald-600 text-white rounded text-sm"
-                        onClick={() => {
-                          if (!newDocName) return;
-                          const newDoc = { id: Date.now().toString(), name: newDocName };
-                          const updated = { ...draft, documents: [...(draft.documents || []), newDoc] };
-                          setAllCases((prev) => prev.map((x) => (x.id === updated.id ? updated : x)));
-                          openCasaModal(updated);
-                          setDraft(updated);
-                          setNewDocName("");
-                          setShowAddDoc(false);
-                        }}
-                      >
-                        Aggiungi
-                      </button>
-                      <button className="px-3 py-1 border rounded text-sm" onClick={() => setShowAddDoc(false)}>Annulla</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
+              )}
+            </div>
+          ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 flex flex-col gap-6">
                 {/* Informazioni immobile */}
@@ -171,7 +352,7 @@ export default function CasaModal() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Informazioni immobile</h3>
                     <button
-                      className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700"
+                      className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700"
                       onClick={() => setEditing((e) => ({ ...e, info: !e.info }))}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
@@ -185,25 +366,40 @@ export default function CasaModal() {
                     {editing.info ? (
                       <div className="flex flex-col gap-2">
                         <label className="text-xs text-gray-500">Superficie (m²)</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property.surfaceM2 ?? ''} onChange={(e) => updateDraftProperty('surfaceM2', Number(e.target.value))} />
-                        <label className="text-xs text-gray-500">Valutazione AVM</label>
+                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.property?.sizeMq ?? ''} onChange={(e) => updateDraftProperty('sizeMq', Number(e.target.value))} />
+                        <label className="text-xs text-gray-500">Valutazione attuale</label>
                         <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.valuationRange ?? ''} onChange={(e) => updateDraftRoot('valuationRange', e.target.value)} />
+                        <label className="text-xs text-gray-500">Valutazione finale (€)</label>
+                        <input className="border rounded px-3 py-2 text-sm" type="number" value={draft.valuationFinal ?? ''} onChange={(e) => updateDraftRoot('valuationFinal', e.target.value ? Number(e.target.value) : null)} />
                         <label className="text-xs text-gray-500">Tipologia</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)} />
+                        <select className="border rounded px-3 py-2 text-sm" value={draft.property?.propertyType ?? ''} onChange={(e) => updateDraftProperty('propertyType', e.target.value)}>
+                          <option value="">Seleziona...</option>
+                          <option value="APARTMENT">Appartamento</option>
+                          <option value="HOUSE">Casa</option>
+                          <option value="OFFICE">Ufficio</option>
+                          <option value="OTHER">Altro</option>
+                        </select>
                         <label className="text-xs text-gray-500">Stato</label>
-                        <input className="border rounded px-3 py-2 text-sm" type="text" value={draft.property.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)} />
+                        <select className="border rounded px-3 py-2 text-sm" value={draft.property?.condition ?? ''} onChange={(e) => updateDraftProperty('condition', e.target.value)}>
+                          <option value="">Seleziona...</option>
+                          <option value="NEW">Nuovo</option>
+                          <option value="RECENTLY_RENOVATED">Ristrutturato di recente</option>
+                          <option value="GOOD_CONDITION">Buono stato</option>
+                          <option value="TO_RENOVATE">Da ristrutturare</option>
+                        </select>
 
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('info')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('info')}>Annulla</button>
                         </div>
                       </div>
                     ) : (
                       <>
-                        <div><span className="font-medium">Superficie:</span> {draft.property.surfaceM2} m²</div>
-                        <div><span className="font-medium">Valutazione AVM:</span> {draft.valuationRange}</div>
-                        <div><span className="font-medium">Tipologia:</span> {draft.property.propertyType}</div>
-                        <div><span className="font-medium">Stato:</span> {draft.property.condition}</div>
+                        <div><span className="font-medium">Superficie:</span> {draft.property?.sizeMq ?? ''} m²</div>
+                        <div><span className="font-medium">Valutazione attuale:</span> {draft.valuationRange ?? ''}</div>
+                        <div><span className="font-medium">Valutazione finale:</span> {typeof draft.valuationFinal === 'number' ? new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(draft.valuationFinal) : (draft.valuationFinal ?? '-')}</div>
+                        <div><span className="font-medium">Tipologia:</span> {draft.property?.propertyTypeLabel || draft.property?.propertyType || ''}</div>
+                        <div><span className="font-medium">Stato:</span> {draft.property?.conditionLabel || draft.property?.condition || ''}</div>
                       </>
                     )}
                   </div>
@@ -213,7 +409,7 @@ export default function CasaModal() {
                 <section className="bg-white p-5 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Contatto proprietario</h3>
-                    <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, contact: !e.contact }))}>
+                    <button className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700" onClick={() => setEditing((e) => ({ ...e, contact: !e.contact }))}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                       </svg>
@@ -242,7 +438,7 @@ export default function CasaModal() {
                         </div>
 
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('contact')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('contact')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('contact')}>Annulla</button>
                         </div>
                       </div>
@@ -255,44 +451,15 @@ export default function CasaModal() {
                     )}
                   </div>
                 </section>
-
-                <section className="bg-white p-5 rounded-xl shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-800">Altri dettagli</h3>
-                      <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, agent: !e.agent }))}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                        </svg>
-                        <span>Modifica</span>
-                      </button>
-                    </div>
-
-                    <div className="text-gray-700">
-                      {editing.agent ? (
-                        <div className="flex flex-col gap-2">
-                          <label className="text-xs text-gray-500">Assegnato ad</label>
-                          <input className="border rounded px-3 py-2 text-sm" value={draft.assignedAgent ?? ''} onChange={(e) => updateDraftRoot('assignedAgent', e.target.value)} />
-                          <label className="text-xs text-gray-500">Valutazione finale</label>
-                          <input className="border rounded px-3 py-2 text-sm" value={draft.valuationFinal ?? ''} onChange={(e) => updateDraftRoot('valuationFinal', e.target.value)} />
-
-                          <div className="mt-3 flex gap-2">
-                            <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('agent')}>Conferma</button>
-                            <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('agent')}>Annulla</button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>{draft.extraInfo || "Nessun dettaglio aggiuntivo."}</>
-                      )}
-                    </div>
-                </section>
               </div>
+              
 
               {/* Right column: note */}
               <aside className="md:col-span-1">
                 <section className="bg-white p-5 rounded-xl shadow-sm sticky top-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Note</h3>
-                    <button className="flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700" onClick={() => setEditing((e) => ({ ...e, notes: !e.notes }))}>
+                    <button className="flex items-center gap-2 text-sm text-teal-700 hover:text-teal-700" onClick={() => setEditing((e) => ({ ...e, notes: !e.notes }))}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden>
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                       </svg>
@@ -305,7 +472,7 @@ export default function CasaModal() {
                       <div className="flex flex-col gap-2">
                         <textarea className="border rounded px-3 py-2 text-sm min-h-[120px]" value={draft.notes ?? ''} onChange={(e) => updateDraftRoot('notes', e.target.value)} />
                         <div className="mt-3 flex gap-2">
-                          <button className="px-3 py-1 bg-emerald-600 text-white rounded text-sm" onClick={() => saveSection('notes')}>Conferma</button>
+                          <button className="px-3 py-1 bg-teal-700 text-white rounded text-sm" onClick={() => saveSection('notes')}>Conferma</button>
                           <button className="px-3 py-1 border rounded text-sm" onClick={() => cancelSection('notes')}>Annulla</button>
                         </div>
                       </div>
@@ -317,18 +484,19 @@ export default function CasaModal() {
               </aside>
             </div>
           )}
-          </div>
+        </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-end items-center gap-3">
+        <div className="px-6 py-4 bg-gray-50 rounded-b-3xl flex justify-between items-center gap-3">
           {userType === "admin" && (
             <button
-              className="px-4 py-2 bg-emerald-600 text-white rounded-md font-medium shadow-sm hover:bg-emerald-700 transition text-sm"
+              onClick={handleDeleteClick}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
             >
-              Cambia agente assegnato
+              Elimina
             </button>
           )}
-
+          <div className="flex-1"></div>
           <button
             onClick={closeCasaModal}
             className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
@@ -337,6 +505,13 @@ export default function CasaModal() {
           </button>
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={showDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        leadAddress={selectedCasa?.property?.address}
+      />
     </div>
   );
 }

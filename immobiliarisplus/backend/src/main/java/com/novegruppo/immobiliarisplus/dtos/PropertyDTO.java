@@ -9,7 +9,9 @@ public record PropertyDTO(
         @NotNull(message = "L'ID non può essere nullo.")
         Integer id,
 
-        // Cognome del proprietario esposto in lettura al posto dell'ownerId
+        Integer ownerId,
+
+        // Cognome del proprietario esposto in lettura
         String ownerSurname,
 
         PropertyStatus status,
@@ -28,7 +30,9 @@ public record PropertyDTO(
         @Min(value = 1, message = "Il numero di bagni deve essere almeno 1.")
         Integer bathrooms,
 
-        Floor floor,
+        @NotNull(message = "Il numero del piano non può essere nullo.")
+        @Min(value = 0, message = "Il numero del piano deve essere almeno 0.")
+        int floor,
 
         HeatingType heatingType,
 
@@ -51,9 +55,4 @@ public record PropertyDTO(
         LocalDateTime createdAt,
 
         LocalDateTime updatedAt
-) {
-
-    public Object ownerId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ownerId'");
-    }}
+) {}

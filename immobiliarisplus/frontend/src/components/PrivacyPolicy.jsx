@@ -1,5 +1,19 @@
+/**
+ * @file PrivacyPolicy.jsx
+ * @description Privacy policy component that loads and displays Iubenda privacy policy embed.
+ *              Dynamically loads the Iubenda script on component mount.
+ */
+
 import { useEffect } from "react";
 
+/**
+ * PrivacyPolicy
+ *
+ * Component that loads the Iubenda privacy policy script and renders a linked embed.
+ * The script is loaded on mount and handles browser compatibility for event listeners.
+ *
+ * @returns {JSX.Element} Anchor element linking to Iubenda privacy policy.
+ */
 function PrivacyPolicy() {
   useEffect(() => {
     (function (w, d) {

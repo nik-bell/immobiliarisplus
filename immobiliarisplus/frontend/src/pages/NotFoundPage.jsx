@@ -1,9 +1,18 @@
 import NotFoundImage from "../assets/image-page-not-found.png";
 import { Link } from "react-router-dom";
 
+/**
+ * 404 Not Found page component.
+ *
+ * Displays an illustration, a message explaining that the page doesn't exist,
+ * and quick navigation buttons to return to the main sections of the website.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered 404 page.
+ */
 function NotFoundPage() {
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-35">
+    <div className="flex flex-col items-center justify-center text-center">
       <div className="mb-[20px]">
         <img
           src={NotFoundImage}
@@ -51,19 +60,19 @@ function NotFoundPage() {
         <Link
           to='/contattaci'
           className="px-6 py-3
-                  bg-teal-500 text-white
+                  bg-teal-700 text-white
                   font-semibold text-base
                   rounded-lg
                   shadow-md
-                  hover:bg-teal-400 hover:shadow-lg
+                  hover:bg-teal-500 hover:shadow-lg
                   transition duration-150 ease-in-out
-                  focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50"
+                  focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
         >
           Contattaci Subito
         </Link>
       </div>
 
-      <p className="text-sm text-gray-400 pt-8">Se hai cliccato un link rotto, segnalacelo!</p>
+      <p className="text-sm text-gray-400 py-8">Se hai cliccato un link rotto, segnalacelo!</p>
     </div>
   );
 }

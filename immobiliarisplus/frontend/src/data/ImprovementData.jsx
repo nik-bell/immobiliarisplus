@@ -1,8 +1,43 @@
+/**
+ * @file ImprovementData.jsx
+ * @description Data file containing home improvement suggestions with associated costs, ROI, and impact metrics.
+ *              Used to display improvement options in the "Migliora casa" section of the application.
+ */
+
 import IconBolt from '../assets/iconeMigliora/electric_bolt/electric_bolt_verde/electric_bolt_verde.svg';
 import IconWaterDrop from '../assets/iconeMigliora/water_drop/water_drop_verde/water_drop_verde.svg';
 import IconPaintBrush from '../assets/iconeMigliora/format_paint/format_paint_verde/format_paint_verde.svg';
 import IconLightBulb from '../assets/iconeMigliora/lightbulb_circle/lightbulb_circle_verde/lightbulb_circle_verde.svg';
 
+/**
+ * Improvement statistics object.
+ * @typedef {Object} ImprovementStats
+ * @property {string} 'Costo stimato' - Estimated cost range for the improvement.
+ * @property {string} 'Aumento valore' - Estimated property value increase.
+ * @property {string} 'ROI atteso' - Expected return on investment percentage.
+ * @property {string} 'Tempi' - Estimated duration for completion.
+ */
+
+/**
+ * Home improvement item object.
+ * @typedef {Object} ImprovementItem
+ * @property {number} id - Unique identifier for the improvement.
+ * @property {JSX.Element} icon - SVG icon element representing the improvement type.
+ * @property {string} title - Main title of the improvement project.
+ * @property {string} subtitle - Detailed description of the improvement.
+ * @property {ImprovementStats} stats - Financial and timeline statistics.
+ * @property {number} impactValue - ROI impact value as a percentage number.
+ */
+
+/**
+ * Array of home improvement suggestions.
+ * 
+ * Contains detailed information about various home improvements including energy efficiency upgrades,
+ * window replacements, painting, and LED lighting. Each item includes estimated costs, value increase,
+ * ROI expectations, and completion timelines.
+ *
+ * @type {Array<ImprovementItem>}
+ */
 const improvementData = [
     {
         id: 1,

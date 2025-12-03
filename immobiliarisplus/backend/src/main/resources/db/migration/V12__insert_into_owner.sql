@@ -1,5 +1,5 @@
 INSERT INTO owner (name, surname, email, phone, contact_preference, intake_date) VALUES
-    ('Luca', 'Rossi', 'tt3exp1yn@mozmail.com', '+39 345 1234567', 'EMAIL', '2025-01-12 11:15:00'),
+    ('Luca', 'Rossi', 'luca.rossi@example.com', '+39 345 1234567', 'EMAIL', '2025-01-12 11:15:00'),
     ('Maria', 'Bianchi', 'maria.bianchi@example.com','+39 347 2345678', 'PHONE', '2025-01-12 11:15:00'),
     ('Giovanni', 'Verdi','giovanni.verdi@example.com', '+39 349 3456789', 'WHATSAPP', '2025-01-15 09:30:00'),
     ('Francesca', 'Russo', 'francesca.russo@example.com','+39 346 4567890', 'EMAIL', '2025-01-18 14:45:00'),

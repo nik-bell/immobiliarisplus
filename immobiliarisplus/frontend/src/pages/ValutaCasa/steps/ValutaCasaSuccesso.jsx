@@ -5,14 +5,26 @@ import MailInArrivo from "../../../sections/MailInArrivo";
 import CtaValutazioneSuccesso from "../../../sections/CtaValutazioneSuccesso";
 import ScrollToTop from "../../../components/ScrollToTop";
 
+/**
+ * Final success page displayed after submitting the property valuation form.
+ *
+ * Pulls the confirmation message from global form state and shows
+ * additional information sections about next steps.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ValutaCasaSuccesso() {
     const { state } = useValutaCasaForm();
 
+    // Fallback success message (in case none is provided)
     const submitMessage = state.submitMessage || "La tua richiesta è stata inviata con successo.";
 
     return (
-        <div className="max-w-6xl mx-auto mb-8  p-8 text-center mt-[8rem]">
+        <div className="max-w-6xl mx-auto mb-8  p-8 text-center">
             <ScrollToTop />
+
+            {/* Success Icon */}
             <svg
                 className="w-16 h-16 text-teal-500 mx-auto my-4"
                 fill="none"
@@ -25,13 +37,17 @@ export default function ValutaCasaSuccesso() {
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
 
-            <h2 className="text-3xl font-semibold pb-4 text-indigo-900">Richiesta ricevuta con successo!</h2>
+            <h2 className="text-3xl font-semibold pb-4 text-indigo-900">
+                Richiesta ricevuta con successo!
+            </h2>
+
             <p className="pb-6 text-xl text-gray-700 font-medium">
                 {submitMessage}
             </p>
 
             <p className="mt-4 text-gray-600">
-                Presto riceverai una conferma via email all'indirizzo che ci hai fornito. Controlla la tua posta elettronica per la valutazione dettagliata.
+                Presto riceverai una conferma via email all'indirizzo che ci hai fornito.
+                Controlla la tua posta elettronica per la valutazione dettagliata.
             </p>
 
             <CardContattiValutaCasa />

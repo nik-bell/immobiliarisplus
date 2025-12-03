@@ -12,9 +12,11 @@ const ImprovementCard = ({
     const statsGridClasses = "grid grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-4 mt-6";
     const labelClasses = "text-sm text-gray-500";
     const valueClasses = "text-base font-medium text-gray-900";
+  
+  // Function to determine value color based on key
     const getValueColorClass = (key) => {
         if (key === 'Aumento valore' || key === 'ROI atteso') {
-            return 'text-teal-600';
+            return 'text-teal-800';
         }
         return 'text-gray-900';
     };
@@ -23,12 +25,12 @@ const ImprovementCard = ({
         <Card className={cardBaseClasses}>
             <div className="flex justify-between items-start">
                 <div className="flex items-start space-x-4">
-                    <div className="text-2xl p-2 rounded-full bg-gray-100 text-teal-500">
+                    <div className="text-2xl p-2 rounded-full bg-gray-100 text-teal-800">
                         {icon}
                     </div>
 
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+                        <h2 className="h3 text-lg font-semibold text-gray-800">{title}</h2>
                         <p className="text-sm text-gray-500">{subtitle}</p>
                     </div>
                 </div>

@@ -25,7 +25,7 @@ const faqsData = [
     },
 ];
 
-
+// Tracks which FAQ item is currently expanded
 const FAQContratto = () => {
     const [activeId, setActiveId] = useState(null);
 
@@ -38,7 +38,7 @@ const FAQContratto = () => {
     return (
         <div className="my-8">
             <Card className={cardClasses}>
-                <h2 className="text-xl font-semibold text-teal-600 mb-4">
+                <h2 className="text-xl font-semibold text-teal-700 mb-4">
                     FAQ rapide
                 </h2>
 

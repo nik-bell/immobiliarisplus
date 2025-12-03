@@ -1,3 +1,20 @@
+/**
+ * Validate step 3 of the property valuation form.
+ *
+ * Ensures user contact information is correctly provided,
+ * including name, surname, email, phone number, and privacy consent.
+ *
+ * @param {Object} data - Contact information provided in step 3.
+ * @param {string} data.name - User's first name.
+ * @param {string} data.surname - User's last name.
+ * @param {string} data.email - User's email address.
+ * @param {string} data.phone - User's phone number.
+ * @param {boolean} data.privacyAccepted - Whether privacy terms were accepted.
+ *
+ * @returns {{ valid: boolean, errors: Object }} Validation result.
+ * - `valid` true if all fields pass validation.
+ * - `errors` contains validation messages for invalid fields.
+ */
 export default function validateStep3(data) {
   const errors = {};
 

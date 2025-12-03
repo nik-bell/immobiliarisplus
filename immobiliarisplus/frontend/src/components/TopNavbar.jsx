@@ -1,8 +1,25 @@
+/**
+ * @file TopNavbar.jsx
+ * @description Top navigation bar component displaying authentication links and user menu.
+ *              Shows login button for guests or user area and logout for authenticated users.
+ */
+
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 import { useState } from "react";
 import LoginModal from "../layout/LoginModal";
 
+/**
+ * TopNavbar
+ *
+ * Renders a top navigation bar with authentication state management.
+ * Displays "Assistenza" link and conditionally shows login button or user menu based on authentication.
+ * For authenticated agents/admins, displays role badge and "Area Agenti" link.
+ * For regular authenticated users, displays "Area Personale" link.
+ * Includes a LoginModal for unauthenticated users.
+ *
+ * @returns {JSX.Element} Top navigation bar with auth controls.
+ */
 const TopNavbar = () => {
   const { isLoggedIn, userType, user, logout } = useAuth();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -26,7 +43,11 @@ const TopNavbar = () => {
             ) : (
               <>
                 {userType === "agente" || userType === "admin" ? (
-                  <NavLink to="/area-agenti" className="hover:underline">
+                  <NavLink
+                    to="/area-agenti"
+                    className="hover:underline text-center"
+                    onMouseEnter={() => import("../pages/AreaAgenti")}
+                  >
                     Area Agenti
                   </NavLink>
                 ) : (

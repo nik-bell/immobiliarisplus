@@ -1,3 +1,18 @@
+/**
+ * Validate step 2 of the property valuation form.
+ *
+ * Checks basic structural details of the property such as
+ * number of rooms, number of bathrooms, and floor.
+ *
+ * @param {Object} data - Form data for step 2.
+ * @param {number|string} data.rooms - Number of rooms.
+ * @param {number|string} data.bathrooms - Number of bathrooms.
+ * @param {number|string} data.floor - Floor number.
+ *
+ * @returns {{ valid: boolean, errors: Object }} Validation result.
+ * - `valid` true if all required fields are correctly filled.
+ * - `errors` contains validation messages for incorrect fields.
+ */
 export default function validateStep2(data) {
   const errors = {};
 

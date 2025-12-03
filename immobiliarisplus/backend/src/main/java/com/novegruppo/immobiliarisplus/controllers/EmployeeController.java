@@ -2,17 +2,19 @@ package com.novegruppo.immobiliarisplus.controllers;
 
 import com.novegruppo.immobiliarisplus.dtos.EmployeeDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyValuationDTO;
-import com.novegruppo.immobiliarisplus.enums.Priority;
+import com.novegruppo.immobiliarisplus.enums.ValuationStatus;
 import com.novegruppo.immobiliarisplus.services.EmployeeService;
 import com.novegruppo.immobiliarisplus.services.PropertyValuationService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
+@PreAuthorize("hasRole('ADMIN')")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -24,8 +26,19 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDTO> list() {
-        return employeeService.findAll();
+    public ResponseEntity<?> list() {
+        try {
+            List<EmployeeDTO> employees = employeeService.findAll();
+            System.out.println("✓ Employees fetched successfully: " + employees.size());
+            return ResponseEntity.ok(employees);
+        } catch (Exception e) {
+            System.err.println("✗ Error in GET /api/employees:");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(java.util.Map.of(
+                "error", e.getMessage() != null ? e.getMessage() : "Unknown error",
+                "type", e.getClass().getSimpleName()
+            ));
+        }
     }
 
     @GetMapping("/{id}")
@@ -34,14 +47,45 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> create(@RequestBody EmployeeDTO dto) {
-        EmployeeDTO created = employeeService.create(dto);
-        return ResponseEntity.ok(created);
+    public ResponseEntity<?> create(@RequestBody EmployeeDTO dto) {
+        try {
+            EmployeeDTO created = employeeService.create(dto);
+            return ResponseEntity.ok(created);
+        } catch (IllegalArgumentException e) {
+            System.err.println("✗ Validation error in POST /api/employees: " + e.getMessage());
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                "error", e.getMessage(),
+                "type", "ValidationError"
+            ));
+        } catch (Exception e) {
+            System.err.println("✗ Error in POST /api/employees:");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(java.util.Map.of(
+                "error", e.getMessage() != null ? e.getMessage() : "Errore durante la creazione dell'employee",
+                "type", e.getClass().getSimpleName()
+            ));
+        }
     }
 
     @PutMapping("/{id}")
-    public EmployeeDTO update(@PathVariable Integer id, @RequestBody EmployeeDTO dto) {
-        return employeeService.update(id, dto);
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody EmployeeDTO dto) {
+        try {
+            EmployeeDTO updated = employeeService.update(id, dto);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            System.err.println("✗ Validation error in PUT /api/employees/" + id + ": " + e.getMessage());
+            return ResponseEntity.badRequest().body(java.util.Map.of(
+                "error", e.getMessage(),
+                "type", "ValidationError"
+            ));
+        } catch (Exception e) {
+            System.err.println("✗ Error in PUT /api/employees/" + id + ":");
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(java.util.Map.of(
+                "error", e.getMessage() != null ? e.getMessage() : "Errore durante l'aggiornamento dell'employee",
+                "type", e.getClass().getSimpleName()
+            ));
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -66,49 +110,15 @@ public class EmployeeController {
             @PathVariable Integer valuationId,
             @PathVariable Integer employeeId
     ) {
-        PropertyValuationDTO dto = valuationService.findById(valuationId);
-
-        PropertyValuationDTO updated = new PropertyValuationDTO(
-                dto.id(),
-                dto.propertyId(),
-                employeeId,
-                dto.improveProperty(),
-                dto.exclusiveContract(),
-                dto.priority(),
-                dto.estimatedPriceMin(),
-                dto.estimatedPriceMax(),
-                dto.pricePerMq(),
-                dto.confidenceScore(),
-                dto.dataSource(),
-                dto.createdAt()
-        );
-
-        return valuationService.update(valuationId, updated);
+        return valuationService.assignEmployee(valuationId, employeeId);
     }
 
-     //Aggiorna la priorità (stato) della valutazione.
-    @PutMapping("/valuation/{valuationId}/priority")
-    public PropertyValuationDTO updatePriority(
+     //Aggiorna lo status della valutazione.
+    @PutMapping("/valuation/{valuationId}/status")
+    public PropertyValuationDTO updateStatus(
             @PathVariable Integer valuationId,
-            @RequestParam Priority priority
+            @RequestParam ValuationStatus status
     ) {
-        PropertyValuationDTO dto = valuationService.findById(valuationId);
-
-        PropertyValuationDTO updated = new PropertyValuationDTO(
-                dto.id(),
-                dto.propertyId(),
-                dto.employeeId(),
-                dto.improveProperty(),
-                dto.exclusiveContract(),
-                priority,  // Cambiamo SOLO questo
-                dto.estimatedPriceMin(),
-                dto.estimatedPriceMax(),
-                dto.pricePerMq(),
-                dto.confidenceScore(),
-                dto.dataSource(),
-                dto.createdAt()
-        );
-
-        return valuationService.update(valuationId, updated);
+        return valuationService.updateStatus(valuationId, status);
     }
 }

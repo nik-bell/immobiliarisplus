@@ -11,8 +11,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  /* Default to a dark text color so light backgrounds are readable */
-  color: #111827;
+  color: rgba(255, 255, 255, 0.87);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

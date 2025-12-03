@@ -3,7 +3,6 @@ package com.novegruppo.immobiliarisplus.mappers;
 import com.novegruppo.immobiliarisplus.dtos.PropertyCreateDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyDTO;
 import com.novegruppo.immobiliarisplus.dtos.PropertyUpdateDTO;
-import com.novegruppo.immobiliarisplus.entities.Owner;
 import com.novegruppo.immobiliarisplus.entities.Property;
 import org.mapstruct.*;
 
@@ -11,8 +10,10 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface PropertyMapper {
 
+    @Mapping(source = "owner.id", target = "ownerId")
     @Mapping(source = "owner.surname", target = "ownerSurname")
     @Mapping(source = "sizeMq", target = "sizeMq")
+    @Mapping(source = "floors", target = "floor")
     @Mapping(source = "hasBalcony", target = "terrace")
     @Mapping(source = "hasElevator", target = "elevator")
     @Mapping(source = "hasGarage", target = "boxAuto")
@@ -22,6 +23,7 @@ public interface PropertyMapper {
 
     @Mapping(source = "ownerId", target = "owner.id")
     @Mapping(source = "sizeMq", target = "sizeMq")
+    @Mapping(source = "floor", target = "floors")
     @Mapping(source = "terrace", target = "hasBalcony")
     @Mapping(source = "elevator", target = "hasElevator")
     @Mapping(source = "boxAuto", target = "hasGarage")
@@ -32,6 +34,7 @@ public interface PropertyMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(source = "ownerId", target = "owner.id")
     @Mapping(source = "sizeMq", target = "sizeMq")
+    @Mapping(source = "floor", target = "floors")
     @Mapping(source = "terrace", target = "hasBalcony")
     @Mapping(source = "elevator", target = "hasElevator")
     @Mapping(source = "boxAuto", target = "hasGarage")

@@ -38,14 +38,21 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoint pubblici (senza autenticazione)
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/valuation/**",
+                                "/api/valuations/calculate",
                                 "/actuator/**",
                                 "/error"
                         ).permitAll()
-                        // Tutti gli altri endpoint richiedono autenticazione
+                        // ADMIN only endpoints
+                        .requestMatchers(
+                                "/api/users/**",
+                                "/api/user-tokens/**",
+                                "/api/price-per-sqm/**",
+                                "/api/employees/**"
+                        ).hasRole("ADMIN")
+                        // Altri endpoint: autenticati con uno dei ruoli
+                        .requestMatchers("/api/**").hasAnyRole("ADMIN","AGENT","OWNER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -53,4 +60,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-

@@ -6,10 +6,21 @@ const steps = [
     { id: 3, name: 'Contatti' },
 ];
 
+/**
+ * Step progress bar for the "Valuta Casa" multi-step form.
+ *
+ * Highlights the current step, shows completed steps with a checkmark,
+ * and visually connects steps with a progress line (desktop only).
+ *
+ * @component
+ * @param {Object} props
+ * @param {number} props.currentStep - The active step (1–3).
+ * @returns {JSX.Element} A rendered horizontal step indicator.
+ */
 const BarraStep = ({ currentStep }) => {
 
     return (
-        <div className="mt-8 mt-[8rem]"> 
+        <div className="mt-2"> 
             <nav 
                 aria-label="Progress" 
                 className="max-w-4xl mx-auto flex items-center justify-center md:justify-between px-4 md:px-0" 

@@ -5,6 +5,6 @@ public enum PropertyType {
     HOUSE,
     VILLA,
     STUDIO,
-    OFFICE
+    OFFICE,
+    OTHER
 }
-

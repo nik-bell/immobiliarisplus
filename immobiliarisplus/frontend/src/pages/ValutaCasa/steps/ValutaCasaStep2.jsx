@@ -2,10 +2,24 @@ import useValutaCasaForm from "../useValutaCasaForm";
 import NavigationButtons from "../NavigationButtons";
 import ScrollToTop from "../../../components/ScrollToTop";
 
+/**
+ * Step 2 of the "Valuta Casa" form.
+ * Handles house details such as rooms, bathrooms, floor, and available features.
+ *
+ * Uses centralized state from `useValutaCasaForm`.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ValutaCasaStep2() {
   const { state, dispatch } = useValutaCasaForm();
   const d = state.details;
 
+  /**
+   * Toggles a feature inside the `details.features` object.
+   *
+   * @param {string} name - Feature key to toggle.
+   */
   function toggleFeature(name) {
     dispatch({
       type: "UPDATE_FEATURES",
@@ -16,13 +30,13 @@ export default function ValutaCasaStep2() {
   return (
     <div className="max-w-3xl mx-auto mb-8 bg-white p-6 rounded-lg shadow-lg">
       <ScrollToTop />
+
       <h2 className="text-3xl font-semibold pb-2">Dettagli dell'immobile</h2>
       <p className="pb-4">Più dettagli fornisci, più accurata sarà la valutazione</p>
 
+      {/* Number of rooms */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">
-          Numero di camere *
-        </label>
+        <label className="block text-sm font-medium mb-1">Numero di camere *</label>
         <input
           className="w-full px-3 py-2 border rounded border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
@@ -41,12 +55,11 @@ export default function ValutaCasaStep2() {
         )}
       </div>
 
+      {/* Number of bathrooms */}
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">
-          Numero di bagni *
-        </label>
+        <label className="block text-sm font-medium mb-1">Numero di bagni *</label>
         <input
-          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none "
+          className="w-full px-3 py-2 border border-gray-300 rounded hover:border-teal-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none"
           type="number"
           min={0}
           value={d.bathrooms}
@@ -63,6 +76,7 @@ export default function ValutaCasaStep2() {
         )}
       </div>
 
+      {/* Floor */}
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1">Piano *</label>
         <input
@@ -83,6 +97,7 @@ export default function ValutaCasaStep2() {
         )}
       </div>
 
+      {/* Features list */}
       <div>
         <label className="block text-sm font-medium mb-2">Dotazioni</label>
         <div className="grid grid-cols-2 gap-2">
@@ -92,13 +107,16 @@ export default function ValutaCasaStep2() {
                 type="checkbox"
                 checked={d.features[feature]}
                 onChange={() => toggleFeature(feature)}
-                className="w-4 h-4"
+                className="w-4 h-4 accent-teal-500"
               />
-              <span className="capitalize">{feature.replace(/_/g, " ")}</span>
+              <span className="capitalize">
+                {feature.replace(/_/g, " ")}
+              </span>
             </label>
           ))}
         </div>
       </div>
+
       <NavigationButtons />
     </div>
   );
