@@ -117,7 +117,7 @@ export default function ValutaCasaStep3() {
             type="checkbox"
             checked={c.privacyAccepted}
             onChange={handleChange}
-            className={`w-4 h-4 mt-1`}
+            className={`w-4 h-4 mt-1 accent-teal-500`}
           />
           <span className={`ml-1 ${textClasses}`}>
             Accetto la <a

@@ -202,6 +202,8 @@ export default function FormContextProvider({ children }) {
         nextStep,
         prevStep,
         submitForm,
+        loading,
+        error,
       }}
     >
       {children}

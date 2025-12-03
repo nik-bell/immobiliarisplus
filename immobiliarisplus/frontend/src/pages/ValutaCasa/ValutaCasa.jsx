@@ -5,6 +5,7 @@ import ValutaCasaStep1 from "./steps/ValutaCasaStep1";
 import ValutaCasaStep2 from "./steps/ValutaCasaStep2";
 import ValutaCasaStep3 from "./steps/ValutaCasaStep3";
 import ValutaCasaSuccesso from "./steps/ValutaCasaSuccesso";
+import ValutaCasaLoading from "./ValutaCasaLoading";
 import BarraStep from "./BarraStep";
 
 function StepperWrapper() {
@@ -18,7 +19,12 @@ function StepperWrapper() {
   );
 }
 function StepsRenderer() {
-  const { state } = useValutaCasaForm();
+  const { state, loading } = useValutaCasaForm();
+
+  if (loading) {
+    return <ValutaCasaLoading />;
+  }
+
   if (state.isSubmitted) {
     return <ValutaCasaSuccesso />;
   }

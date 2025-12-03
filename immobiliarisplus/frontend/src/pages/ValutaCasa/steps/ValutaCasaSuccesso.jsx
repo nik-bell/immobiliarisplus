@@ -11,7 +11,7 @@ export default function ValutaCasaSuccesso() {
     const submitMessage = state.submitMessage || "La tua richiesta è stata inviata con successo.";
 
     return (
-        <div className="max-w-6xl mx-auto mb-8  p-8 text-center mt-[8rem]">
+        <div className="max-w-6xl mx-auto mb-8  p-8 text-center">
             <ScrollToTop />
             <svg
                 className="w-16 h-16 text-teal-500 mx-auto my-4"

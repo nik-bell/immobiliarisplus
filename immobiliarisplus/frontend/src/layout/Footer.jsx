@@ -1,35 +1,46 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import CookiePolicy from "../components/CookiePolicy";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 
 // IMPORTA QUI IL LOGO SVG
-import Logo from "../assets/Logo.svg";
+import LogoPNG from "../assets/Logo.png";
 
 function Footer() {
   const [email, setEmail] = useState("");
   const [consenso, setConsenso] = useState(false);
+  const [consensoError, setConsensoError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    if (!successMessage) return;
+    const t = setTimeout(() => setSuccessMessage(""), 1500);
+    return () => clearTimeout(t);
+  }, [successMessage]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!consenso) {
-      alert("Per favore accetta l'informativa privacy.");
+      setConsensoError("Per favore accetta l’informativa privacy.");
       return;
     }
 
-    alert("Iscrizione completata!");
+    setSuccessMessage("Iscrizione completata!");
+    setEmail("");
+    setConsenso(false);
+    setConsensoError("");
   };
 
   return (
-    <footer className="w-full bg-black text-gray-200">
+    <footer className="w-full bg-gray-900 text-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-4 gap-8">
 
         {/* LOGO */}
         <div>
           <NavLink to="/" className="flex items-center">
-            <img src={Logo} alt="Logo" className="h-10 w-auto" />
+            <img src={LogoPNG} alt="Logo" className="h-10 w-auto" />
           </NavLink>
 
           <p className="mt-2 text-sm text-gray-400">
@@ -44,6 +55,7 @@ function Footer() {
             <li><NavLink to="/valuta-casa" className="text-gray-400 hover:text-white">Valuta casa</NavLink></li>
             <li><NavLink to="/vendi-casa" className="text-gray-400 hover:text-white">Vendi casa</NavLink></li>
             <li><NavLink to="/migliora-casa" className="text-gray-400 hover:text-white">Migliora casa</NavLink></li>
+            <li><NavLink to="/contratto-esclusiva" className="text-gray-400 hover:text-white">Contratto Esclusiva</NavLink></li>
           </ul>
         </div>
 
@@ -76,11 +88,23 @@ function Footer() {
               <input
                 type="checkbox"
                 checked={consenso}
-                onChange={() => setConsenso(!consenso)}
+                onChange={() => {
+                  const newVal = !consenso;
+                  setConsenso(newVal);
+                  if (newVal) setConsensoError("");
+                }}
                 className="w-4 h-4 accent-teal-500"
               />
               Acconsento al trattamento dei dati personali
             </label>
+
+            {consensoError && (
+              <p className="text-sm text-red-400 mt-1">{consensoError}</p>
+            )}
+
+            {successMessage && (
+              <p className="text-sm text-green-400 mt-1">{successMessage}</p>
+            )}
 
             <button
               type="submit"
